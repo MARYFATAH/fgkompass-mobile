@@ -1,6 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
+import MinimalCard from "../../components/MinimalCard";
+import MoreOnTopic from "../../components/MoreOnTopic";
+
 import {
   Image,
   Pressable,
@@ -54,6 +57,38 @@ export default function Home() {
         {/* FEATURED */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Featured Articles</Text>
+          {/* EXPLORE */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Explore</Text>
+
+            <View style={styles.grid}>
+              <MinimalCard
+                title="Nutrition"
+                description="Food, balance & wellbeing"
+                link="/nutrition"
+              />
+              <MinimalCard
+                title="Mental Health"
+                description="Emotional wellbeing & resilience"
+                link="/mental-health"
+              />
+              <MinimalCard
+                title="Fitness"
+                description="Exercise & physical activity"
+                link="/fitness"
+              />
+              <MinimalCard
+                title="Motherhood"
+                description="Life phase & parenting support"
+                link="/life-phase/motherhood"
+              />
+            </View>
+          </View>
+          {/* MORE ON TOPIC */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>More on this topic</Text>
+            <MoreOnTopic />
+          </View>
 
           {error && <Text style={styles.error}>{error}</Text>}
 
@@ -152,5 +187,11 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginBottom: 10,
+  },
+  grid: {
+    flexDirection: "column",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 24,
   },
 });
