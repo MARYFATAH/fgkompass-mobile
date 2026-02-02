@@ -1,8 +1,18 @@
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
+import { client } from "../sanity/client";
 
 export default function Landing() {
   const router = useRouter();
+  useEffect(() => {
+    async function loadPosts() {
+      const posts = await client.fetch(`*[_type=="post"][0..2]{title}`);
+      console.log("SANITY POSTS 👉", posts);
+    }
+
+    loadPosts();
+  }, []);
 
   return (
     <View
