@@ -1,9 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import MinimalCard from "../../components/MinimalCard";
-import MoreOnTopic from "../../components/MoreOnTopic";
-
 import {
   Image,
   Pressable,
@@ -12,6 +9,9 @@ import {
   Text,
   View,
 } from "react-native";
+
+import MinimalCard from "../../components/MinimalCard";
+import MoreOnTopic from "../../components/MoreOnTopic";
 import { client } from "../../sanity/client";
 
 export default function Home() {
@@ -19,14 +19,17 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const query = `*[_type == "post" && featured == true && defined(slug.current)]
-      | order(publishedAt desc)[0...6] {
-        _id,
-        title,
-        slug,
-        "imageUrl": image.asset->url,
-        excerpt
-      }`;
+    const query = `*[
+      _type == "post" &&
+      featured == true &&
+      defined(slug.current)
+    ] | order(publishedAt desc)[0...6] {
+      _id,
+      title,
+      slug,
+      "imageUrl": image.asset->url,
+      excerpt
+    }`;
 
     client
       .fetch(query)
@@ -42,7 +45,7 @@ export default function Home() {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.container}>
-        {/* HERO */}
+        {/* 🌸 HERO */}
         <View style={styles.hero}>
           <Image
             source={require("../../assets/strongwomen.jpg")}
@@ -54,57 +57,62 @@ export default function Home() {
           </Text>
         </View>
 
-        {/* FEATURED */}
+        {/* 🌿 EXPLORE */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Explore</Text>
+
+          <View style={styles.stack}>
+            <MinimalCard
+              title="Nutrition"
+              description="Food, balance & wellbeing"
+              link="/nutrition"
+            />
+            <MinimalCard
+              title="Mental Health"
+              description="Emotional wellbeing & resilience"
+              link="/mental-health"
+            />
+            <MinimalCard
+              title="Fitness"
+              description="Exercise & physical activity"
+              link="/fitness"
+            />
+            <MinimalCard
+              title="Motherhood"
+              description="Life phase & parenting support"
+              link="/life-phase/motherhood"
+            />
+          </View>
+        </View>
+
+        {/* 💡 MORE ON TOPIC */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>More on this topic</Text>
+          <MoreOnTopic />
+        </View>
+
+        {/* 📰 FEATURED ARTICLES */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Featured Articles</Text>
-          {/* EXPLORE */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Explore</Text>
-
-            <View style={styles.grid}>
-              <MinimalCard
-                title="Nutrition"
-                description="Food, balance & wellbeing"
-                link="/nutrition"
-              />
-              <MinimalCard
-                title="Mental Health"
-                description="Emotional wellbeing & resilience"
-                link="/mental-health"
-              />
-              <MinimalCard
-                title="Fitness"
-                description="Exercise & physical activity"
-                link="/fitness"
-              />
-              <MinimalCard
-                title="Motherhood"
-                description="Life phase & parenting support"
-                link="/life-phase/motherhood"
-              />
-            </View>
-          </View>
-          {/* MORE ON TOPIC */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>More on this topic</Text>
-            <MoreOnTopic />
-          </View>
 
           {error && <Text style={styles.error}>{error}</Text>}
 
           {featured.map((post) => (
-            <View key={post._id} style={styles.card}>
-              <Image source={{ uri: post.imageUrl }} style={styles.cardImage} />
+            <View key={post._id} style={styles.articleCard}>
+              <Image
+                source={{ uri: post.imageUrl }}
+                style={styles.articleImage}
+              />
 
-              <View style={styles.cardBody}>
-                <Text style={styles.cardTitle}>{post.title}</Text>
-                <Text style={styles.cardExcerpt} numberOfLines={3}>
+              <View style={styles.articleBody}>
+                <Text style={styles.articleTitle}>{post.title}</Text>
+                <Text style={styles.articleExcerpt} numberOfLines={3}>
                   {post.excerpt}
                 </Text>
 
                 <Link href={`/${post.slug.current}`} asChild>
-                  <Pressable style={styles.button}>
-                    <Text style={styles.buttonText}>Read more</Text>
+                  <Pressable style={styles.readButton}>
+                    <Text style={styles.readButtonText}>Read more</Text>
                   </Pressable>
                 </Link>
               </View>
@@ -115,83 +123,104 @@ export default function Home() {
     </LinearGradient>
   );
 }
+
+/* 🎨 STYLES */
+
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    paddingBottom: 60,
+    paddingBottom: 80,
   },
+
+  /* HERO */
   hero: {
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 56,
   },
   heroImage: {
     width: "100%",
-    height: 220,
-    borderRadius: 20,
+    height: 230,
+    borderRadius: 22,
     marginBottom: 20,
   },
   heroTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "600",
     color: "#881337",
+    textAlign: "center",
   },
   heroSubtitle: {
-    fontSize: 16,
+    fontSize: 15,
     color: "#475569",
-    marginTop: 8,
+    marginTop: 10,
+    textAlign: "center",
+    maxWidth: 280,
   },
+
+  /* SECTIONS */
   section: {
-    marginTop: 20,
+    marginTop: 40,
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "600",
     color: "#9f1239",
-    marginBottom: 20,
+    marginBottom: 18,
+    letterSpacing: 0.3,
   },
-  card: {
+
+  /* EXPLORE STACK */
+  stack: {
+    gap: 18,
+  },
+
+  /* ARTICLES */
+  articleCard: {
     backgroundColor: "#fff",
-    borderRadius: 18,
+    borderRadius: 22,
     overflow: "hidden",
-    marginBottom: 20,
+    marginBottom: 28,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 2,
   },
-  cardImage: {
+  articleImage: {
     width: "100%",
-    height: 180,
+    height: 190,
   },
-  cardBody: {
-    padding: 16,
+  articleBody: {
+    padding: 18,
   },
-  cardTitle: {
-    fontSize: 16,
+  articleTitle: {
+    fontSize: 17,
     fontWeight: "600",
-    marginBottom: 8,
+    color: "#881337",
+    marginBottom: 10,
   },
-  cardExcerpt: {
+  articleExcerpt: {
     fontSize: 14,
     color: "#475569",
+    lineHeight: 20,
   },
-  button: {
-    marginTop: 12,
+
+  /* BUTTON */
+  readButton: {
+    marginTop: 14,
     backgroundColor: "#f43f5e",
     paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    paddingHorizontal: 18,
+    borderRadius: 22,
     alignSelf: "flex-start",
   },
-  buttonText: {
+  readButtonText: {
     color: "#fff",
     fontSize: 14,
     fontWeight: "500",
   },
+
   error: {
     color: "red",
     marginBottom: 10,
-  },
-  grid: {
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 24,
   },
 });

@@ -54,11 +54,19 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    padding: 18,
-    minHeight: 210,
+    padding: 70,
+    minHeight: 120,
     borderWidth: 1,
     borderColor: "#E5E7EB",
     justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   header: {
     flexDirection: "row",
