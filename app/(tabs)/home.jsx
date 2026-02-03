@@ -2,225 +2,301 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  Dimensions,
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
 import { client } from "../../sanity/client";
 
+const { width } = Dimensions.get("window");
+const HERO_HEIGHT = 280;
+
 export default function Home() {
+  const scrollY = useSharedValue(0);
   const [featured, setFeatured] = useState([]);
-  const [error, setError] = useState(null);
+  const [lifePhase, setLifePhase] = useState("motherhood"); // later from profile
 
   useEffect(() => {
     const query = `*[
       _type == "post" &&
       featured == true &&
       defined(slug.current)
-    ] | order(publishedAt desc)[0...6] {
+    ][0...5]{
       _id,
       title,
-      slug,
+      excerpt,
       "imageUrl": image.asset->url,
-      excerpt
+      slug
     }`;
 
-    client
-      .fetch(query)
-      .then(setFeatured)
-      .catch((err) => {
-        setError(err.message);
-      });
+    client.fetch(query).then(setFeatured);
   }, []);
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
+  const heroStyle = useAnimatedStyle(() => ({
+    height: interpolate(
+      scrollY.value,
+      [0, HERO_HEIGHT],
+      [HERO_HEIGHT, 120],
+      Extrapolate.CLAMP,
+    ),
+  }));
+
+  const heroImageStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: interpolate(
+          scrollY.value,
+          [0, HERO_HEIGHT],
+          [1, 1.15],
+          Extrapolate.CLAMP,
+        ),
+      },
+    ],
+  }));
+
   return (
-    <LinearGradient
-      colors={["#ffe4e6", "#fecdd3", "#fda4af"]}
-      style={{ flex: 1 }}
-    >
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* 🌸 HERO */}
-        <View style={styles.hero}>
-          <Image
-            source={require("../../assets/strongwomen.jpg")}
-            style={styles.heroImage}
-          />
-          <Text style={styles.heroTitle}>Strong women. Strong futures.</Text>
-          <Text style={styles.heroSubtitle}>
-            Knowledge, health & life guidance
-          </Text>
+    <View style={{ flex: 1 }}>
+      {/* 🌸 STICKY HERO */}
+      <Animated.View style={[styles.hero, heroStyle]}>
+        <Animated.Image
+          source={require("../../assets/strongwomen.jpg")}
+          style={[styles.heroImage, heroImageStyle]}
+        />
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.35)"]}
+          style={styles.heroOverlay}
+        />
+        <View style={styles.heroText}>
+          <Text style={styles.heroTitle}>Strong women</Text>
+          <Text style={styles.heroSubtitle}>Guidance for every life phase</Text>
         </View>
+      </Animated.View>
 
-        {/* 🌿 EXPLORE */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Explore</Text>
+      {/* 📜 CONTENT */}
+      <Animated.ScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.content}
+      >
+        {/* 🌿 EXPLORE — HORIZONTAL */}
+        <Section title="Explore">
+          <Animated.ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.horizontal}
+          >
+            <MinimalCard title="Nutrition" link="/nutrition" />
+            <MinimalCard title="Mental Health" link="/mental-health" />
+            <MinimalCard title="Fitness" link="/fitness" />
+            <MinimalCard title="Hormones" link="/hormones" />
+            <MinimalCard title="Motherhood" link="/life-phase/motherhood" />
+          </Animated.ScrollView>
+        </Section>
 
-          <View style={styles.stack}>
-            <MinimalCard
-              title="Nutrition"
-              description="Food, balance & wellbeing"
-              link="/nutrition"
-            />
-            <MinimalCard
-              title="Mental Health"
-              description="Emotional wellbeing & resilience"
-              link="/mental-health"
-            />
-            <MinimalCard
-              title="Fitness"
-              description="Exercise & physical activity"
-              link="/fitness"
-            />
-            <MinimalCard
-              title="Motherhood"
-              description="Life phase & parenting support"
-              link="/life-phase/motherhood"
-            />
+        {/* 🧬 LIFE PHASE */}
+        <Section title="For your life phase">
+          <View style={styles.phaseCard}>
+            <Text style={styles.phaseTitle}>
+              {lifePhase === "motherhood"
+                ? "Motherhood & Family"
+                : "Your current phase"}
+            </Text>
+            <Text style={styles.phaseText}>
+              Curated articles and tools for your current stage of life.
+            </Text>
+
+            <Link href={`/life-phase/${lifePhase}`} asChild>
+              <Pressable style={styles.phaseButton}>
+                <Text style={styles.phaseButtonText}>Explore</Text>
+              </Pressable>
+            </Link>
           </View>
-        </View>
+          <View style={styles.phaseCard}>
+            <Text style={styles.phaseTitle}>
+              {lifePhase === "motherhood"
+                ? "Motherhood & Family"
+                : "Your current phase"}
+            </Text>
+            <Text style={styles.phaseText}>
+              Curated articles and tools for your current stage of life.
+            </Text>
+
+            <Link href={`/life-phase/${lifePhase}`} asChild>
+              <Pressable style={styles.phaseButton}>
+                <Text style={styles.phaseButtonText}>Explore</Text>
+              </Pressable>
+            </Link>
+          </View>
+        </Section>
 
         {/* 💡 MORE ON TOPIC */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>More on this topic</Text>
+        <Section title="More on this topic">
           <MoreOnTopic />
-        </View>
+        </Section>
 
-        {/* 📰 FEATURED ARTICLES */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Featured Articles</Text>
-
-          {error && <Text style={styles.error}>{error}</Text>}
-
+        {/* 📰 FEATURED */}
+        <Section title="Featured Articles">
           {featured.map((post) => (
-            <View key={post._id} style={styles.articleCard}>
+            <View key={post._id} style={styles.article}>
               <Image
                 source={{ uri: post.imageUrl }}
                 style={styles.articleImage}
               />
-
               <View style={styles.articleBody}>
                 <Text style={styles.articleTitle}>{post.title}</Text>
                 <Text style={styles.articleExcerpt} numberOfLines={3}>
                   {post.excerpt}
                 </Text>
-
                 <Link href={`/${post.slug.current}`} asChild>
-                  <Pressable style={styles.readButton}>
-                    <Text style={styles.readButtonText}>Read more</Text>
+                  <Pressable>
+                    <Text style={styles.readMore}>Read more →</Text>
                   </Pressable>
                 </Link>
               </View>
             </View>
           ))}
-        </View>
-      </ScrollView>
-    </LinearGradient>
+        </Section>
+      </Animated.ScrollView>
+    </View>
   );
 }
 
+/* 🧱 SECTION WRAPPER */
+const Section = ({ title, children }) => (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    {children}
+  </View>
+);
+
 /* 🎨 STYLES */
-
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    paddingBottom: 80,
-  },
-
-  /* HERO */
   hero: {
-    alignItems: "center",
-    marginBottom: 56,
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    zIndex: 10,
+    overflow: "hidden",
   },
   heroImage: {
     width: "100%",
-    height: 230,
-    borderRadius: 22,
-    marginBottom: 20,
+    height: "100%",
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  heroText: {
+    position: "absolute",
+    bottom: 30,
+    left: 20,
   },
   heroTitle: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "600",
-    color: "#881337",
-    textAlign: "center",
+    color: "#fff",
   },
   heroSubtitle: {
     fontSize: 15,
-    color: "#475569",
-    marginTop: 10,
-    textAlign: "center",
-    maxWidth: 280,
+    color: "#fce7f3",
+    marginTop: 6,
   },
 
-  /* SECTIONS */
+  content: {
+    paddingTop: HERO_HEIGHT + 20,
+    paddingBottom: 100,
+  },
+
   section: {
-    marginTop: 40,
+    paddingHorizontal: 20,
+    marginBottom: 42,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "600",
     color: "#9f1239",
-    marginBottom: 18,
-    letterSpacing: 0.3,
+    marginBottom: 16,
   },
 
-  /* EXPLORE STACK */
-  stack: {
-    gap: 18,
+  horizontal: {
+    gap: 16,
+    paddingRight: 20,
   },
 
-  /* ARTICLES */
-  articleCard: {
+  phaseCard: {
     backgroundColor: "#fff",
-    borderRadius: 22,
-    overflow: "hidden",
-    marginBottom: 28,
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 16,
+    shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 2,
   },
-  articleImage: {
-    width: "100%",
-    height: 190,
-  },
-  articleBody: {
-    padding: 18,
-  },
-  articleTitle: {
-    fontSize: 17,
+  phaseTitle: {
+    fontSize: 18,
     fontWeight: "600",
     color: "#881337",
-    marginBottom: 10,
+  },
+  phaseText: {
+    fontSize: 14,
+    color: "#475569",
+    marginVertical: 10,
+  },
+  phaseButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#f43f5e",
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  phaseButtonText: {
+    color: "#fff",
+    fontWeight: "500",
+  },
+
+  article: {
+    backgroundColor: "#fff",
+    borderRadius: 22,
+    overflow: "hidden",
+    marginBottom: 22,
+  },
+  articleImage: {
+    width: "100%",
+    height: 180,
+  },
+  articleBody: {
+    padding: 16,
+  },
+  articleTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#881337",
   },
   articleExcerpt: {
     fontSize: 14,
     color: "#475569",
-    lineHeight: 20,
+    marginVertical: 8,
   },
-
-  /* BUTTON */
-  readButton: {
-    marginTop: 14,
-    backgroundColor: "#f43f5e",
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 22,
-    alignSelf: "flex-start",
-  },
-  readButtonText: {
-    color: "#fff",
-    fontSize: 14,
+  readMore: {
+    color: "#f43f5e",
     fontWeight: "500",
-  },
-
-  error: {
-    color: "red",
-    marginBottom: 10,
   },
 });
