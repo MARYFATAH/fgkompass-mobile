@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import LifePhaseArticleCard from "../../../components/LifePhaseArticleCard";
 import LifePhaseWheel from "../../../components/LifePhaseWheel";
-import MinimalCard from "../../../components/MinimalCard";
 import { client } from "../../../sanity/client";
 
 export default function LifePhaseScreen() {
@@ -29,26 +29,29 @@ export default function LifePhaseScreen() {
         }));
 
         setPhases(mapped);
-        setActivePhase(mapped[0]); // default selection
+        setActivePhase(mapped[0]); // default
       });
   }, []);
 
-  // 2️⃣ Fetch posts based on selected life phase
+  // 2️⃣ Fetch posts for selected life phase
   useEffect(() => {
     if (!activePhase?.slug) return;
 
     client
       .fetch(
         `
-        *[
-          _type=="post" &&
-          defined(slug.current) &&
-          $slug in lifePhases[]->slug.current
-        ] | order(publishedAt desc){
-          _id,
-          title
-        }
-        `,
+  *[
+    _type=="post" &&
+    defined(slug.current) &&
+    $slug in lifePhases[]->slug.current
+  ] | order(publishedAt desc){
+    _id,
+    title,
+    excerpt,
+    "slug": slug.current,
+    "imageUrl": mainImage.asset->url
+  }
+  `,
         { slug: activePhase.slug },
       )
       .then(setPosts);
@@ -64,17 +67,24 @@ export default function LifePhaseScreen() {
         <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
 
         {posts.length === 0 && (
-          <Text style={{ color: "#9CA3AF" }}>No articles yet</Text>
+          <Text style={styles.empty}>No articles yet</Text>
         )}
 
         {posts.map((p) => (
-          <MinimalCard key={p._id} title={p.title} link={`/posts/${p.slug}`} />
+          <LifePhaseArticleCard
+            key={p._id}
+            title={p.title}
+            excerpt={p.excerpt}
+            imageUrl={p.imageUrl}
+            slug={p.slug}
+          />
         ))}
       </View>
     </ScrollView>
   );
 }
-export const styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF1F2",
@@ -102,23 +112,9 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 14,
-    borderWidth: 1,
-    borderColor: "#FBCFE8",
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 2,
-  },
-
-  cardText: {
-    fontSize: 15,
-    color: "#374151",
-    lineHeight: 22,
+  empty: {
+    color: "#9CA3AF",
+    fontSize: 14,
+    marginTop: 8,
   },
 });

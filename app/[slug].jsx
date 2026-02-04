@@ -1,9 +1,9 @@
 // app/[slug].jsx
 
+import { PortableText } from "@portabletext/react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { PortableText } from "@portabletext/react-native";
 import { client } from "../sanity/client";
 
 /* 🎨 Life-phase theme colors */
@@ -46,7 +46,7 @@ export default function ArticleScreen() {
 
     client
       .fetch(
-        `*[_type=="post" && slug.current==$slug][0]{
+        `*[_type=="post" && slug.current == $slug][0]{
           title,
           publishedAt,
           lifePhase->{
