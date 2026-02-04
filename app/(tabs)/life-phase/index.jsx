@@ -1,25 +1,55 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import LifePhaseWheel from "../../../components/LifePhaseWheel";
+import MinimalCard from "../../../components/MinimalCard";
 import { client } from "../../../sanity/client";
 
-const LIFE_PHASES = [
-  { id: "young", label: "Young" },
-  { id: "midlife", label: "Midlife" },
-  { id: "motherhood", label: "Motherhood" },
-  { id: "older-adults", label: "Older Adults" },
-];
-
 export default function LifePhaseScreen() {
-  const [activePhase, setActivePhase] = useState(LIFE_PHASES[2]);
+  const [phases, setPhases] = useState([]);
+  const [activePhase, setActivePhase] = useState(null);
   const [posts, setPosts] = useState([]);
 
+  // 1️⃣ Fetch life phases from Sanity
   useEffect(() => {
     client
       .fetch(
-        `*[_type=="post" && "${activePhase.id}" in lifePhase[]->slug.current]{
-          _id,title
-        }`,
+        `
+        *[_type=="lifePhase"] | order(order asc){
+          _id,
+          title,
+          "slug": slug.current
+        }
+      `,
+      )
+      .then((data) => {
+        const mapped = data.map((p) => ({
+          id: p._id,
+          label: p.title,
+          slug: p.slug,
+        }));
+
+        setPhases(mapped);
+        setActivePhase(mapped[0]); // default selection
+      });
+  }, []);
+
+  // 2️⃣ Fetch posts based on selected life phase
+  useEffect(() => {
+    if (!activePhase?.slug) return;
+
+    client
+      .fetch(
+        `
+        *[
+          _type=="post" &&
+          defined(slug.current) &&
+          $slug in lifePhases[]->slug.current
+        ] | order(publishedAt desc){
+          _id,
+          title
+        }
+        `,
+        { slug: activePhase.slug },
       )
       .then(setPosts);
   }, [activePhase]);
@@ -28,25 +58,26 @@ export default function LifePhaseScreen() {
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Life Phases</Text>
 
-      <LifePhaseWheel phases={LIFE_PHASES} onSelect={setActivePhase} />
+      <LifePhaseWheel phases={phases} onSelect={setActivePhase} />
 
       <View style={styles.content}>
-        <Text style={styles.phaseTitle}>{activePhase.label}</Text>
+        <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
+
+        {posts.length === 0 && (
+          <Text style={{ color: "#9CA3AF" }}>No articles yet</Text>
+        )}
 
         {posts.map((p) => (
-          <View key={p._id} style={styles.card}>
-            <Text style={styles.cardText}>{p.title}</Text>
-          </View>
+          <MinimalCard key={p._id} title={p.title} link={`/posts/${p.slug}`} />
         ))}
       </View>
     </ScrollView>
   );
 }
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF1F2", // soft rose background
+    backgroundColor: "#FFF1F2",
   },
 
   title: {
@@ -78,7 +109,6 @@ export const styles = StyleSheet.create({
     marginBottom: 14,
     borderWidth: 1,
     borderColor: "#FBCFE8",
-
     shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 6,
