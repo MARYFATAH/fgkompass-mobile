@@ -17,6 +17,7 @@ export default function LifePhaseScreen() {
         *[_type=="lifePhase"] | order(order asc){
           _id,
           title,
+          image,
           "slug": slug.current
         }
       `,
@@ -49,7 +50,7 @@ export default function LifePhaseScreen() {
     title,
     excerpt,
     "slug": slug.current,
-    "imageUrl": mainImage.asset->url
+     "imageUrl": image.asset->url,
   }
   `,
         { slug: activePhase.slug },
