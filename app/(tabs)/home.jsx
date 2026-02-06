@@ -1,16 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
   Extrapolate,
+  FadeIn,
   interpolate,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -21,8 +15,35 @@ import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
 import { client } from "../../sanity/client";
 
-const { width } = Dimensions.get("window");
-const HERO_HEIGHT = 280;
+const HERO_HEIGHT = 240;
+
+const EXPLORE_CARDS = [
+  {
+    title: "Menopause",
+    href: "/menopause",
+    image: require("../../assets/images/menopause.jpg"),
+  },
+  {
+    title: "Pregnancy",
+    href: "/pregnancy",
+    image: require("../../assets/images/pregnancy.jpg"),
+  },
+  {
+    title: "Breast Cancer",
+    href: "/breast-cancer",
+    image: require("../../assets/images/breast-cancer.jpg"),
+  },
+  {
+    title: "Diabetes",
+    href: "/diabetes",
+    image: require("../../assets/images/diabetes.jpg"),
+  },
+  {
+    title: "Heart Disease",
+    href: "/heart-disease",
+    image: require("../../assets/images/heart-disease.jpg"),
+  },
+];
 
 export default function Home() {
   const scrollY = useSharedValue(0);
@@ -55,7 +76,7 @@ export default function Home() {
     height: interpolate(
       scrollY.value,
       [0, HERO_HEIGHT],
-      [HERO_HEIGHT, 120],
+      [HERO_HEIGHT, 150],
       Extrapolate.CLAMP,
     ),
   }));
@@ -66,53 +87,66 @@ export default function Home() {
         scale: interpolate(
           scrollY.value,
           [0, HERO_HEIGHT],
-          [1, 1.15],
+          [1, 1.05],
           Extrapolate.CLAMP,
         ),
       },
     ],
   }));
 
+  const heroTextStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      scrollY.value,
+      [0, HERO_HEIGHT * 0.6],
+      [1, 0.3],
+      Extrapolate.CLAMP,
+    ),
+  }));
+
   return (
-    <View style={{ flex: 1 }}>
-      {/* 🌸 STICKY HERO */}
+    <View style={styles.root}>
+      {/* HERO */}
       <Animated.View style={[styles.hero, heroStyle]}>
         <Animated.Image
           source={require("../../assets/strongwomen.jpg")}
           style={[styles.heroImage, heroImageStyle]}
         />
         <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.35)"]}
+          colors={["rgba(255,255,255,0)", "rgba(255,255,255,0.9)"]}
           style={styles.heroOverlay}
         />
-        <View style={styles.heroText}>
+        <Animated.View style={[styles.heroText, heroTextStyle]}>
           <Text style={styles.heroTitle}>Strong women</Text>
-          <Text style={styles.heroSubtitle}>Guidance for every life phase</Text>
-        </View>
+          <Text style={styles.heroSubtitle}>
+            Calm guidance for every life phase.
+          </Text>
+        </Animated.View>
       </Animated.View>
 
-      {/* 📜 CONTENT */}
+      {/* CONTENT */}
       <Animated.ScrollView
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
-        {/* 🌿 EXPLORE — HORIZONTAL */}
         <Section title="Explore">
           <Animated.ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontal}
           >
-            <MinimalCard title="Nutrition" link="/nutrition" />
-            <MinimalCard title="Mental Health" link="/mental-health" />
-            <MinimalCard title="Fitness" link="/fitness" />
-            <MinimalCard title="Hormones" link="/hormones" />
-            <MinimalCard title="Motherhood" link="/life-phase/motherhood" />
+            {EXPLORE_CARDS.map((card) => (
+              <MinimalCard
+                key={card.title}
+                title={card.title}
+                link={card.href}
+                imageSource={card.image}
+              />
+            ))}
           </Animated.ScrollView>
         </Section>
 
-        {/* 🧬 LIFE PHASE */}
         <Section title="For your life phase">
           <View style={styles.phaseCard}>
             <Text style={styles.phaseTitle}>
@@ -130,49 +164,33 @@ export default function Home() {
               </Pressable>
             </Link>
           </View>
-          <View style={styles.phaseCard}>
-            <Text style={styles.phaseTitle}>
-              {lifePhase === "motherhood"
-                ? "Family & Relationships"
-                : "Your current phase"}
-            </Text>
-            <Text style={styles.phaseText}>
-              Curated articles and tools for your current stage of life.
-            </Text>
-
-            <Link href={`/life-phase/${lifePhase}`} asChild>
-              <Pressable style={styles.phaseButton}>
-                <Text style={styles.phaseButtonText}>Explore</Text>
-              </Pressable>
-            </Link>
-          </View>
         </Section>
 
-        {/* 💡 MORE ON TOPIC */}
         <Section title="More on this topic">
           <MoreOnTopic />
         </Section>
 
-        {/* 📰 FEATURED */}
         <Section title="Featured Articles">
           {featured.map((post) => (
-            <View key={post._id} style={styles.article}>
-              <Image
-                source={{ uri: post.imageUrl }}
-                style={styles.articleImage}
-              />
-              <View style={styles.articleBody}>
-                <Text style={styles.articleTitle}>{post.title}</Text>
-                <Text style={styles.articleExcerpt} numberOfLines={3}>
-                  {post.excerpt}
-                </Text>
-                <Link href={`/${post.slug.current}`} asChild>
-                  <Pressable>
-                    <Text style={styles.readMore}>Read more →</Text>
-                  </Pressable>
-                </Link>
+            <Animated.View key={post._id} entering={FadeIn.duration(500)}>
+              <View style={styles.article}>
+                <Image
+                  source={{ uri: post.imageUrl }}
+                  style={styles.articleImage}
+                />
+                <View style={styles.articleBody}>
+                  <Text style={styles.articleTitle}>{post.title}</Text>
+                  <Text style={styles.articleExcerpt} numberOfLines={3}>
+                    {post.excerpt}
+                  </Text>
+                  <Link href={`/${post.slug.current}`} asChild>
+                    <Pressable>
+                      <Text style={styles.readMore}>Read more ?</Text>
+                    </Pressable>
+                  </Link>
+                </View>
               </View>
-            </View>
+            </Animated.View>
           ))}
         </Section>
       </Animated.ScrollView>
@@ -180,7 +198,6 @@ export default function Home() {
   );
 }
 
-/* 🧱 SECTION WRAPPER */
 const Section = ({ title, children }) => (
   <View style={styles.section}>
     <Text style={styles.sectionTitle}>{title}</Text>
@@ -188,14 +205,19 @@ const Section = ({ title, children }) => (
   </View>
 );
 
-/* 🎨 STYLES */
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   hero: {
     position: "absolute",
     top: 0,
     width: "100%",
     zIndex: 10,
     overflow: "hidden",
+    borderBottomLeftRadius: 22,
+    borderBottomRightRadius: 22,
   },
   heroImage: {
     width: "100%",
@@ -206,53 +228,52 @@ const styles = StyleSheet.create({
   },
   heroText: {
     position: "absolute",
-    bottom: 30,
+    bottom: 20,
     left: 20,
   },
   heroTitle: {
-    fontSize: 28,
-    fontWeight: "600",
-    color: "#fff",
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#9F1239",
   },
   heroSubtitle: {
-    fontSize: 15,
-    color: "#fce7f3",
+    fontSize: 14,
+    color: "#6B7280",
     marginTop: 6,
   },
 
   content: {
-    paddingTop: HERO_HEIGHT + 20,
-    paddingBottom: 100,
+    paddingTop: HERO_HEIGHT + 16,
+    paddingBottom: 110,
   },
 
   section: {
     paddingHorizontal: 20,
-    marginBottom: 42,
+    marginBottom: 36,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#9f1239",
-    marginBottom: 16,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#9F1239",
+    marginBottom: 14,
   },
 
   horizontal: {
-    gap: 16,
+    gap: 12,
     paddingRight: 20,
   },
 
+  
   phaseCard: {
-    backgroundColor: "#fff",
-    borderRadius: 24,
-    padding: 20,
-    marginBottom: 16,
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 2,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
   },
   phaseTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 17,
+    fontWeight: "700",
     color: "#881337",
   },
   phaseText: {
@@ -262,21 +283,23 @@ const styles = StyleSheet.create({
   },
   phaseButton: {
     alignSelf: "flex-start",
-    backgroundColor: "#f43f5e",
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 20,
+    backgroundColor: "#E11D48",
+    paddingHorizontal: 16,
+    paddingVertical: 9,
+    borderRadius: 18,
   },
   phaseButtonText: {
     color: "#fff",
-    fontWeight: "500",
+    fontWeight: "600",
   },
 
   article: {
     backgroundColor: "#fff",
-    borderRadius: 22,
+    borderRadius: 20,
     overflow: "hidden",
-    marginBottom: 22,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
   },
   articleImage: {
     width: "100%",
@@ -287,16 +310,17 @@ const styles = StyleSheet.create({
   },
   articleTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
     color: "#881337",
   },
   articleExcerpt: {
     fontSize: 14,
     color: "#475569",
     marginVertical: 8,
+    lineHeight: 20,
   },
   readMore: {
-    color: "#f43f5e",
-    fontWeight: "500",
+    color: "#E11D48",
+    fontWeight: "600",
   },
 });

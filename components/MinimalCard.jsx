@@ -1,14 +1,23 @@
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 /**
  * 🌿 MinimalCard — elegant uniform-height category card (native)
  */
-export default function MinimalCard({ title, description, icon: Icon, link }) {
+export default function MinimalCard({
+  title,
+  description,
+  icon: Icon,
+  imageSource,
+  link,
+}) {
   const router = useRouter();
 
   const Card = (
     <View style={styles.card}>
+      {imageSource ? (
+        <Image source={imageSource} style={styles.image} />
+      ) : null}
       {/* HEADER */}
       <View style={styles.header}>
         {Icon && (
@@ -46,7 +55,7 @@ export default function MinimalCard({ title, description, icon: Icon, link }) {
 }
 const styles = StyleSheet.create({
   pressable: {
-    flex: 1,
+    width: 190,
   },
   pressed: {
     transform: [{ scale: 0.97 }],
@@ -54,19 +63,19 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    padding: 70,
+    padding: 16,
     minHeight: 120,
+    width: 190,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#FCE7F3",
     justifyContent: "space-between",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
+    elevation: 0,
+  },
+  image: {
+    width: "100%",
+    height: 90,
+    borderRadius: 14,
+    marginBottom: 12,
   },
   header: {
     flexDirection: "row",
