@@ -6,15 +6,17 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        // 🌸 Logo stays on the left
-        headerLeft: () => (
+        // 🔤 Tab title on the left
+        headerTitleAlign: "left",
+
+        // 🌸 Logo on the right
+        headerRight: () => (
           <Image
             source={require("../../assets/images/fgkompass-logo.png")}
             style={{
               width: 70,
               height: 70,
               resizeMode: "contain",
-              marginLeft: 12,
               marginRight: 12,
               backgroundColor: "#fff",
               marginBottom: 15,
@@ -28,10 +30,31 @@ export default function TabsLayout() {
           backgroundColor: "#fdf2f8",
         },
 
+        headerTitleStyle: {
+          fontSize: 17,
+          fontWeight: "600",
+          color: "#881337",
+        },
+
         // 🎨 Brand-compatible back button color
         headerTintColor: "#881337",
 
-        tabBarActiveTintColor: "#f43f5e",
+        tabBarStyle: {
+          height: 58,
+          paddingTop: 6,
+          paddingBottom: 6,
+          backgroundColor: "#FFFFFF",
+          borderTopWidth: 1,
+          borderTopColor: "#F1F5F9",
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "500",
+        },
+
+        tabBarActiveTintColor: "#9F1239",
+        tabBarInactiveTintColor: "#94A3B8",
       }}
     >
       <Tabs.Screen

@@ -117,7 +117,7 @@ export default function Home() {
           <View style={styles.phaseCard}>
             <Text style={styles.phaseTitle}>
               {lifePhase === "motherhood"
-                ? "Motherhood & Family"
+                ? "Family & Relationships"
                 : "Your current phase"}
             </Text>
             <Text style={styles.phaseText}>
@@ -133,7 +133,7 @@ export default function Home() {
           <View style={styles.phaseCard}>
             <Text style={styles.phaseTitle}>
               {lifePhase === "motherhood"
-                ? "Motherhood & Family"
+                ? "Family & Relationships"
                 : "Your current phase"}
             </Text>
             <Text style={styles.phaseText}>

@@ -30,30 +30,43 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     gap: 10,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
   },
 
   item: {
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFF7FB",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#F3E8FF",
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
 
   activeItem: {
-    backgroundColor: "#FFF1F2",
-    borderColor: "#9F1239",
+    backgroundColor: "#FDF2F8",
+    borderColor: "#BE185D",
+    transform: [{ scale: 1.02 }],
   },
 
   label: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: "600",
     color: "#6B7280",
+    letterSpacing: 0.2,
   },
 
   activeLabel: {
     color: "#9F1239",
-    fontWeight: "600",
+    fontWeight: "700",
   },
 });
