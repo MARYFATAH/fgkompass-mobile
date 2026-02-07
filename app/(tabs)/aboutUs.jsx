@@ -45,6 +45,8 @@ export default function About() {
         />
       </View>
 
+      <View style={styles.divider} />
+
       {/* CTA */}
       <View style={styles.cta}>
         <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
@@ -76,7 +78,7 @@ function Section({ title, text, bullets }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFFFFF",
   },
   content: {
     padding: 20,
@@ -84,30 +86,27 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    marginTop: 40,
-    marginBottom: 40,
-    alignItems: "center",
+    marginTop: 24,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "600",
-    color: "#E11D48", // rose-600
-    textAlign: "center",
-    marginBottom: 16,
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#9F1239",
+    marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#475569",
-    textAlign: "center",
-    lineHeight: 24,
+    fontSize: 14,
+    color: "#6B7280",
+    lineHeight: 22,
     maxWidth: 340,
   },
 
   card: {
-    backgroundColor: "#FFF",
-    borderRadius: 24,
-    padding: 20,
-    gap: 24,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 18,
+    gap: 20,
     borderWidth: 1,
     borderColor: "#FCE7F3",
   },
@@ -120,17 +119,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#F43F5E",
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#9F1239",
   },
   sectionText: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#475569",
     lineHeight: 22,
   },
   bullet: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#475569",
     lineHeight: 22,
   },
@@ -141,8 +140,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
+  divider: {
+    height: 1,
+    backgroundColor: "#FCE7F3",
+    marginTop: 28,
+  },
+
   cta: {
-    marginTop: 50,
+    marginTop: 24,
     alignItems: "center",
     gap: 8,
   },

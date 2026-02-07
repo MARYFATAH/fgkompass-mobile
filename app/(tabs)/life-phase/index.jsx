@@ -102,35 +102,44 @@ export default function LifePhaseScreen() {
   }, [activePhase?.slug]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      stickyHeaderIndices={[1]}
+    >
       <View style={styles.header}>
         <Text style={styles.title}>{t("lifePhase.title")}</Text>
         <Text style={styles.subtitle}>{t("lifePhase.subtitle")}</Text>
       </View>
 
-      <LifePhaseWheel
-        phases={displayPhases}
-        activePhase={activePhase}
-        onSelect={(phase) => setActivePhaseId(phase.id)}
-      />
-
-      <View style={styles.content}>
-        <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
-
-        {posts.length === 0 && (
-          <Text style={styles.empty}>{t("lifePhase.empty")}</Text>
-        )}
-
-        {posts.map((p) => (
-          <LifePhaseArticleCard
-            key={p._id}
-            title={p.title}
-            excerpt={p.excerpt}
-            imageUrl={p.imageUrl}
-            slug={p.slug}
+      <View style={styles.stickyWrap}>
+        <View style={styles.wheelWrap}>
+          <LifePhaseWheel
+            phases={displayPhases}
+            activePhase={activePhase}
+            onSelect={(phase) => setActivePhaseId(phase.id)}
           />
-        ))}
+        </View>
       </View>
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
+        <View style={styles.divider} />
+      </View>
+
+      {posts.length === 0 && (
+        <Text style={styles.empty}>{t("lifePhase.empty")}</Text>
+      )}
+
+      {posts.map((p) => (
+        <LifePhaseArticleCard
+          key={p._id}
+          title={p.title}
+          excerpt={p.excerpt}
+          imageUrl={p.imageUrl}
+          slug={p.slug}
+        />
+      ))}
     </ScrollView>
   );
 }
@@ -138,38 +147,59 @@ export default function LifePhaseScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF7FB",
+    backgroundColor: "#FFFFFF",
+  },
+
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 40,
   },
 
   header: {
-    paddingHorizontal: 20,
-    paddingTop: 28,
-    paddingBottom: 6,
+    marginBottom: 16,
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "700",
     color: "#9F1239",
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#64748B",
+    color: "#6B7280",
     marginTop: 6,
   },
 
-  content: {
-    paddingHorizontal: 20,
-    paddingTop: 18,
-    paddingBottom: 40,
+  wheelWrap: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
+    paddingVertical: 6,
+    marginBottom: 22,
+  },
+  stickyWrap: {
+    backgroundColor: "#FFFFFF",
+    paddingTop: 4,
+    paddingBottom: 10,
+  },
+
+  sectionHeader: {
+    marginBottom: 10,
   },
 
   phaseTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#9F1239",
-    marginBottom: 14,
+    color: "#881337",
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: "#FCE7F3",
+    marginTop: 12,
   },
 
   empty: {

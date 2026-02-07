@@ -1,4 +1,3 @@
-import { LinearGradient } from "expo-linear-gradient";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -15,10 +14,7 @@ export default function Contact() {
   const { t } = useTranslation();
 
   return (
-    <LinearGradient
-      colors={["#ffe4e6", "#fecdd3", "#fda4af"]}
-      style={{ flex: 1 }}
-    >
+    <View style={styles.root}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={{ flex: 1 }}
@@ -69,55 +65,55 @@ export default function Contact() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   container: {
     padding: 20,
     paddingBottom: 60,
   },
   header: {
-    alignItems: "center",
-    marginTop: 40,
-    marginBottom: 30,
+    marginTop: 24,
+    marginBottom: 18,
   },
   title: {
-    fontSize: 34,
-    fontWeight: "600",
-    color: "#9f1239",
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#9F1239",
   },
   subtitle: {
-    fontSize: 16,
-    color: "#475569",
-    marginTop: 10,
-    textAlign: "center",
-    maxWidth: 280,
+    fontSize: 14,
+    color: "#6B7280",
+    marginTop: 6,
+    maxWidth: 320,
   },
   card: {
-    backgroundColor: "#ffffffee",
-    borderRadius: 24,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
   },
   field: {
     marginBottom: 18,
   },
   label: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: "600",
     color: "#475569",
     marginBottom: 6,
   },
   input: {
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#f1f5f9",
-    borderRadius: 14,
+    borderColor: "#FCE7F3",
+    borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 15,
@@ -129,7 +125,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: "#f43f5e",
+    backgroundColor: "#E11D48",
     paddingVertical: 14,
     borderRadius: 18,
     alignItems: "center",
