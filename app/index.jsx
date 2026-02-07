@@ -13,9 +13,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { client } from "../sanity/client";
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "../components/LanguageToggle";
 
 export default function Landing() {
   const router = useRouter();
+  const { t } = useTranslation();
   const floatY = useSharedValue(0);
   const pulse = useSharedValue(0);
 
@@ -59,6 +62,9 @@ export default function Landing() {
       colors={["#FFF7FB", "#FDE7F0", "#F9E8FF"]}
       style={styles.container}
     >
+      <View style={styles.toggleWrap}>
+        <LanguageToggle />
+      </View>
       {/* Ambient blobs */}
       <Animated.View style={[styles.blob, styles.blobLeft, glowStyle]} />
       <Animated.View style={[styles.blob, styles.blobRight, glowStyle]} />
@@ -77,7 +83,7 @@ export default function Landing() {
         entering={SlideInUp.delay(150).duration(700)}
         style={styles.title}
       >
-        FG Kompass
+        {t("landing.title")}
       </Animated.Text>
 
       {/* ✨ SUBTITLE */}
@@ -85,19 +91,19 @@ export default function Landing() {
         entering={SlideInUp.delay(300).duration(700)}
         style={styles.subtitle}
       >
-        A gentle guide through every stage of women’s health.
+        {t("landing.subtitle")}
       </Animated.Text>
 
       {/* 🌱 CTA */}
       <Animated.View entering={FadeInDown.delay(450).duration(700)}>
         <Pressable onPress={() => router.push("/home")} style={styles.button}>
-          <Text style={styles.buttonText}>Explore Life Phases</Text>
+          <Text style={styles.buttonText}>{t("landing.cta")}</Text>
         </Pressable>
         <Pressable
           onPress={() => router.push("/life-phase")}
           style={styles.link}
         >
-          <Text style={styles.linkText}>Browse life phases</Text>
+          <Text style={styles.linkText}>{t("common.browseLifePhases")}</Text>
         </Pressable>
       </Animated.View>
     </LinearGradient>
@@ -111,6 +117,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 24,
     backgroundColor: "#fdf2f8",
+  },
+  toggleWrap: {
+    position: "absolute",
+    top: 44,
+    right: 16,
+    zIndex: 10,
   },
   blob: {
     position: "absolute",

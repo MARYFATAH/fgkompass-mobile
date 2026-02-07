@@ -9,8 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
+  const { t } = useTranslation();
+
   return (
     <LinearGradient
       colors={["#ffe4e6", "#fecdd3", "#fda4af"]}
@@ -23,25 +26,25 @@ export default function Contact() {
         <ScrollView contentContainerStyle={styles.container}>
           {/* TITLE */}
           <View style={styles.header}>
-            <Text style={styles.title}>Contact Us</Text>
-            <Text style={styles.subtitle}>We’re here to listen and help.</Text>
+            <Text style={styles.title}>{t("contact.title")}</Text>
+            <Text style={styles.subtitle}>{t("contact.subtitle")}</Text>
           </View>
 
           {/* FORM */}
           <View style={styles.card}>
             <View style={styles.field}>
-              <Text style={styles.label}>Name</Text>
+              <Text style={styles.label}>{t("contact.name")}</Text>
               <TextInput
-                placeholder="Your name"
+                placeholder={t("contact.namePlaceholder")}
                 style={styles.input}
                 placeholderTextColor="#9CA3AF"
               />
             </View>
 
             <View style={styles.field}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>{t("contact.email")}</Text>
               <TextInput
-                placeholder="your@email.com"
+                placeholder={t("contact.emailPlaceholder")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 style={styles.input}
@@ -50,9 +53,9 @@ export default function Contact() {
             </View>
 
             <View style={styles.field}>
-              <Text style={styles.label}>Message</Text>
+              <Text style={styles.label}>{t("contact.message")}</Text>
               <TextInput
-                placeholder="Write your message..."
+                placeholder={t("contact.messagePlaceholder")}
                 multiline
                 numberOfLines={5}
                 style={[styles.input, styles.textarea]}
@@ -61,7 +64,7 @@ export default function Contact() {
             </View>
 
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Send message</Text>
+              <Text style={styles.buttonText}>{t("contact.send")}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

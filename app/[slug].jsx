@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PortableText } from "@portabletext/react-native";
 import { client } from "../sanity/client";
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "../components/LanguageToggle";
 
-/* 🎨 Life-phase theme colors */
 const LIFE_PHASE_THEME = {
   teens: "#0EA5E9",
   fertility: "#EC4899",
@@ -15,7 +16,6 @@ const LIFE_PHASE_THEME = {
   default: "#9D174D",
 };
 
-/* 🧩 Portable Text renderers */
 const portableComponents = {
   block: {
     h2: ({ children }) => <Text style={styles.h2}>{children}</Text>,
@@ -30,7 +30,7 @@ const portableComponents = {
     bullet: ({ children }) => <View style={styles.list}>{children}</View>,
   },
   listItem: {
-    bullet: ({ children }) => <Text style={styles.listItem}>• {children}</Text>,
+    bullet: ({ children }) => <Text style={styles.listItem}>� {children}</Text>,
   },
   marks: {
     strong: ({ children }) => <Text style={styles.bold}>{children}</Text>,
@@ -40,6 +40,7 @@ const portableComponents = {
 export default function ArticleScreen() {
   const { slug } = useLocalSearchParams();
   const [post, setPost] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!slug) return;
@@ -64,7 +65,7 @@ export default function ArticleScreen() {
   if (!post) {
     return (
       <View style={styles.center}>
-        <Text>Loading…</Text>
+        <Text>{t("common.loading")}</Text>
       </View>
     );
   }
@@ -73,30 +74,35 @@ export default function ArticleScreen() {
     LIFE_PHASE_THEME[post.lifePhase?.slug?.current] || LIFE_PHASE_THEME.default;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* 🖼 Hero image */}
-      {post.imageUrl && (
-        <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
-      )}
+    <View style={styles.wrapper}>
+      <View style={styles.toggleWrap}>
+        <LanguageToggle />
+      </View>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        {post.imageUrl && (
+          <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
+        )}
 
-      {/* 📰 Title */}
-      <Text style={[styles.title, { color: themeColor }]}>{post.title}</Text>
+        <Text style={[styles.title, { color: themeColor }]}>{post.title}</Text>
 
-      {/* 📅 Meta */}
-      <Text style={styles.meta}>
-        {new Date(post.publishedAt).toDateString()} · 5 min read
-      </Text>
+        <Text style={styles.meta}>
+          {new Date(post.publishedAt).toDateString()} �{" "}
+          {t("article.readTime", { minutes: 5 })}
+        </Text>
 
-      <View style={styles.divider} />
+        <View style={styles.divider} />
 
-      {/* ✍️ Article body */}
-      <PortableText value={post.body} components={portableComponents} />
-    </ScrollView>
+        <PortableText value={post.body} components={portableComponents} />
+      </ScrollView>
+    </View>
   );
 }
 
-/* 🎯 Styles */
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   container: {
     backgroundColor: "#FFFFFF",
   },
@@ -182,5 +188,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  toggleWrap: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    zIndex: 10,
   },
 });

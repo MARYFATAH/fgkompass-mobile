@@ -9,11 +9,13 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { client } from "../sanity/client";
+import { useTranslation } from "react-i18next";
 
 export default function MoreOnTopic() {
   const [posts, setPosts] = useState([]);
   const router = useRouter();
   const { width } = useWindowDimensions();
+  const { t } = useTranslation();
 
   const isTablet = width >= 768;
 
@@ -54,7 +56,7 @@ export default function MoreOnTopic() {
               <Text style={styles.title} numberOfLines={2}>
                 {post.title}
               </Text>
-              <Text style={styles.subtitle}>Explore article →</Text>
+              <Text style={styles.subtitle}>{t("common.readMore")}</Text>
             </View>
           </Pressable>
         ))}

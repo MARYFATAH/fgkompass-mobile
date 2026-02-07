@@ -3,27 +3,29 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import LifePhaseArticleCard from "../../../components/LifePhaseArticleCard";
 import LifePhaseWheel from "../../../components/LifePhaseWheel";
 import { client } from "../../../sanity/client";
+import { useTranslation } from "react-i18next";
 
 export default function LifePhaseScreen() {
   const [phases, setPhases] = useState([]);
-  const [activePhase, setActivePhase] = useState(null);
+  const [activePhaseId, setActivePhaseId] = useState(null);
   const [posts, setPosts] = useState([]);
+  const { t } = useTranslation();
 
   const PHASE_ORDER = ["young", "motherhood", "midlife", "older"];
   const PHASE_LABELS = {
-    young: "Youth",
-    motherhood: "Family & Relationships",
-    midlife: "Midlife",
-    older: "Older Adult Wellness",
+    young: t("lifePhase.youth"),
+    motherhood: t("lifePhase.family"),
+    midlife: t("lifePhase.midlife"),
+    older: t("lifePhase.older"),
   };
   const PHASE_LABELS_BY_TITLE = {
-    youth: "Youth",
-    "family & relationships": "Family & Relationships",
-    motherhood: "Family & Relationships",
-    midlife: "Midlife",
-    "old age": "Older Adult Wellness",
-    "older adulthood": "Older Adult Wellness",
-    "older adult wellness": "Older Adult Wellness",
+    youth: t("lifePhase.youth"),
+    "family & relationships": t("lifePhase.family"),
+    motherhood: t("lifePhase.family"),
+    midlife: t("lifePhase.midlife"),
+    "old age": t("lifePhase.older"),
+    "older adulthood": t("lifePhase.older"),
+    "older adult wellness": t("lifePhase.older"),
   };
 
   // 1️⃣ Fetch life phases from Sanity
@@ -42,10 +44,7 @@ export default function LifePhaseScreen() {
       .then((data) => {
         const mapped = data.map((p) => ({
           id: p._id,
-          label:
-            PHASE_LABELS[p.slug] ||
-            PHASE_LABELS_BY_TITLE[p.title?.toLowerCase?.()] ||
-            p.title,
+          title: p.title,
           slug: p.slug,
         }));
 
@@ -64,9 +63,19 @@ export default function LifePhaseScreen() {
         );
 
         setPhases(sorted);
-        setActivePhase(sorted[0]); // default
+        setActivePhaseId(sorted[0]?.id || null); // default
       });
   }, []);
+
+  const displayPhases = phases.map((p) => ({
+    ...p,
+    label:
+      PHASE_LABELS[p.slug] ||
+      PHASE_LABELS_BY_TITLE[p.title?.toLowerCase?.()] ||
+      p.title,
+  }));
+
+  const activePhase = displayPhases.find((p) => p.id === activePhaseId) || null;
 
   // 2️⃣ Fetch posts for selected life phase
   useEffect(() => {
@@ -90,28 +99,26 @@ export default function LifePhaseScreen() {
         { slug: activePhase.slug },
       )
       .then(setPosts);
-  }, [activePhase]);
+  }, [activePhase?.slug]);
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Life Phases</Text>
-        <Text style={styles.subtitle}>
-          Choose a phase to explore curated guidance.
-        </Text>
+        <Text style={styles.title}>{t("lifePhase.title")}</Text>
+        <Text style={styles.subtitle}>{t("lifePhase.subtitle")}</Text>
       </View>
 
       <LifePhaseWheel
-        phases={phases}
+        phases={displayPhases}
         activePhase={activePhase}
-        onSelect={setActivePhase}
+        onSelect={(phase) => setActivePhaseId(phase.id)}
       />
 
       <View style={styles.content}>
         <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
 
         {posts.length === 0 && (
-          <Text style={styles.empty}>No articles yet</Text>
+          <Text style={styles.empty}>{t("lifePhase.empty")}</Text>
         )}
 
         {posts.map((p) => (

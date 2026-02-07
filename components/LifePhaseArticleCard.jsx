@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 export default function LifePhaseArticleCard({
   title,
@@ -8,6 +9,7 @@ export default function LifePhaseArticleCard({
   slug,
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <Pressable
@@ -37,7 +39,7 @@ export default function LifePhaseArticleCard({
           </Text>
         ) : null}
 
-        <Text style={styles.readMore}>Read article →</Text>
+        <Text style={styles.readMore}>{t("common.readMore")}</Text>
       </View>
     </Pressable>
   );

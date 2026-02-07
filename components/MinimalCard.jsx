@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 /**
  * 🌿 MinimalCard — elegant uniform-height category card (native)
@@ -12,6 +13,7 @@ export default function MinimalCard({
   link,
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const Card = (
     <View style={styles.card}>
@@ -38,7 +40,7 @@ export default function MinimalCard({
       ) : null}
 
       {/* FOOTER */}
-      <Text style={styles.explore}>Explore →</Text>
+      <Text style={styles.explore}>{t("common.explore")} →</Text>
     </View>
   );
 

@@ -1,8 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "../../components/LanguageToggle";
 
 export default function TabsLayout() {
+  const { t } = useTranslation();
+
   return (
     <Tabs
       screenOptions={{
@@ -11,18 +15,21 @@ export default function TabsLayout() {
 
         // 🌸 Logo on the right
         headerRight: () => (
-          <Image
-            source={require("../../assets/images/fgkompass-logo.png")}
-            style={{
-              width: 70,
-              height: 70,
-              resizeMode: "contain",
-              marginRight: 12,
-              backgroundColor: "#fff",
-              marginBottom: 15,
-              borderRadius: 80,
-            }}
-          />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <LanguageToggle />
+            <Image
+              source={require("../../assets/images/fgkompass-logo.png")}
+              style={{
+                width: 60,
+                height: 60,
+                resizeMode: "contain",
+                marginRight: 12,
+                backgroundColor: "#fff",
+                marginBottom: 12,
+                borderRadius: 80,
+              }}
+            />
+          </View>
         ),
 
         // 🎨 Brand-compatible background color
@@ -60,7 +67,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: t("tabs.home"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
@@ -70,7 +77,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="life-phase"
         options={{
-          title: "Life Phase",
+          title: t("tabs.lifePhase"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="leaf" size={size} color={color} />
           ),
@@ -80,7 +87,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="contact"
         options={{
-          title: "Contact",
+          title: t("tabs.contact"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="call" size={size} color={color} />
           ),
@@ -90,7 +97,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="aboutUs"
         options={{
-          title: "About Us",
+          title: t("tabs.about"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="information-circle" size={size} color={color} />
           ),

@@ -1,15 +1,15 @@
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
+import { useTranslation } from "react-i18next";
 
 export default function About() {
+  const { t } = useTranslation();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Hero */}
       <View style={styles.hero}>
-        <Text style={styles.title}>Women’s Health Knowledge Compass</Text>
-        <Text style={styles.subtitle}>
-          Clear, trustworthy health knowledge tailored to every life phase —
-          designed to empower women to make informed decisions.
-        </Text>
+        <Text style={styles.title}>{t("about.title")}</Text>
+        <Text style={styles.subtitle}>{t("about.subtitle")}</Text>
       </View>
 
       {/* Card */}
@@ -17,21 +17,21 @@ export default function About() {
         {/* Text section */}
         <View style={styles.textBlock}>
           <Section
-            title="Our Mission"
-            text="We provide reliable, science-based health information that reflects the real physiology, experiences, and needs of women across all life phases."
+            title={t("about.missionTitle")}
+            text={t("about.missionText")}
           />
 
           <Section
-            title="Why We Exist"
-            text="Women are often under-represented in medical research and healthcare systems. This platform closes that gap with structured, accessible knowledge."
+            title={t("about.whyTitle")}
+            text={t("about.whyText")}
           />
 
           <Section
-            title="Our Values"
+            title={t("about.valuesTitle")}
             bullets={[
-              "Evidence-based and medically responsible",
-              "Inclusive of all life phases",
-              "Clear, calm, and respectful communication",
+              t("about.values1"),
+              t("about.values2"),
+              t("about.values3"),
             ]}
           />
         </View>
@@ -47,8 +47,8 @@ export default function About() {
 
       {/* CTA */}
       <View style={styles.cta}>
-        <Text style={styles.ctaText}>Have questions or feedback?</Text>
-        <Text style={styles.ctaLink}>Contact us</Text>
+        <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
+        <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
       </View>
     </ScrollView>
   );

@@ -10,6 +10,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
@@ -19,27 +20,27 @@ const HERO_HEIGHT = 240;
 
 const EXPLORE_CARDS = [
   {
-    title: "Menopause",
+    key: "menopause",
     href: "/menopause",
     image: require("../../assets/images/menopause.jpg"),
   },
   {
-    title: "Pregnancy",
+    key: "pregnancy",
     href: "/pregnancy",
     image: require("../../assets/images/pregnancy.jpg"),
   },
   {
-    title: "Breast Cancer",
+    key: "breastCancer",
     href: "/breast-cancer",
     image: require("../../assets/images/breast-cancer.jpg"),
   },
   {
-    title: "Diabetes",
+    key: "diabetes",
     href: "/diabetes",
     image: require("../../assets/images/diabetes.jpg"),
   },
   {
-    title: "Heart Disease",
+    key: "heartDisease",
     href: "/heart-disease",
     image: require("../../assets/images/heart-disease.jpg"),
   },
@@ -49,6 +50,7 @@ export default function Home() {
   const scrollY = useSharedValue(0);
   const [featured, setFeatured] = useState([]);
   const [lifePhase, setLifePhase] = useState("motherhood"); // later from profile
+  const { t } = useTranslation();
 
   useEffect(() => {
     const query = `*[
@@ -116,10 +118,8 @@ export default function Home() {
           style={styles.heroOverlay}
         />
         <Animated.View style={[styles.heroText, heroTextStyle]}>
-          <Text style={styles.heroTitle}>Strong women</Text>
-          <Text style={styles.heroSubtitle}>
-            Calm guidance for every life phase.
-          </Text>
+          <Text style={styles.heroTitle}>{t("home.heroTitle")}</Text>
+          <Text style={styles.heroSubtitle}>{t("home.heroSubtitle")}</Text>
         </Animated.View>
       </Animated.View>
 
@@ -130,7 +130,7 @@ export default function Home() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <Section title="Explore">
+        <Section title={t("home.sectionExplore")}>
           <Animated.ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -138,8 +138,8 @@ export default function Home() {
           >
             {EXPLORE_CARDS.map((card) => (
               <MinimalCard
-                key={card.title}
-                title={card.title}
+                key={card.key}
+                title={t(`home.exploreCards.${card.key}`)}
                 link={card.href}
                 imageSource={card.image}
               />
@@ -147,30 +147,30 @@ export default function Home() {
           </Animated.ScrollView>
         </Section>
 
-        <Section title="For your life phase">
+        <Section title={t("home.sectionLifePhase")}>
           <View style={styles.phaseCard}>
             <Text style={styles.phaseTitle}>
               {lifePhase === "motherhood"
-                ? "Family & Relationships"
-                : "Your current phase"}
+                ? t("home.phaseFamily")
+                : t("home.phaseDefault")}
             </Text>
-            <Text style={styles.phaseText}>
-              Curated articles and tools for your current stage of life.
-            </Text>
+            <Text style={styles.phaseText}>{t("home.phaseText")}</Text>
 
             <Link href={`/life-phase/${lifePhase}`} asChild>
               <Pressable style={styles.phaseButton}>
-                <Text style={styles.phaseButtonText}>Explore</Text>
+                <Text style={styles.phaseButtonText}>
+                  {t("common.explore")}
+                </Text>
               </Pressable>
             </Link>
           </View>
         </Section>
 
-        <Section title="More on this topic">
+        <Section title={t("home.sectionMore")}>
           <MoreOnTopic />
         </Section>
 
-        <Section title="Featured Articles">
+        <Section title={t("home.sectionFeatured")}>
           {featured.map((post) => (
             <Animated.View key={post._id} entering={FadeIn.duration(500)}>
               <View style={styles.article}>
@@ -185,7 +185,9 @@ export default function Home() {
                   </Text>
                   <Link href={`/${post.slug.current}`} asChild>
                     <Pressable>
-                      <Text style={styles.readMore}>Read more ?</Text>
+                      <Text style={styles.readMore}>
+                        {t("common.readMore")}
+                      </Text>
                     </Pressable>
                   </Link>
                 </View>
@@ -263,7 +265,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
 
-  
   phaseCard: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
