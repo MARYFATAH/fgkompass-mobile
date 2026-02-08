@@ -79,20 +79,41 @@ export default function ArticleScreen() {
         <LanguageToggle />
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        {post.imageUrl && (
-          <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
-        )}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>{t("common.browseLifePhases")}</Text>
+          <Text style={styles.headerSubtitle}>{t("home.sectionFeatured")}</Text>
+        </View>
 
-        <Text style={[styles.title, { color: themeColor }]}>{post.title}</Text>
+        <View style={styles.heroCard}>
+          {post.imageUrl && (
+            <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
+          )}
+          <View style={styles.heroBody}>
+            <View style={[styles.accentPill, { borderColor: themeColor }]}
+            >
+              <Text style={[styles.accentText, { color: themeColor }]}>
+                {t("lifePhase.title")}
+              </Text>
+            </View>
+            <Text style={[styles.title, { color: themeColor }]}>
+              {post.title}
+            </Text>
 
-        <Text style={styles.meta}>
-          {new Date(post.publishedAt).toDateString()} ·{" "}
-          {t("article.readTime", { minutes: 5 })}
-        </Text>
+            <View style={styles.metaRow}>
+              <Text style={styles.metaDate}>
+                {new Date(post.publishedAt).toDateString()}
+              </Text>
+              <View style={styles.metaDot} />
+              <Text style={styles.metaRead}>
+                {t("article.readTime", { minutes: 5 })}
+              </Text>
+            </View>
+          </View>
+        </View>
 
-        <View style={styles.divider} />
-
-        <PortableText value={post.body} components={portableComponents} />
+        <View style={styles.articleCard}>
+          <PortableText value={post.body} components={portableComponents} />
+        </View>
       </ScrollView>
     </View>
   );
@@ -101,56 +122,111 @@ export default function ArticleScreen() {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFF7FB",
   },
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFF7FB",
   },
   content: {
     paddingHorizontal: 20,
+    paddingTop: 24,
     paddingBottom: 48,
   },
+  header: {
+    marginBottom: 16,
+  },
+  headerTitle: {
+    fontSize: 12,
+    color: "#9F1239",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 1.3,
+  },
+  headerSubtitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#881337",
+    marginTop: 6,
+  },
 
+  heroCard: {
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
+    marginBottom: 18,
+  },
   heroImage: {
     width: "100%",
-    height: 260,
-    borderRadius: 20,
-    marginTop: 16,
-    marginBottom: 28,
+    height: 240,
+  },
+  heroBody: {
+    padding: 16,
+  },
+  accentPill: {
+    alignSelf: "flex-start",
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginBottom: 10,
+  },
+  accentText: {
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
   },
 
   title: {
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: "800",
-    lineHeight: 40,
-    marginBottom: 8,
+    lineHeight: 34,
+    marginBottom: 10,
   },
 
-  meta: {
-    fontSize: 13,
-    color: "#64748B",
-    marginBottom: 20,
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  metaDate: {
+    fontSize: 12,
+    color: "#6B7280",
+  },
+  metaDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 999,
+    backgroundColor: "#CBD5F5",
+  },
+  metaRead: {
+    fontSize: 12,
+    color: "#6B7280",
   },
 
-  divider: {
-    height: 1,
-    backgroundColor: "#E5E7EB",
-    marginBottom: 28,
+  articleCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
   },
 
   paragraph: {
-    fontSize: 17,
-    lineHeight: 28,
+    fontSize: 16,
+    lineHeight: 26,
     color: "#1F2937",
-    marginBottom: 18,
+    marginBottom: 16,
   },
 
   h2: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "700",
     color: "#881337",
-    marginTop: 36,
-    marginBottom: 12,
+    marginTop: 26,
+    marginBottom: 10,
   },
 
   bold: {
@@ -163,8 +239,8 @@ const styles = StyleSheet.create({
   },
 
   listItem: {
-    fontSize: 16,
-    lineHeight: 26,
+    fontSize: 15,
+    lineHeight: 24,
     color: "#374151",
     marginBottom: 8,
   },
@@ -173,14 +249,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDF2F8",
     borderLeftWidth: 4,
     borderLeftColor: "#EC4899",
-    padding: 16,
+    padding: 14,
     borderRadius: 12,
-    marginVertical: 20,
+    marginVertical: 18,
   },
 
   calloutText: {
-    fontSize: 16,
-    lineHeight: 26,
+    fontSize: 15,
+    lineHeight: 24,
     color: "#831843",
   },
 
