@@ -9,9 +9,45 @@ import {
   View,
 } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export default function Contact() {
   const { t } = useTranslation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+
+  const onSubmit = async () => {
+    if (!name || !email || !message) {
+      setError("Please fill all fields.");
+      return;
+    }
+
+    setError("");
+    setStatus("loading");
+
+    try {
+      const res = await fetch("/.netlify/functions/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Request failed");
+      }
+
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setStatus("error");
+      setError("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <View style={styles.root}>
@@ -34,6 +70,8 @@ export default function Contact() {
                 placeholder={t("contact.namePlaceholder")}
                 style={styles.input}
                 placeholderTextColor="#9CA3AF"
+                value={name}
+                onChangeText={setName}
               />
             </View>
 
@@ -45,6 +83,8 @@ export default function Contact() {
                 autoCapitalize="none"
                 style={styles.input}
                 placeholderTextColor="#9CA3AF"
+                value={email}
+                onChangeText={setEmail}
               />
             </View>
 
@@ -56,10 +96,21 @@ export default function Contact() {
                 numberOfLines={5}
                 style={[styles.input, styles.textarea]}
                 placeholderTextColor="#9CA3AF"
+                value={message}
+                onChangeText={setMessage}
               />
             </View>
 
-            <TouchableOpacity style={styles.button}>
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {status === "success" ? (
+              <Text style={styles.success}>Message sent.</Text>
+            ) : null}
+
+            <TouchableOpacity
+              style={[styles.button, status === "loading" && styles.buttonDisabled]}
+              onPress={onSubmit}
+              disabled={status === "loading"}
+            >
               <Text style={styles.buttonText}>{t("contact.send")}</Text>
             </TouchableOpacity>
           </View>
@@ -130,9 +181,22 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
   },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
   buttonText: {
     color: "#fff",
     fontSize: 15,
     fontWeight: "600",
+  },
+  error: {
+    color: "#B91C1C",
+    fontSize: 13,
+    marginTop: 6,
+  },
+  success: {
+    color: "#15803D",
+    fontSize: 13,
+    marginTop: 6,
   },
 });
