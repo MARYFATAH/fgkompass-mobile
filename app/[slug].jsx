@@ -81,7 +81,7 @@ export default function ArticleScreen() {
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backText}>? Back</Text>
+          <Text style={styles.backText}>&lt;- Back</Text>
         </Pressable>
 
         <View style={styles.header}>
