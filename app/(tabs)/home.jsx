@@ -18,37 +18,10 @@ import { client } from "../../sanity/client";
 
 const HERO_HEIGHT = 240;
 
-const EXPLORE_CARDS = [
-  {
-    key: "menopause",
-    href: "/menopause",
-    image: require("../../assets/images/menopause.jpg"),
-  },
-  {
-    key: "pregnancy",
-    href: "/pregnancy",
-    image: require("../../assets/images/pregnancy.jpg"),
-  },
-  {
-    key: "breastCancer",
-    href: "/breast-cancer",
-    image: require("../../assets/images/breast-cancer.jpg"),
-  },
-  {
-    key: "diabetes",
-    href: "/diabetes",
-    image: require("../../assets/images/diabetes.jpg"),
-  },
-  {
-    key: "heartDisease",
-    href: "/heart-disease",
-    image: require("../../assets/images/heart-disease.jpg"),
-  },
-];
-
 export default function Home() {
   const scrollY = useSharedValue(0);
   const [featured, setFeatured] = useState([]);
+  const [topics, setTopics] = useState([]);
   const [lifePhase, setLifePhase] = useState("motherhood"); // later from profile
   const { t } = useTranslation();
 
@@ -66,6 +39,19 @@ export default function Home() {
     }`;
 
     client.fetch(query).then(setFeatured);
+  }, []);
+
+  useEffect(() => {
+    client
+      .fetch(
+        `*[_type=="topic" && !defined(parent)] | order(order asc, title asc){
+          _id,
+          title,
+          "slug": slug.current
+        }`,
+      )
+      .then(setTopics)
+      .catch(console.error);
   }, []);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -136,12 +122,11 @@ export default function Home() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontal}
           >
-            {EXPLORE_CARDS.map((card) => (
+            {topics.map((topic) => (
               <MinimalCard
-                key={card.key}
-                title={t(`home.exploreCards.${card.key}`)}
-                link={card.href}
-                imageSource={card.image}
+                key={topic._id}
+                title={topic.title}
+                link={`/explore/${topic.slug}`}
               />
             ))}
           </Animated.ScrollView>
