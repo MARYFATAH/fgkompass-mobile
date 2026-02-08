@@ -1,8 +1,8 @@
 // app/[slug].jsx
 
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PortableText } from "@portabletext/react-native";
 import { client } from "../sanity/client";
 import { useTranslation } from "react-i18next";
@@ -39,6 +39,7 @@ const portableComponents = {
 
 export default function ArticleScreen() {
   const { slug } = useLocalSearchParams();
+  const router = useRouter();
   const [post, setPost] = useState(null);
   const { t } = useTranslation();
 
@@ -79,6 +80,10 @@ export default function ArticleScreen() {
         <LanguageToggle />
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Text style={styles.backText}>? Back</Text>
+        </Pressable>
+
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t("common.browseLifePhases")}</Text>
           <Text style={styles.headerSubtitle}>{t("home.sectionFeatured")}</Text>
@@ -89,9 +94,8 @@ export default function ArticleScreen() {
             <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
           )}
           <View style={styles.heroBody}>
-            <View style={[styles.accentPill, { borderColor: themeColor }]}
-            >
-              <Text style={[styles.accentText, { color: themeColor }]}>
+            <View style={[styles.accentPill, { borderColor: themeColor }]}>
+              <Text style={[styles.accentText, { color: themeColor }]}> 
                 {t("lifePhase.title")}
               </Text>
             </View>
@@ -131,6 +135,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 24,
     paddingBottom: 48,
+  },
+  backButton: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
+    backgroundColor: "#FFFFFF",
+    marginBottom: 12,
+  },
+  backText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#9F1239",
   },
   header: {
     marginBottom: 16,
