@@ -1,6 +1,6 @@
-// app/[slug].jsx
+﻿// app/[slug].jsx
 
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PortableText } from "@portabletext/react-native";
@@ -30,7 +30,7 @@ const portableComponents = {
     bullet: ({ children }) => <View style={styles.list}>{children}</View>,
   },
   listItem: {
-    bullet: ({ children }) => <Text style={styles.listItem}>� {children}</Text>,
+    bullet: ({ children }) => <Text style={styles.listItem}>• {children}</Text>,
   },
   marks: {
     strong: ({ children }) => <Text style={styles.bold}>{children}</Text>,
@@ -76,6 +76,7 @@ export default function ArticleScreen() {
 
   return (
     <View style={styles.wrapper}>
+      <Stack.Screen options={{ title: post?.title || t("common.loading") }} />
       <View style={styles.toggleWrap}>
         <LanguageToggle />
       </View>

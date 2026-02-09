@@ -17,6 +17,23 @@ import MoreOnTopic from "../../components/MoreOnTopic";
 import { client } from "../../sanity/client";
 
 const HERO_HEIGHT = 240;
+const DEFAULT_TOPIC_IMAGE = require("../../assets/strongwomen.jpg");
+const TOPIC_IMAGES = {
+  menopause: require("../../assets/images/menopause.jpg"),
+  pregnancy: require("../../assets/images/pregnancy.jpg"),
+  "breast-cancer": require("../../assets/images/breast-cancer.jpg"),
+  breastcancer: require("../../assets/images/breast-cancer.jpg"),
+  diabetes: require("../../assets/images/diabetes.jpg"),
+  diabet: require("../../assets/images/diabetes.jpg"),
+  diabets: require("../../assets/images/diabetes.jpg"),
+  "heart-disease": require("../../assets/images/heart-disease.jpg"),
+  "hormone-overview-and-regulation": DEFAULT_TOPIC_IMAGE,
+  "immune-system-in-women": DEFAULT_TOPIC_IMAGE,
+  "pain-processing-in-women": DEFAULT_TOPIC_IMAGE,
+  "metabolism-in-women": DEFAULT_TOPIC_IMAGE,
+  "disease-risks-in-women": DEFAULT_TOPIC_IMAGE,
+  "menstrual-cycle-and-its-impact": DEFAULT_TOPIC_IMAGE,
+};
 
 export default function Home() {
   const scrollY = useSharedValue(0);
@@ -42,15 +59,25 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log("Sanity config:", {
+      projectId: process.env.EXPO_PUBLIC_SANITY_PROJECT_ID,
+      dataset: process.env.EXPO_PUBLIC_SANITY_DATASET,
+      useCdn: process.env.EXPO_PUBLIC_SANITY_USE_CDN,
+      apiVersion: process.env.EXPO_PUBLIC_SANITY_API_VERSION,
+    });
     client
       .fetch(
-        `*[_type=="topic" && !defined(parent)] | order(order asc, title asc){
+        `*[_type=="topic"] | order(order asc, title asc){
           _id,
           title,
-          "slug": slug.current
+          "slug": slug.current,
+          parent
         }`,
       )
-      .then(setTopics)
+      .then((data) => {
+        const topLevel = data.filter((item) => !item.parent);
+        setTopics(topLevel);
+      })
       .catch(console.error);
   }, []);
 
@@ -125,8 +152,9 @@ export default function Home() {
             {topics.map((topic) => (
               <MinimalCard
                 key={topic._id}
-                title={topic.title}
+                title={t(`topics.${topic.slug}`, topic.title)}
                 link={`/explore/${topic.slug}`}
+                imageSource={TOPIC_IMAGES[topic.slug] || DEFAULT_TOPIC_IMAGE}
               />
             ))}
           </Animated.ScrollView>

@@ -1,10 +1,10 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import LifePhaseArticleCard from "../../../components/LifePhaseArticleCard";
-import { client } from "../../../sanity/client";
+import LifePhaseArticleCard from "../../components/LifePhaseArticleCard";
+import { client } from "../../sanity/client";
 
 export default function ExploreGroup() {
   const { slug } = useLocalSearchParams();
@@ -75,33 +75,25 @@ export default function ExploreGroup() {
   }, [posts, subtopics]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Pressable onPress={() => router.back()} style={styles.backButton}>
-        <Text style={styles.backText}>&lt;- Back</Text>
-      </Pressable>
+    <>
+      <Stack.Screen
+        options={{ title: group?.title || t("home.sectionExplore") }}
+      />
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Text style={styles.backText}>&lt;- Back</Text>
+        </Pressable>
 
-      <View style={styles.header}>
-        <Text style={styles.title}>{group?.title}</Text>
-        <Text style={styles.subtitle}>{t("home.sectionMore")}</Text>
-      </View>
-
-      {subtopics.length === 0 ? (
-        <View>
-          {posts.map((p) => (
-            <LifePhaseArticleCard
-              key={p._id}
-              title={p.title}
-              excerpt={p.excerpt}
-              imageUrl={p.imageUrl}
-              slug={p.slug.current}
-            />
-          ))}
+        <View style={styles.header}>
+        <Text style={styles.title}>
+          {group?.slug ? t(`topics.${group.slug}`, group.title) : group?.title}
+        </Text>
+          <Text style={styles.subtitle}>{t("home.sectionMore")}</Text>
         </View>
-      ) : (
-        subtopics.map((sub) => (
-          <View key={sub._id} style={styles.subgroup}>
-            <Text style={styles.subgroupTitle}>{sub.title}</Text>
-            {(postsBySubtopic.get(sub._id) || []).map((p) => (
+
+        {subtopics.length === 0 ? (
+          <View>
+            {posts.map((p) => (
               <LifePhaseArticleCard
                 key={p._id}
                 title={p.title}
@@ -111,9 +103,26 @@ export default function ExploreGroup() {
               />
             ))}
           </View>
-        ))
-      )}
-    </ScrollView>
+        ) : (
+          subtopics.map((sub) => (
+            <View key={sub._id} style={styles.subgroup}>
+            <Text style={styles.subgroupTitle}>
+              {sub.slug ? t(`topics.${sub.slug}`, sub.title) : sub.title}
+            </Text>
+              {(postsBySubtopic.get(sub._id) || []).map((p) => (
+                <LifePhaseArticleCard
+                  key={p._id}
+                  title={p.title}
+                  excerpt={p.excerpt}
+                  imageUrl={p.imageUrl}
+                  slug={p.slug.current}
+                />
+              ))}
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </>
   );
 }
 

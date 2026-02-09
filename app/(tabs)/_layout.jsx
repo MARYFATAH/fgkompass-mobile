@@ -6,6 +6,10 @@ import LanguageToggle from "../../components/LanguageToggle";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
+  const label = (key, fallback) => {
+    const value = t(key);
+    return value && value !== key ? value : fallback;
+  };
 
   return (
     <Tabs
@@ -67,7 +71,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: t("tabs.home"),
+          title: label("tabs.home", "Home"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
@@ -77,7 +81,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="life-phase"
         options={{
-          title: t("tabs.lifePhase"),
+          title: label("tabs.lifePhase", "Life Phase"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="leaf" size={size} color={color} />
           ),
@@ -87,7 +91,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="contact"
         options={{
-          title: t("tabs.contact"),
+          title: label("tabs.contact", "Contact"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="call" size={size} color={color} />
           ),
@@ -97,12 +101,13 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="aboutUs"
         options={{
-          title: t("tabs.about"),
+          title: label("tabs.about", "About"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="information-circle" size={size} color={color} />
           ),
         }}
       />
+
     </Tabs>
   );
 }
