@@ -36,7 +36,14 @@ export default function Contact() {
       });
 
       if (!res.ok) {
-        throw new Error("Request failed");
+        let details = "";
+        try {
+          const data = await res.json();
+          details = data?.error ? ` ${data.error}` : "";
+        } catch {
+          // ignore parsing errors
+        }
+        throw new Error(`Request failed.${details}`);
       }
 
       setStatus("success");
@@ -45,7 +52,7 @@ export default function Contact() {
       setMessage("");
     } catch (err) {
       setStatus("error");
-      setError("Something went wrong. Please try again.");
+      setError(err?.message || "Something went wrong. Please try again.");
     }
   };
 
