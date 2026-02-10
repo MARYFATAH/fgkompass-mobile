@@ -53,7 +53,7 @@ export default function ExploreGroup() {
           _id,
           title,
           excerpt,
-          "imageUrl": image.asset->url,
+          image,
           slug,
           "topicIds": topics[]._ref
         }`,
@@ -98,7 +98,7 @@ export default function ExploreGroup() {
                 key={p._id}
                 title={p.title}
                 excerpt={p.excerpt}
-                imageUrl={p.imageUrl}
+                image={p.image}
                 slug={p.slug.current}
               />
             ))}
@@ -114,7 +114,7 @@ export default function ExploreGroup() {
                   key={p._id}
                   title={p.title}
                   excerpt={p.excerpt}
-                  imageUrl={p.imageUrl}
+                  image={p.image}
                   slug={p.slug.current}
                 />
               ))}

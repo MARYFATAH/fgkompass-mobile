@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PortableText } from "@portabletext/react-native";
 import { client } from "../sanity/client";
+import { buildImageUrl } from "../sanity/imageUrl";
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle";
 
@@ -54,7 +55,7 @@ export default function ArticleScreen() {
           lifePhase->{
             slug
           },
-          "imageUrl": image.asset->url,
+          image,
           body
         }`,
         { slug },
@@ -91,8 +92,14 @@ export default function ArticleScreen() {
         </View>
 
         <View style={styles.heroCard}>
-          {post.imageUrl && (
-            <Image source={{ uri: post.imageUrl }} style={styles.heroImage} />
+          {post.image && (
+            <Image
+              source={{
+                uri: buildImageUrl(post.image, { width: 1200, height: 600 }),
+              }}
+              style={styles.heroImage}
+              resizeMode="cover"
+            />
           )}
           <View style={styles.heroBody}>
             <View style={[styles.accentPill, { borderColor: themeColor }]}>
@@ -180,6 +187,7 @@ const styles = StyleSheet.create({
   heroImage: {
     width: "100%",
     height: 240,
+    backgroundColor: "#FDE8EF",
   },
   heroBody: {
     padding: 16,

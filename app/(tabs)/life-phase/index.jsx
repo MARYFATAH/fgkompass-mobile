@@ -93,7 +93,7 @@ export default function LifePhaseScreen() {
     title,
     excerpt,
     "slug": slug.current,
-     "imageUrl": image.asset->url,
+     image,
   }
   `,
         { slug: activePhase.slug },
@@ -136,7 +136,7 @@ export default function LifePhaseScreen() {
           key={p._id}
           title={p.title}
           excerpt={p.excerpt}
-          imageUrl={p.imageUrl}
+          image={p.image}
           slug={p.slug}
         />
       ))}

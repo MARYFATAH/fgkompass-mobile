@@ -1,11 +1,12 @@
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { buildImageUrl } from "../sanity/imageUrl";
 
 export default function LifePhaseArticleCard({
   title,
   excerpt,
-  imageUrl,
+  image,
   slug,
 }) {
   const router = useRouter();
@@ -17,9 +18,11 @@ export default function LifePhaseArticleCard({
       style={({ pressed }) => [styles.card, pressed && { opacity: 0.9 }]}
     >
       {/* IMAGE */}
-      {imageUrl ? (
+      {image ? (
         <Image
-          source={{ uri: imageUrl }}
+          source={{
+            uri: buildImageUrl(image, { width: 900, height: 360 }),
+          }}
           style={styles.image}
           resizeMode="cover"
         />

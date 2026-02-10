@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { client } from "../sanity/client";
+import { buildImageUrl } from "../sanity/imageUrl";
 import { useTranslation } from "react-i18next";
 
 export default function MoreOnTopic() {
@@ -26,7 +27,7 @@ export default function MoreOnTopic() {
           _id,
           title,
           slug,
-          "imageUrl": image.asset->url
+          image
         }`,
       )
       .then(setPosts)
@@ -50,7 +51,17 @@ export default function MoreOnTopic() {
               isTablet && { width: "48%" },
             ]}
           >
-            <Image source={{ uri: post.imageUrl }} style={styles.image} />
+            {post.image ? (
+              <Image
+                source={{
+                  uri: buildImageUrl(post.image, { width: 300, height: 300 }),
+                }}
+                style={styles.image}
+                resizeMode="cover"
+              />
+            ) : (
+              <View style={styles.image} />
+            )}
 
             <View style={styles.textWrap}>
               <Text style={styles.title} numberOfLines={2}>

@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
   Extrapolate,
@@ -10,11 +11,11 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { useTranslation } from "react-i18next";
 
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
 import { client } from "../../sanity/client";
+import { buildImageUrl } from "../../sanity/imageUrl";
 
 const HERO_HEIGHT = 240;
 const DEFAULT_TOPIC_IMAGE = require("../../assets/strongwomen.jpg");
@@ -51,7 +52,7 @@ export default function Home() {
       _id,
       title,
       excerpt,
-      "imageUrl": image.asset->url,
+      image,
       slug
     }`;
 
@@ -123,7 +124,7 @@ export default function Home() {
       {/* HERO */}
       <Animated.View style={[styles.hero, heroStyle]}>
         <Animated.Image
-          source={require("../../assets/strongwomen.jpg")}
+          source={require("../../assets/images/brave-women.png")}
           style={[styles.heroImage, heroImageStyle]}
         />
         <LinearGradient
@@ -187,10 +188,20 @@ export default function Home() {
           {featured.map((post) => (
             <Animated.View key={post._id} entering={FadeIn.duration(500)}>
               <View style={styles.article}>
-                <Image
-                  source={{ uri: post.imageUrl }}
-                  style={styles.articleImage}
-                />
+                {post.image ? (
+                  <Image
+                    source={{
+                      uri: buildImageUrl(post.image, {
+                        width: 1000,
+                        height: 600,
+                      }),
+                    }}
+                    style={styles.articleImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View style={styles.articleImage} />
+                )}
                 <View style={styles.articleBody}>
                   <Text style={styles.articleTitle}>{post.title}</Text>
                   <Text style={styles.articleExcerpt} numberOfLines={3}>
@@ -318,6 +329,7 @@ const styles = StyleSheet.create({
   articleImage: {
     width: "100%",
     height: 180,
+    backgroundColor: "#FDE8EF",
   },
   articleBody: {
     padding: 16,
