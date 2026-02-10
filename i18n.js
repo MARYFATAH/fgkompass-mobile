@@ -11,8 +11,9 @@ const resources = {
         loading: "Loading…",
       },
       landing: {
-        title: "FG Kompass",
-        subtitle: "A gentle guide through every stage of women’s health.",
+        title: "Women's Health Knowledge Compass",
+        subtitle:
+          "Better understanding, motivation for all generations and age groups of women",
         cta: "Explore Life Phases",
       },
       tabs: {
@@ -52,7 +53,8 @@ const resources = {
         "disease-risks-in-women": "Disease Risks in Women",
         "menstrual-cycle-and-its-impact": "Menstrual Cycle & Its Impact",
         "cycle-related-fluctuations": "Cycle-Related Fluctuations",
-        "life-phases-and-hormonal-transitions": "Life Phases & Hormonal Transitions",
+        "life-phases-and-hormonal-transitions":
+          "Life Phases & Hormonal Transitions",
         "symptoms-of-imbalance": "Symptoms of Imbalance",
         "hormone-aware-daily-support": "Hormone-Aware Daily Support",
         "immune-strength-and-reactivity": "Immune Strength & Reactivity",
@@ -71,7 +73,8 @@ const resources = {
         "weight-appetite-and-cravings": "Weight, Appetite & Cravings",
         "metabolic-support-and-nutrition": "Metabolic Support & Nutrition",
         "cardiovascular-health": "Cardiovascular Health",
-        "autoimmune-and-inflammatory-diseases": "Autoimmune & Inflammatory Diseases",
+        "autoimmune-and-inflammatory-diseases":
+          "Autoimmune & Inflammatory Diseases",
         "mental-health-vulnerabilities": "Mental Health Vulnerabilities",
         "underdiagnosed-conditions": "Underdiagnosed Conditions",
         "prevention-and-early-detection": "Prevention & Early Detection",
@@ -132,9 +135,9 @@ const resources = {
         loading: "Wird geladen…",
       },
       landing: {
-        title: "FG Kompass",
+        title: "Kompass für Frauengesundheit",
         subtitle:
-          "Ein sanfter Leitfaden durch jede Phase der Frauengesundheit.",
+          "besseres Bild, Motiv alle Generation und Altersgruppen von Frauen",
         cta: "Lebensphasen entdecken",
       },
       tabs: {
@@ -173,28 +176,36 @@ const resources = {
         "pain-processing-in-women": "Schmerzverarbeitung bei Frauen",
         "metabolism-in-women": "Stoffwechsel bei Frauen",
         "disease-risks-in-women": "Krankheitsrisiken bei Frauen",
-        "menstrual-cycle-and-its-impact": "Menstruationszyklus und seine Auswirkungen",
+        "menstrual-cycle-and-its-impact":
+          "Menstruationszyklus und seine Auswirkungen",
         "cycle-related-fluctuations": "Zyklusbedingte Schwankungen",
-        "life-phases-and-hormonal-transitions": "Lebensphasen und hormonelle Übergänge",
+        "life-phases-and-hormonal-transitions":
+          "Lebensphasen und hormonelle Übergänge",
         "symptoms-of-imbalance": "Symptome eines Ungleichgewichts",
         "hormone-aware-daily-support": "Hormonbewusste Alltagsunterstützung",
         "immune-strength-and-reactivity": "Immunstärke und Reaktivität",
-        "hormonal-influence-on-immunity": "Hormoneller Einfluss auf die Immunität",
+        "hormonal-influence-on-immunity":
+          "Hormoneller Einfluss auf die Immunität",
         "autoimmune-risk": "Autoimmunrisiko",
         "cycle-and-immune-fluctuations": "Zyklus und Immunschwankungen",
         "immune-support-strategies": "Strategien zur Immununterstützung",
-        "pain-perception-and-sensitivity": "Schmerzwahrnehmung und Sensibilität",
+        "pain-perception-and-sensitivity":
+          "Schmerzwahrnehmung und Sensibilität",
         "hormonal-modulation-of-pain": "Hormonelle Modulation von Schmerz",
         "cycle-related-pain-patterns": "Zyklusbedingte Schmerzverläufe",
         "chronic-pain-and-gender-bias": "Chronischer Schmerz und Gender-Bias",
-        "pain-management-and-self-advocacy": "Schmerzmanagement und Selbstvertretung",
+        "pain-management-and-self-advocacy":
+          "Schmerzmanagement und Selbstvertretung",
         "basal-metabolism-and-energy-use": "Grundumsatz und Energieverbrauch",
         "hormones-and-metabolic-control": "Hormone und Stoffwechselregulation",
-        "cycle-dependent-metabolic-shifts": "Zyklusabhängige Stoffwechselverschiebungen",
+        "cycle-dependent-metabolic-shifts":
+          "Zyklusabhängige Stoffwechselverschiebungen",
         "weight-appetite-and-cravings": "Gewicht, Appetit und Heißhunger",
-        "metabolic-support-and-nutrition": "Stoffwechselunterstützung und Ernährung",
+        "metabolic-support-and-nutrition":
+          "Stoffwechselunterstützung und Ernährung",
         "cardiovascular-health": "Herz‑Kreislauf‑Gesundheit",
-        "autoimmune-and-inflammatory-diseases": "Autoimmun- und Entzündungskrankheiten",
+        "autoimmune-and-inflammatory-diseases":
+          "Autoimmun- und Entzündungskrankheiten",
         "mental-health-vulnerabilities": "Psychische Verwundbarkeiten",
         "underdiagnosed-conditions": "Unterdiagnostizierte Erkrankungen",
         "prevention-and-early-detection": "Prävention und Früherkennung",
