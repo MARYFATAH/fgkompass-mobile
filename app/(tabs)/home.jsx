@@ -207,7 +207,10 @@ export default function Home() {
                   <Text style={styles.articleExcerpt} numberOfLines={3}>
                     {post.excerpt}
                   </Text>
-                  <Link href={`/${post.slug.current}`} asChild>
+                  <Link
+                    href={{ pathname: "/[slug]", params: { slug: post.slug.current } }}
+                    asChild
+                  >
                     <Pressable>
                       <Text style={styles.readMore}>
                         {t("common.readMore")}

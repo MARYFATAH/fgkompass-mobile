@@ -24,7 +24,7 @@ const resources = {
       },
       home: {
         heroTitle: "Strong women",
-        heroSubtitle: "Calm guidance for every life phase.",
+        heroSubtitle: "Guidance for every life phase.",
         sectionExplore: "Explore",
         sectionLifePhase: "For your life phase",
         sectionMore: "More on this topic",
@@ -148,7 +148,7 @@ const resources = {
       },
       home: {
         heroTitle: "Starke Frauen",
-        heroSubtitle: "Ruhige Orientierung für jede Lebensphase.",
+        heroSubtitle: "Orientierung für jede Lebensphase.",
         sectionExplore: "Entdecken",
         sectionLifePhase: "Für deine Lebensphase",
         sectionMore: "Mehr zu diesem Thema",

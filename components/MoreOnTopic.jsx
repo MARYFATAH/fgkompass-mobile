@@ -44,7 +44,12 @@ export default function MoreOnTopic() {
         {posts.map((post) => (
           <Pressable
             key={post._id}
-            onPress={() => router.push(`/${post.slug.current}`)}
+            onPress={() =>
+              router.push({
+                pathname: "/[slug]",
+                params: { slug: post.slug.current },
+              })
+            }
             style={({ pressed }) => [
               styles.card,
               pressed && { backgroundColor: "#FFF1F2" },

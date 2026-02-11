@@ -14,7 +14,12 @@ export default function LifePhaseArticleCard({
 
   return (
     <Pressable
-      onPress={() => router.push(`/${slug}`)}
+      onPress={() =>
+        router.push({
+          pathname: "/[slug]",
+          params: { slug },
+        })
+      }
       style={({ pressed }) => [styles.card, pressed && { opacity: 0.9 }]}
     >
       {/* IMAGE */}

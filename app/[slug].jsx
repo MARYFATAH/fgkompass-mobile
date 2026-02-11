@@ -82,7 +82,16 @@ export default function ArticleScreen() {
         <LanguageToggle />
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
+        <Pressable
+          onPress={() => {
+            if (router.canGoBack?.()) {
+              router.back();
+            } else {
+              router.replace("/(tabs)/home");
+            }
+          }}
+          style={styles.backButton}
+        >
           <Text style={styles.backText}>&lt;- Back</Text>
         </Pressable>
 
