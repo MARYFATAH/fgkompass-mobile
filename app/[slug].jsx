@@ -95,7 +95,7 @@ export default function ArticleScreen() {
           {post.image && (
             <Image
               source={{
-                uri: buildImageUrl(post.image, { width: 1200, height: 600 }),
+                uri: buildImageUrl(post.image, { width: 1200, height: 800 }),
               }}
               style={styles.heroImage}
               resizeMode="cover"

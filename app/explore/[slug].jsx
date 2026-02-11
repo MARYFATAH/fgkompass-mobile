@@ -74,6 +74,8 @@ export default function ExploreGroup() {
     return map;
   }, [posts, subtopics]);
 
+  const allPosts = posts.filter((p) => p.topicIds?.includes(group?._id));
+
   return (
     <>
       <Stack.Screen
@@ -104,22 +106,41 @@ export default function ExploreGroup() {
             ))}
           </View>
         ) : (
-          subtopics.map((sub) => (
-            <View key={sub._id} style={styles.subgroup}>
-            <Text style={styles.subgroupTitle}>
-              {sub.slug ? t(`topics.${sub.slug}`, sub.title) : sub.title}
-            </Text>
-              {(postsBySubtopic.get(sub._id) || []).map((p) => (
-                <LifePhaseArticleCard
-                  key={p._id}
-                  title={p.title}
-                  excerpt={p.excerpt}
-                  image={p.image}
-                  slug={p.slug.current}
-                />
-              ))}
-            </View>
-          ))
+          <>
+            {allPosts.length > 0 ? (
+              <View style={styles.subgroup}>
+                <Text style={styles.subgroupTitle}>
+                  {t("home.sectionMore")}
+                </Text>
+                {allPosts.map((p) => (
+                  <LifePhaseArticleCard
+                    key={p._id}
+                    title={p.title}
+                    excerpt={p.excerpt}
+                    image={p.image}
+                    slug={p.slug.current}
+                  />
+                ))}
+              </View>
+            ) : null}
+
+            {subtopics.map((sub) => (
+              <View key={sub._id} style={styles.subgroup}>
+                <Text style={styles.subgroupTitle}>
+                  {sub.slug ? t(`topics.${sub.slug}`, sub.title) : sub.title}
+                </Text>
+                {(postsBySubtopic.get(sub._id) || []).map((p) => (
+                  <LifePhaseArticleCard
+                    key={p._id}
+                    title={p.title}
+                    excerpt={p.excerpt}
+                    image={p.image}
+                    slug={p.slug.current}
+                  />
+                ))}
+              </View>
+            ))}
+          </>
         )}
       </ScrollView>
     </>

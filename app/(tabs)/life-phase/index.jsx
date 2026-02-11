@@ -48,6 +48,20 @@ export default function LifePhaseScreen() {
           slug: p.slug,
         }));
 
+        const seen = new Set();
+        const deduped = [];
+
+        mapped.forEach((p) => {
+          const key = (p.slug || p.title || p.id || "")
+            .toString()
+            .toLowerCase()
+            .trim();
+
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+          deduped.push(p);
+        });
+
         const getIndex = (slug, title) => {
           const idx = PHASE_ORDER.indexOf(slug);
           if (idx !== -1) return idx;
@@ -58,8 +72,8 @@ export default function LifePhaseScreen() {
           return idx === -1 ? PHASE_ORDER.length : idx;
         };
 
-        const sorted = mapped.sort(
-          (a, b) => getIndex(a.slug, a.label) - getIndex(b.slug, b.label),
+        const sorted = deduped.sort(
+          (a, b) => getIndex(a.slug, a.title) - getIndex(b.slug, b.title),
         );
 
         setPhases(sorted);

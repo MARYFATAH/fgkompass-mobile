@@ -21,7 +21,7 @@ export default function LifePhaseArticleCard({
       {image ? (
         <Image
           source={{
-            uri: buildImageUrl(image, { width: 900, height: 360 }),
+            uri: buildImageUrl(image, { width: 900, height: 600 }),
           }}
           style={styles.image}
           resizeMode="cover"

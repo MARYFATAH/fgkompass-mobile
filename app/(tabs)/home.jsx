@@ -193,7 +193,7 @@ export default function Home() {
                     source={{
                       uri: buildImageUrl(post.image, {
                         width: 1000,
-                        height: 600,
+                        height: 700,
                       }),
                     }}
                     style={styles.articleImage}
