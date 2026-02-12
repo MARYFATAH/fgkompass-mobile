@@ -11,10 +11,25 @@ const resources = {
         loading: "Loading…",
       },
       landing: {
-        title: "Women's Health Knowledge Compass",
-        subtitle:
-          "Better understanding, motivation for all generations and age groups of women",
-        cta: "Explore Life Phases",
+        title: "Women’s Health Knowledge Compass",
+        subtitle: "Your app for knowledge, guidance, and empowerment",
+        cta: "Enter app",
+        onboardingLink: "Quick tour",
+      },
+      onboarding: {
+        title: "Welcome to Women’s Health Knowledge Compass",
+        step1Title: "Why This App Exists",
+        step1Body:
+          "Women are not \"smaller men with a uterus\". They have their own physiology, their own symptoms, their own needs. Yet women's health is still too often overlooked, recognized too late, and under-researched. The Women's HealthKnowledge Compass app addresses this very issue: It makes knowledge accessible, strengthens self-care, and supports women through all phases of life from menstruation and pregnancy to menopause and mental stress.",
+        step2Title: "A Space for Empowerment",
+        step2Body:
+          "This app is more than just a tool. It's a space for education, exchange, and empowerment. It helps women better understand their bodies, recognize symptoms early, and develop individual strategies for everyday health. It's not about deficits, but about potential: physical, emotional, and social.",
+        step3Title: "Your Compass",
+        step3Body:
+          "With sound information, practical advice, and a strengths-based approach to women's health, Compass provides guidance. Practical, respectful, and empowering. For women who take themselves seriously. And for a medical system that finally considers women's needs.",
+        cta: "Get started",
+        skip: "Skip",
+        next: "Next",
       },
       tabs: {
         home: "Home",
@@ -135,10 +150,25 @@ const resources = {
         loading: "Wird geladen…",
       },
       landing: {
-        title: "Kompass für Frauengesundheit",
-        subtitle:
-          "besseres Bild, Motiv alle Generation und Altersgruppen von Frauen",
-        cta: "Lebensphasen entdecken",
+        title: "Women’s HealthKnowledge Compass",
+        subtitle: "Deine App für Wissen, Orientierung und Empowerment",
+        cta: "Zur App",
+        onboardingLink: "Kurze Tour",
+      },
+      onboarding: {
+        title: "Willkommen beim Women’s HealthKnowledge Compass",
+        step1Title: "Warum es diese App gibt",
+        step1Body:
+          "Frauen sind keine „kleineren Männer mit Gebärmutter“. Sie haben eine eigene Physiologie, eigene Symptome, eigene Bedürfnisse. Doch noch immer wird Frauengesundheit zu oft übersehen, zu spät erkannt und zu wenig erforscht. Die App Women’s HealthKnowledge Compass setzt genau hier an: Sie macht Wissen zugänglich, stärkt Selbstfürsorge und begleitet Frauen durch alle Lebensphasen von Zyklus und Schwangerschaft bis zu Wechseljahren und mentaler Belastung.",
+        step2Title: "Ein Raum für Empowerment",
+        step2Body:
+          "Diese App ist mehr als ein Tool. Sie ist ein Raum für Aufklärung, Austausch und Aktivierung. Sie hilft Frauen, ihren Körper besser zu verstehen, Symptome frühzeitig zu deuten und individuelle Strategien für Gesundheit im Alltag zu entwickeln. Dabei geht es nicht um Defizite, sondern um Potenziale: körperlich, emotional und sozial.",
+        step3Title: "Dein Kompass",
+        step3Body:
+          "Mit fundierten Informationen, praktischen Impulsen und einem stärkenorientierten Blick auf Frauengesundheit schafft der Compass Orientierung. Lebensnah, wertschätzend und empowernd. Für Frauen, die sich selbst ernst nehmen. Und für eine Medizin, die Frauen endlich mitdenkt.",
+        cta: "Los geht’s",
+        skip: "Überspringen",
+        next: "Weiter",
       },
       tabs: {
         home: "Start",

@@ -73,7 +73,7 @@ export default function Landing() {
       <Animated.View style={[styles.logoWrap, floatingStyle]}>
         <Animated.Image
           entering={FadeIn.duration(900)}
-          source={require("../assets/images/fgkompass-logo.png")}
+          source={require("../assets/images/fgkompass-logo-old.png")}
           style={styles.logo}
         />
       </Animated.View>
@@ -95,15 +95,17 @@ export default function Landing() {
       </Animated.Text>
 
       {/* 🌱 CTA */}
-      <Animated.View entering={FadeInDown.delay(450).duration(700)}>
+      <Animated.View entering={FadeInDown.delay(450).duration(700)} style={styles.ctaWrap}>
         <Pressable onPress={() => router.push("/home")} style={styles.button}>
           <Text style={styles.buttonText}>{t("landing.cta")}</Text>
         </Pressable>
         <Pressable
-          onPress={() => router.push("/life-phase")}
-          style={styles.link}
+          onPress={() => router.push("/onboarding")}
+          style={styles.secondaryButton}
         >
-          <Text style={styles.linkText}>{t("common.browseLifePhases")}</Text>
+          <Text style={styles.secondaryButtonText}>
+            {t("landing.onboardingLink")}
+          </Text>
         </Pressable>
       </Animated.View>
     </LinearGradient>
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
   },
   button: {
-    backgroundColor: "#E11D48",
+    backgroundColor: "#9F1239",
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 30,
@@ -187,14 +189,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 0.3,
+    textAlign: "center",
   },
-  link: {
-    marginTop: 14,
-    alignItems: "center",
+  ctaWrap: {
+    width: "100%",
+    maxWidth: 320,
+    gap: 10,
   },
-  linkText: {
+  secondaryButton: {
+    borderWidth: 1,
+    borderColor: "#9F1239",
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 30,
+  },
+  secondaryButtonText: {
     color: "#9F1239",
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "700",
+    textAlign: "center",
   },
 });
