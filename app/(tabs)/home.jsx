@@ -20,6 +20,14 @@ import { buildImageUrl } from "../../sanity/imageUrl";
 const HERO_HEIGHT = 240;
 const DEFAULT_TOPIC_IMAGE = require("../../assets/strongwomen.jpg");
 const TOPIC_IMAGES = {
+  "hormone-overview-and-regulation": require("../../assets/images/hormone.jpg"),
+  "immune-system-in-women": require("../../assets/images/immune-system.jpg"),
+  "pain-processing-in-women": require("../../assets/images/pain.jpg"),
+  "metabolism-in-women": require("../../assets/images/metabolism.jpg"),
+  "disease-risks-in-women": require("../../assets/images/disease.jpg"),
+  "menstrual-cycle-and-its-impact": require("../../assets/images/menstrual.jpg"),
+  breastcancer: require("../../assets/images/breast-cancer.jpg"),
+  wellness: require("../../assets/strongwomen.jpg"),
   menopause: require("../../assets/images/menopause.jpg"),
   pregnancy: require("../../assets/images/pregnancy.jpg"),
   "breast-cancer": require("../../assets/images/breast-cancer.jpg"),
@@ -28,12 +36,6 @@ const TOPIC_IMAGES = {
   diabet: require("../../assets/images/diabetes.jpg"),
   diabets: require("../../assets/images/diabetes.jpg"),
   "heart-disease": require("../../assets/images/heart-disease.jpg"),
-  "hormone-overview-and-regulation": DEFAULT_TOPIC_IMAGE,
-  "immune-system-in-women": DEFAULT_TOPIC_IMAGE,
-  "pain-processing-in-women": DEFAULT_TOPIC_IMAGE,
-  "metabolism-in-women": DEFAULT_TOPIC_IMAGE,
-  "disease-risks-in-women": DEFAULT_TOPIC_IMAGE,
-  "menstrual-cycle-and-its-impact": DEFAULT_TOPIC_IMAGE,
 };
 
 export default function Home() {
@@ -78,6 +80,16 @@ export default function Home() {
       )
       .then((data) => {
         const topLevel = data.filter((item) => !item.parent);
+        console.log(
+          "Topic slugs:",
+          topLevel.map((t) => t.slug),
+        );
+        const missingImages = topLevel
+          .map((t) => (t.slug || "").toString().trim().toLowerCase())
+          .filter((slug) => slug && !TOPIC_IMAGES[slug]);
+        if (missingImages.length) {
+          console.log("Missing topic images for:", missingImages);
+        }
         setTopics(topLevel);
       })
       .catch(console.error);
@@ -156,7 +168,10 @@ export default function Home() {
                 key={topic._id}
                 title={t(`topics.${topic.slug}`, topic.title)}
                 link={`/explore/${topic.slug}`}
-                imageSource={TOPIC_IMAGES[topic.slug] || DEFAULT_TOPIC_IMAGE}
+                imageSource={
+                  TOPIC_IMAGES[(topic.slug || "").toLowerCase()] ||
+                  DEFAULT_TOPIC_IMAGE
+                }
               />
             ))}
           </Animated.ScrollView>
