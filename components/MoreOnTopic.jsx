@@ -27,7 +27,8 @@ export default function MoreOnTopic() {
           _id,
           title,
           slug,
-          image
+          image,
+          "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio
         }`,
       )
       .then(setPosts)
@@ -59,10 +60,13 @@ export default function MoreOnTopic() {
             {post.image ? (
               <Image
                 source={{
-                  uri: buildImageUrl(post.image, { width: 300, height: 300 }),
+                  uri: buildImageUrl(post.image, { width: 300 }),
                 }}
-                style={styles.image}
-                resizeMode="cover"
+                style={[
+                  styles.image,
+                  { aspectRatio: post.imageAspectRatio || 1 },
+                ]}
+                resizeMode="contain"
               />
             ) : (
               <View style={styles.image} />
@@ -101,7 +105,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 80,
-    height: 80,
     borderRadius: 12,
     backgroundColor: "#f1f5f9",
   },

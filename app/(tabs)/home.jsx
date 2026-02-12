@@ -53,6 +53,7 @@ export default function Home() {
       title,
       excerpt,
       image,
+      "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio,
       slug
     }`;
 
@@ -191,13 +192,13 @@ export default function Home() {
                 {post.image ? (
                   <Image
                     source={{
-                      uri: buildImageUrl(post.image, {
-                        width: 1000,
-                        height: 700,
-                      }),
+                      uri: buildImageUrl(post.image, { width: 1000 }),
                     }}
-                    style={styles.articleImage}
-                    resizeMode="cover"
+                    style={[
+                      styles.articleImage,
+                      { aspectRatio: post.imageAspectRatio || 16 / 9 },
+                    ]}
+                    resizeMode="contain"
                   />
                 ) : (
                   <View style={styles.articleImage} />
@@ -331,7 +332,6 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: "100%",
-    height: 180,
     backgroundColor: "#FDE8EF",
   },
   articleBody: {

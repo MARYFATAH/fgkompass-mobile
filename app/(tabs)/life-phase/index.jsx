@@ -108,6 +108,7 @@ export default function LifePhaseScreen() {
     excerpt,
     "slug": slug.current,
      image,
+     "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio,
   }
   `,
         { slug: activePhase.slug },
@@ -151,6 +152,7 @@ export default function LifePhaseScreen() {
           title={p.title}
           excerpt={p.excerpt}
           image={p.image}
+          imageAspectRatio={p.imageAspectRatio}
           slug={p.slug}
         />
       ))}

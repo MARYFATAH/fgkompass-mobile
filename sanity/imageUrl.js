@@ -13,5 +13,5 @@ export const buildImageUrl = (source, { width, height } = {}) => {
   if (width) img = img.width(width);
   if (height) img = img.height(height);
 
-  return img.fit("crop").crop("focalpoint").quality(80).url();
+  return img.fit("clip").quality(80).url();
 };

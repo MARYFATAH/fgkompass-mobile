@@ -56,6 +56,7 @@ export default function ArticleScreen() {
             slug
           },
           image,
+          "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio,
           body
         }`,
         { slug },
@@ -104,10 +105,13 @@ export default function ArticleScreen() {
           {post.image && (
             <Image
               source={{
-                uri: buildImageUrl(post.image, { width: 1200, height: 800 }),
+                uri: buildImageUrl(post.image, { width: 1200 }),
               }}
-              style={styles.heroImage}
-              resizeMode="cover"
+              style={[
+                styles.heroImage,
+                { aspectRatio: post.imageAspectRatio || 3 / 2 },
+              ]}
+              resizeMode="contain"
             />
           )}
           <View style={styles.heroBody}>
@@ -195,7 +199,6 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: "100%",
-    height: 240,
     backgroundColor: "#FDE8EF",
   },
   heroBody: {

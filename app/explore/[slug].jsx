@@ -54,6 +54,7 @@ export default function ExploreGroup() {
           title,
           excerpt,
           image,
+          "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio,
           slug,
           "topicIds": topics[]._ref
         }`,
@@ -96,13 +97,14 @@ export default function ExploreGroup() {
         {subtopics.length === 0 ? (
           <View>
             {posts.map((p) => (
-              <LifePhaseArticleCard
-                key={p._id}
-                title={p.title}
-                excerpt={p.excerpt}
-                image={p.image}
-                slug={p.slug.current}
-              />
+                <LifePhaseArticleCard
+                  key={p._id}
+                  title={p.title}
+                  excerpt={p.excerpt}
+                  image={p.image}
+                  imageAspectRatio={p.imageAspectRatio}
+                  slug={p.slug.current}
+                />
             ))}
           </View>
         ) : (
@@ -113,13 +115,14 @@ export default function ExploreGroup() {
                   {t("home.sectionMore")}
                 </Text>
                 {allPosts.map((p) => (
-                  <LifePhaseArticleCard
-                    key={p._id}
-                    title={p.title}
-                    excerpt={p.excerpt}
-                    image={p.image}
-                    slug={p.slug.current}
-                  />
+                <LifePhaseArticleCard
+                  key={p._id}
+                  title={p.title}
+                  excerpt={p.excerpt}
+                  image={p.image}
+                  imageAspectRatio={p.imageAspectRatio}
+                  slug={p.slug.current}
+                />
                 ))}
               </View>
             ) : null}
@@ -135,6 +138,7 @@ export default function ExploreGroup() {
                     title={p.title}
                     excerpt={p.excerpt}
                     image={p.image}
+                    imageAspectRatio={p.imageAspectRatio}
                     slug={p.slug.current}
                   />
                 ))}

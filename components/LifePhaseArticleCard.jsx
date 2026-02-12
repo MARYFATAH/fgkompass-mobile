@@ -7,6 +7,7 @@ export default function LifePhaseArticleCard({
   title,
   excerpt,
   image,
+  imageAspectRatio,
   slug,
 }) {
   const router = useRouter();
@@ -26,10 +27,10 @@ export default function LifePhaseArticleCard({
       {image ? (
         <Image
           source={{
-            uri: buildImageUrl(image, { width: 900, height: 600 }),
+            uri: buildImageUrl(image, { width: 900 }),
           }}
-          style={styles.image}
-          resizeMode="cover"
+          style={[styles.image, { aspectRatio: imageAspectRatio || 16 / 9 }]}
+          resizeMode="contain"
         />
       ) : (
         <View style={styles.imagePlaceholder} />
@@ -66,7 +67,6 @@ const styles = StyleSheet.create({
 
   image: {
     width: "100%",
-    height: 160, // 🔴 REQUIRED
     backgroundColor: "#FDE8EF",
   },
 
