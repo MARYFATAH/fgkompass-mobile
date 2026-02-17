@@ -14,6 +14,7 @@ import Animated, {
 
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
+import KeinGeheimtipp from "../../components/KeinGeheimtipp";
 import { client } from "../../sanity/client";
 import { buildImageUrl } from "../../sanity/imageUrl";
 
@@ -31,7 +32,6 @@ const TOPIC_IMAGES = {
   menopause: require("../../assets/images/menopause.jpg"),
   pregnancy: require("../../assets/images/pregnancy.jpg"),
   "breast-cancer": require("../../assets/images/breast-cancer.jpg"),
-  breastcancer: require("../../assets/images/breast-cancer.jpg"),
   diabetes: require("../../assets/images/diabetes.jpg"),
   diabet: require("../../assets/images/diabetes.jpg"),
   diabets: require("../../assets/images/diabetes.jpg"),
@@ -42,7 +42,6 @@ export default function Home() {
   const scrollY = useSharedValue(0);
   const [featured, setFeatured] = useState([]);
   const [topics, setTopics] = useState([]);
-  const [lifePhase, setLifePhase] = useState("motherhood"); // later from profile
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -177,23 +176,8 @@ export default function Home() {
           </Animated.ScrollView>
         </Section>
 
-        <Section title={t("home.sectionLifePhase")}>
-          <View style={styles.phaseCard}>
-            <Text style={styles.phaseTitle}>
-              {lifePhase === "motherhood"
-                ? t("home.phaseFamily")
-                : t("home.phaseDefault")}
-            </Text>
-            <Text style={styles.phaseText}>{t("home.phaseText")}</Text>
-
-            <Link href={`/life-phase/${lifePhase}`} asChild>
-              <Pressable style={styles.phaseButton}>
-                <Text style={styles.phaseButtonText}>
-                  {t("common.explore")}
-                </Text>
-              </Pressable>
-            </Link>
-          </View>
+        <Section title={t("home.sectionSecretTip")}>
+          <KeinGeheimtipp />
         </Section>
 
         <Section title={t("home.sectionMore")}>
@@ -368,3 +352,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+
+

@@ -1,0 +1,199 @@
+import { useRouter } from "expo-router";
+import { useEffect, useMemo, useState } from "react";
+import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import { useTranslation } from "react-i18next";
+import { client } from "../sanity/client";
+import { buildImageUrl } from "../sanity/imageUrl";
+
+const ROTATE_EVERY_MS = 4000;
+
+export default function KeinGeheimtipp() {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const [posts, setPosts] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchSecretTips() {
+      try {
+        const topicQuery = `*[
+          _type == "topic" &&
+          (
+            lower(title) match "*geheimtipp*" ||
+            lower(slug.current) match "*geheimtipp*"
+          )
+        ]{
+          _id,
+          title,
+          "slug": slug.current
+        }`;
+
+        const matchedTopics = await client.fetch(topicQuery);
+        const topicIds = (matchedTopics || []).map((topic) => topic._id);
+
+        if (!topicIds.length) {
+          setPosts([]);
+          return;
+        }
+
+        const postQuery = `*[
+          _type == "post" &&
+          defined(slug.current) &&
+          count(topics[@._ref in $topicIds]) > 0
+        ] | order(publishedAt desc){
+          _id,
+          title,
+          excerpt,
+          slug,
+          image,
+          "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio
+        }`;
+
+        const data = await client.fetch(postQuery, { topicIds });
+        setPosts(data || []);
+        setActiveIndex(0);
+      } catch (err) {
+        setError(err?.message || "Unknown error");
+      }
+    }
+
+    fetchSecretTips();
+  }, []);
+
+  useEffect(() => {
+    if (posts.length <= 1) return undefined;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % posts.length);
+    }, ROTATE_EVERY_MS);
+    return () => clearInterval(timer);
+  }, [posts]);
+
+  const activePost = useMemo(() => {
+    if (!posts.length) return null;
+    return posts[activeIndex];
+  }, [posts, activeIndex]);
+
+  if (error) {
+    return (
+      <View style={styles.card}>
+        <Text style={styles.message}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!activePost) {
+    return (
+      <View style={styles.card}>
+        <Text style={styles.message}>{t("home.noSecretTips")}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.card}>
+      {activePost.image ? (
+        <Image
+          source={{ uri: buildImageUrl(activePost.image, { width: 1200 }) }}
+          style={[
+            styles.image,
+            { aspectRatio: activePost.imageAspectRatio || 16 / 9 },
+          ]}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={[styles.image, styles.imageFallback]} />
+      )}
+
+      <Text style={styles.title}>{activePost.title}</Text>
+      <Text style={styles.excerpt} numberOfLines={3}>
+        {activePost.excerpt || t("home.secretTipFallback")}
+      </Text>
+
+      <View style={styles.controlsRow}>
+        <View style={styles.dots}>
+          {posts.map((post, idx) => (
+            <Pressable
+              key={post._id}
+              onPress={() => setActiveIndex(idx)}
+              hitSlop={8}
+              style={[styles.dot, idx === activeIndex && styles.dotActive]}
+            />
+          ))}
+        </View>
+      </View>
+
+      <Pressable
+        onPress={() =>
+          router.push({
+            pathname: "/[slug]",
+            params: { slug: activePost.slug.current },
+          })
+        }
+      >
+        <Text style={styles.readMore}>{t("common.readMore")}</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#FCE7F3",
+    padding: 14,
+  },
+  image: {
+    width: "100%",
+    borderRadius: 12,
+    backgroundColor: "#FDE8EF",
+    marginBottom: 12,
+  },
+  imageFallback: {
+    height: 180,
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#881337",
+  },
+  excerpt: {
+    fontSize: 14,
+    color: "#475569",
+    marginVertical: 8,
+    lineHeight: 20,
+  },
+  controlsRow: {
+    marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dots: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 99,
+    backgroundColor: "#F9A8D4",
+    opacity: 0.45,
+  },
+  dotActive: {
+    opacity: 1,
+    backgroundColor: "#E11D48",
+  },
+  readMore: {
+    color: "#E11D48",
+    fontWeight: "600",
+  },
+  message: {
+    fontSize: 14,
+    color: "#475569",
+  },
+});

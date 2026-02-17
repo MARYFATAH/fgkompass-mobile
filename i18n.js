@@ -42,11 +42,14 @@ const resources = {
         heroSubtitle: "Guidance for every life phase.",
         sectionExplore: "Explore",
         sectionLifePhase: "For your life phase",
+        sectionSecretTip: "(K-)ein Geheimtipp",
         sectionMore: "More on this topic",
         sectionFeatured: "Featured Articles",
         phaseDefault: "Your current phase",
         phaseFamily: "Family & Relationships",
         phaseText: "Curated articles and tools for your current stage of life.",
+        noSecretTips: "No articles found for topic \"(K-)ein Geheimtipp\" yet.",
+        secretTipFallback: "Discover practical insights tailored for this topic.",
         exploreCards: {
           menopause: "Menopause",
           pregnancy: "Pregnancy",
@@ -181,12 +184,15 @@ const resources = {
         heroSubtitle: "Orientierung für jede Lebensphase.",
         sectionExplore: "Entdecken",
         sectionLifePhase: "Für deine Lebensphase",
+        sectionSecretTip: "(K-)ein Geheimtipp",
         sectionMore: "Mehr zu diesem Thema",
         sectionFeatured: "Empfohlene Artikel",
         phaseDefault: "Deine aktuelle Phase",
         phaseFamily: "Familie & Beziehungen",
         phaseText:
           "Kuratierten Artikel und Tools für deine aktuelle Lebensphase.",
+        noSecretTips: "Noch keine Artikel im Thema \"(K-)ein Geheimtipp\" vorhanden.",
+        secretTipFallback: "Entdecke praktische Impulse zu diesem Thema.",
         exploreCards: {
           menopause: "Menopause",
           pregnancy: "Schwangerschaft",
@@ -299,3 +305,5 @@ i18n.use(initReactI18next).init({
 });
 
 export default i18n;
+
+
