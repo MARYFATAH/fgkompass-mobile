@@ -1,11 +1,12 @@
 import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import { PanResponder, Pressable, StyleSheet, Text, View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import { client } from "../sanity/client";
 import { buildImageUrl } from "../sanity/imageUrl";
 
-const ROTATE_EVERY_MS = 4000;
+const ROTATE_EVERY_MS = 10000;
+const SWIPE_THRESHOLD = 50;
 
 export default function KeinGeheimtipp() {
   const router = useRouter();
@@ -74,6 +75,28 @@ export default function KeinGeheimtipp() {
     return posts[activeIndex];
   }, [posts, activeIndex]);
 
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          Math.abs(gestureState.dx) > 14 &&
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
+        onPanResponderRelease: (_, gestureState) => {
+          if (posts.length <= 1) return;
+
+          if (gestureState.dx <= -SWIPE_THRESHOLD) {
+            setActiveIndex((prev) => (prev + 1) % posts.length);
+            return;
+          }
+
+          if (gestureState.dx >= SWIPE_THRESHOLD) {
+            setActiveIndex((prev) => (prev - 1 + posts.length) % posts.length);
+          }
+        },
+      }),
+    [posts.length],
+  );
+
   if (error) {
     return (
       <View style={styles.card}>
@@ -91,7 +114,7 @@ export default function KeinGeheimtipp() {
   }
 
   return (
-    <View style={styles.card}>
+    <View style={styles.card} {...panResponder.panHandlers}>
       {activePost.image ? (
         <Image
           source={{ uri: buildImageUrl(activePost.image, { width: 1200 }) }}
@@ -113,10 +136,8 @@ export default function KeinGeheimtipp() {
       <View style={styles.controlsRow}>
         <View style={styles.dots}>
           {posts.map((post, idx) => (
-            <Pressable
+            <View
               key={post._id}
-              onPress={() => setActiveIndex(idx)}
-              hitSlop={8}
               style={[styles.dot, idx === activeIndex && styles.dotActive]}
             />
           ))}
@@ -178,8 +199,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   dot: {
-    width: 7,
-    height: 7,
+    width: 9,
+    height: 9,
     borderRadius: 99,
     backgroundColor: "#F9A8D4",
     opacity: 0.45,
