@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import Animated, {
   Extrapolate,
   FadeIn,
@@ -11,6 +11,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
@@ -43,6 +44,9 @@ export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [topics, setTopics] = useState([]);
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const sectionPadding = Math.max(16, Math.min(24, Math.round(width * 0.05)));
 
   useEffect(() => {
     const query = `*[
@@ -144,7 +148,9 @@ export default function Home() {
           style={styles.heroOverlay}
         />
         <Animated.View style={[styles.heroText, heroTextStyle]}>
-          <Text style={styles.heroTitle}>{t("home.heroTitle")}</Text>
+          <Text style={[styles.heroTitle, { fontSize: width < 360 ? 22 : 26 }]}>
+            {t("home.heroTitle")}
+          </Text>
           <Text style={styles.heroSubtitle}>{t("home.heroSubtitle")}</Text>
         </Animated.View>
       </Animated.View>
@@ -153,14 +159,17 @@ export default function Home() {
       <Animated.ScrollView
         onScroll={scrollHandler}
         scrollEventThrottle={16}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[
+          styles.content,
+          { paddingBottom: 100 + insets.bottom + 12 },
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        <Section title={t("home.sectionExplore")}>
+        <Section title={t("home.sectionExplore")} sectionPadding={sectionPadding}>
           <Animated.ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horizontal}
+            contentContainerStyle={[styles.horizontal, { paddingRight: sectionPadding }]}
           >
             {topics.map((topic) => (
               <MinimalCard
@@ -176,15 +185,15 @@ export default function Home() {
           </Animated.ScrollView>
         </Section>
 
-        <Section title={t("home.sectionSecretTip")}>
+        <Section title={t("home.sectionSecretTip")} sectionPadding={sectionPadding}>
           <KeinGeheimtipp />
         </Section>
 
-        <Section title={t("home.sectionMore")}>
+        <Section title={t("home.sectionMore")} sectionPadding={sectionPadding}>
           <MoreOnTopic />
         </Section>
 
-        <Section title={t("home.sectionFeatured")}>
+        <Section title={t("home.sectionFeatured")} sectionPadding={sectionPadding}>
           {featured.map((post) => (
             <Animated.View key={post._id} entering={FadeIn.duration(500)}>
               <View style={styles.article}>
@@ -227,8 +236,8 @@ export default function Home() {
   );
 }
 
-const Section = ({ title, children }) => (
-  <View style={styles.section}>
+const Section = ({ title, children, sectionPadding }) => (
+  <View style={[styles.section, { paddingHorizontal: sectionPadding }]}>
     <Text style={styles.sectionTitle}>{title}</Text>
     {children}
   </View>
@@ -259,6 +268,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     left: 20,
+    right: 20,
   },
   heroTitle: {
     fontSize: 26,
@@ -273,11 +283,9 @@ const styles = StyleSheet.create({
 
   content: {
     paddingTop: HERO_HEIGHT + 16,
-    paddingBottom: 110,
   },
 
   section: {
-    paddingHorizontal: 20,
     marginBottom: 36,
   },
   sectionTitle: {
@@ -289,7 +297,6 @@ const styles = StyleSheet.create({
 
   horizontal: {
     gap: 12,
-    paddingRight: 20,
   },
 
   phaseCard: {

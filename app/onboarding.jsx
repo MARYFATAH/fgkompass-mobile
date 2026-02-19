@@ -12,13 +12,17 @@ import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import LanguageToggle from "../components/LanguageToggle";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Onboarding() {
   const { t } = useTranslation();
   const router = useRouter();
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const listRef = useRef(null);
   const [index, setIndex] = useState(0);
+  const compactControls = width < 360;
+  const cardMaxWidth = Math.min(720, width - 40);
 
   const slides = [
     {
@@ -57,15 +61,17 @@ export default function Onboarding() {
       colors={["#FFF7FB", "#FDE7F0", "#F9E8FF"]}
       style={styles.root}
     >
-      <View style={styles.toggleWrap}>
+      <View style={[styles.toggleWrap, { top: insets.top + 8 }]}>
         <LanguageToggle />
       </View>
 
       <Animated.View style={styles.blobLeft} />
       <Animated.View style={styles.blobRight} />
 
-      <View style={styles.header}>
-        <Text style={styles.title}>{t("onboarding.title")}</Text>
+      <View style={[styles.header, { paddingTop: insets.top + 50 }]}>
+        <Text style={[styles.title, { fontSize: width < 360 ? 20 : 24 }]}>
+          {t("onboarding.title")}
+        </Text>
       </View>
 
       <FlatList
@@ -83,7 +89,16 @@ export default function Onboarding() {
         }}
         renderItem={({ item }) => (
           <View style={[styles.slide, { width }]}>
-            <Animated.View style={styles.card} entering={FadeInUp.duration(500)}>
+            <Animated.View
+              style={[
+                styles.card,
+                {
+                  width: cardMaxWidth,
+                  padding: width < 360 ? 18 : 22,
+                },
+              ]}
+              entering={FadeInUp.duration(500)}
+            >
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.cardBody}>{item.body}</Text>
             </Animated.View>
@@ -91,10 +106,16 @@ export default function Onboarding() {
         )}
       />
 
-      <View style={styles.controls}>
+      <View
+        style={[
+          styles.controls,
+          compactControls && styles.controlsCompact,
+          { paddingBottom: Math.max(18, insets.bottom + 10) },
+        ]}
+      >
         <Pressable
           onPress={() => router.replace("/(tabs)/home")}
-          style={styles.skip}
+          style={[styles.skip, compactControls && styles.skipCompact]}
         >
           <Text style={styles.skipText}>{t("onboarding.skip")}</Text>
         </Pressable>
@@ -108,7 +129,7 @@ export default function Onboarding() {
           ))}
         </View>
 
-        <Pressable onPress={onNext} style={styles.button}>
+        <Pressable onPress={onNext} style={[styles.button, compactControls && styles.buttonCompact]}>
           <Text style={styles.buttonText}>
             {index === slides.length - 1
               ? t("onboarding.cta")
@@ -126,7 +147,6 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
-    top: 44,
     right: 16,
     zIndex: 10,
   },
@@ -149,7 +169,6 @@ const styles = StyleSheet.create({
     right: -30,
   },
   header: {
-    paddingTop: 86,
     paddingHorizontal: 20,
     paddingBottom: 12,
     alignItems: "flex-start",
@@ -168,7 +187,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 22,
-    padding: 22,
     borderWidth: 1,
     borderColor: "#E5E7EB",
     alignItems: "flex-start",
@@ -189,11 +207,14 @@ const styles = StyleSheet.create({
   controls: {
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 26,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     gap: 12,
+  },
+  controlsCompact: {
+    flexDirection: "column",
+    alignItems: "stretch",
   },
   dots: {
     flexDirection: "row",
@@ -218,6 +239,9 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
   },
+  buttonCompact: {
+    width: "100%",
+  },
   buttonText: {
     color: "#fff",
     fontSize: 14,
@@ -226,6 +250,9 @@ const styles = StyleSheet.create({
   skip: {
     paddingVertical: 10,
     paddingHorizontal: 8,
+  },
+  skipCompact: {
+    alignSelf: "flex-start",
   },
   skipText: {
     color: "#9F1239",

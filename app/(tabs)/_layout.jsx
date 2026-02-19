@@ -1,11 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Image, View } from "react-native";
+import { Image, View, useWindowDimensions } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LanguageToggle from "../../components/LanguageToggle";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const logoSize = width < 360 ? 44 : 52;
   const label = (key, fallback) => {
     const value = t(key);
     return value && value !== key ? value : fallback;
@@ -24,13 +28,12 @@ export default function TabsLayout() {
             <Image
               source={require("../../assets/images/fgkompass-logo.png")}
               style={{
-                width: 60,
-                height: 60,
+                width: logoSize,
+                height: logoSize,
                 resizeMode: "contain",
                 marginRight: 12,
                 backgroundColor: "#fff",
-                marginBottom: 12,
-                borderRadius: 80,
+                borderRadius: logoSize / 2,
               }}
             />
           </View>
@@ -51,9 +54,9 @@ export default function TabsLayout() {
         headerTintColor: "#881337",
 
         tabBarStyle: {
-          height: 58,
+          height: 58 + insets.bottom,
           paddingTop: 6,
-          paddingBottom: 6,
+          paddingBottom: Math.max(6, insets.bottom),
           backgroundColor: "#FFFFFF",
           borderTopWidth: 1,
           borderTopColor: "#F1F5F9",

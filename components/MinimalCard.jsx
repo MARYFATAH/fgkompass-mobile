@@ -1,5 +1,12 @@
 import { useRouter } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -14,9 +21,11 @@ export default function MinimalCard({
 }) {
   const router = useRouter();
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const cardWidth = Math.max(150, Math.min(220, Math.round(width * 0.52)));
 
   const Card = (
-    <View style={styles.card}>
+    <View style={[styles.card, { width: cardWidth }]}>
       {imageSource ? (
         <Image source={imageSource} style={styles.image} />
       ) : null}
@@ -49,16 +58,18 @@ export default function MinimalCard({
   return (
     <Pressable
       onPress={() => router.push(link)}
-      style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.pressable,
+        { width: cardWidth },
+        pressed && styles.pressed,
+      ]}
     >
       {Card}
     </Pressable>
   );
 }
 const styles = StyleSheet.create({
-  pressable: {
-    width: 190,
-  },
+  pressable: {},
   pressed: {
     transform: [{ scale: 0.97 }],
   },
@@ -67,7 +78,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 16,
     minHeight: 120,
-    width: 190,
     borderWidth: 1,
     borderColor: "#FCE7F3",
     justifyContent: "space-between",

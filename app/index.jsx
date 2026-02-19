@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import Animated, {
   FadeIn,
   FadeInDown,
@@ -12,6 +12,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { client } from "../sanity/client";
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle";
@@ -19,8 +20,14 @@ import LanguageToggle from "../components/LanguageToggle";
 export default function Landing() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const floatY = useSharedValue(0);
   const pulse = useSharedValue(0);
+  const logoSize = Math.max(108, Math.min(160, Math.round(width * 0.36)));
+  const blobSize = Math.max(180, Math.min(320, Math.round(width * 0.66)));
+  const titleSize = width < 360 ? 26 : width > 430 ? 36 : 32;
+  const subtitleWidth = Math.min(360, width - 40);
 
   useEffect(() => {
     async function loadPosts() {
@@ -60,28 +67,37 @@ export default function Landing() {
   return (
     <LinearGradient
       colors={["#FFF7FB", "#FDE7F0", "#F9E8FF"]}
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          paddingHorizontal: Math.max(16, Math.min(28, Math.round(width * 0.06))),
+        },
+      ]}
     >
-      <View style={styles.toggleWrap}>
+      <View style={[styles.toggleWrap, { top: insets.top + 8 }]}>
         <LanguageToggle />
       </View>
       {/* Ambient blobs */}
-      <Animated.View style={[styles.blob, styles.blobLeft, glowStyle]} />
-      <Animated.View style={[styles.blob, styles.blobRight, glowStyle]} />
+      <Animated.View
+        style={[styles.blob, styles.blobLeft, { width: blobSize, height: blobSize }, glowStyle]}
+      />
+      <Animated.View
+        style={[styles.blob, styles.blobRight, { width: blobSize, height: blobSize }, glowStyle]}
+      />
 
       {/* 🌸 LOGO */}
-      <Animated.View style={[styles.logoWrap, floatingStyle]}>
+      <Animated.View style={[styles.logoWrap, { width: logoSize, height: logoSize }, floatingStyle]}>
         <Animated.Image
           entering={FadeIn.duration(900)}
           source={require("../assets/images/fgkompass-logo-old.png")}
-          style={styles.logo}
+          style={[styles.logo, { width: logoSize, height: logoSize, borderRadius: logoSize / 2 }]}
         />
       </Animated.View>
 
       {/* 🌿 TITLE */}
       <Animated.Text
         entering={SlideInUp.delay(150).duration(700)}
-        style={styles.title}
+        style={[styles.title, { fontSize: titleSize }]}
       >
         {t("landing.title")}
       </Animated.Text>
@@ -89,13 +105,16 @@ export default function Landing() {
       {/* ✨ SUBTITLE */}
       <Animated.Text
         entering={SlideInUp.delay(300).duration(700)}
-        style={styles.subtitle}
+        style={[styles.subtitle, { maxWidth: subtitleWidth }]}
       >
         {t("landing.subtitle")}
       </Animated.Text>
 
       {/* 🌱 CTA */}
-      <Animated.View entering={FadeInDown.delay(450).duration(700)} style={styles.ctaWrap}>
+      <Animated.View
+        entering={FadeInDown.delay(450).duration(700)}
+        style={[styles.ctaWrap, { maxWidth: Math.min(360, width - 32) }]}
+      >
         <Pressable onPress={() => router.push("/home")} style={styles.button}>
           <Text style={styles.buttonText}>{t("landing.cta")}</Text>
         </Pressable>
@@ -122,14 +141,11 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
-    top: 44,
     right: 16,
     zIndex: 10,
   },
   blob: {
     position: "absolute",
-    width: 260,
-    height: 260,
     borderRadius: 200,
     backgroundColor: "rgba(255,255,255,0.55)",
   },
@@ -142,17 +158,12 @@ const styles = StyleSheet.create({
     right: -30,
   },
   logoWrap: {
-    width: 150,
-    height: 150,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 24,
   },
   logo: {
-    width: 150,
-    height: 150,
     resizeMode: "contain",
-    borderRadius: 80,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 16,
@@ -172,7 +183,6 @@ const styles = StyleSheet.create({
     color: "#475569",
     marginBottom: 36,
     lineHeight: 22,
-    maxWidth: 300,
   },
   button: {
     backgroundColor: "#9F1239",
@@ -193,7 +203,6 @@ const styles = StyleSheet.create({
   },
   ctaWrap: {
     width: "100%",
-    maxWidth: 320,
     gap: 10,
   },
   secondaryButton: {
