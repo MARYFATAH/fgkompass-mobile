@@ -125,7 +125,7 @@ const resources = {
       about: {
         title: "Women’s Health Knowledge Compass",
         subtitle:
-          "Clear, trustworthy health knowledge tailored to every life phase — designed to empower women to make informed decisions.",
+          "Founded in 2025 by a passionate team of health enthusiasts, FG Kompass began as a small initiative to make wellness education accessible to everyone. Today, FG Kompass is a trusted digital companion for thousands seeking balance, strength, and knowledge.",
         missionTitle: "Our Mission",
         missionText:
           "We provide reliable, science-based health information that reflects the real physiology, experiences, and needs of women across all life phases.",
@@ -274,7 +274,7 @@ const resources = {
       about: {
         title: "Kompass für Frauengesundheit",
         subtitle:
-          "Klare, verlässliche Gesundheitsinformationen für jede Lebensphase — damit Frauen informierte Entscheidungen treffen können.",
+          "Gegründet im Jahr 2025 von einem leidenschaftlichen Team von Gesundheitsbegeisterten, begann FG Kompass als kleine Initiative, um Wellness-Bildung für alle zugänglich zu machen. Heute ist FG Kompass ein vertrauenswürdiger digitaler Begleiter für Tausende, die nach Balance, Stärke und Wissen suchen.",
         missionTitle: "Unsere Mission",
         missionText:
           "Wir bieten verlässliche, wissenschaftlich fundierte Informationen, die die reale Physiologie, Erfahrungen und Bedürfnisse von Frauen in allen Lebensphasen berücksichtigen.",

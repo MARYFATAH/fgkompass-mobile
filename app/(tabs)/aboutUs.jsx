@@ -1,56 +1,70 @@
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  useWindowDimensions,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 
 export default function About() {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const contentMaxWidth = Math.min(920, width - 24);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Hero */}
-      <View style={styles.hero}>
-        <Text style={styles.title}>{t("about.title")}</Text>
-        <Text style={styles.subtitle}>{t("about.subtitle")}</Text>
-      </View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={[styles.content, styles.contentCentered]}
+    >
+      <View style={[styles.inner, { maxWidth: contentMaxWidth }]}>
+        {/* Hero */}
+        <View style={styles.hero}>
+          <Text style={styles.title}>{t("about.title")}</Text>
+          <Text style={styles.subtitle}>{t("about.subtitle")}</Text>
+        </View>
 
-      {/* Card */}
-      <View style={styles.card}>
-        {/* Text section */}
-        <View style={styles.textBlock}>
-          <Section
-            title={t("about.missionTitle")}
-            text={t("about.missionText")}
-          />
+        {/* Card */}
+        <View style={styles.card}>
+          {/* Text section */}
+          <View style={styles.textBlock}>
+            <Section
+              title={t("about.missionTitle")}
+              text={t("about.missionText")}
+            />
 
-          <Section
-            title={t("about.whyTitle")}
-            text={t("about.whyText")}
-          />
+            <Section
+              title={t("about.whyTitle")}
+              text={t("about.whyText")}
+            />
 
-          <Section
-            title={t("about.valuesTitle")}
-            bullets={[
-              t("about.values1"),
-              t("about.values2"),
-              t("about.values3"),
-            ]}
+            <Section
+              title={t("about.valuesTitle")}
+              bullets={[
+                t("about.values1"),
+                t("about.values2"),
+                t("about.values3"),
+              ]}
+            />
+          </View>
+
+          {/* Image */}
+          <Image
+            source={{
+              uri: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1200&q=80",
+            }}
+            style={styles.image}
           />
         </View>
 
-        {/* Image */}
-        <Image
-          source={{
-            uri: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1200&q=80",
-          }}
-          style={styles.image}
-        />
-      </View>
+        <View style={styles.divider} />
 
-      <View style={styles.divider} />
-
-      {/* CTA */}
-      <View style={styles.cta}>
-        <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
-        <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
+        {/* CTA */}
+        <View style={styles.cta}>
+          <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
+          <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -84,6 +98,12 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 40,
   },
+  contentCentered: {
+    alignItems: "center",
+  },
+  inner: {
+    width: "100%",
+  },
 
   hero: {
     marginTop: 24,
@@ -99,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#6B7280",
     lineHeight: 22,
-    maxWidth: 340,
+    textAlign: "justify",
   },
 
   card: {
@@ -127,11 +147,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#475569",
     lineHeight: 22,
+    textAlign: "justify",
   },
   bullet: {
     fontSize: 14,
     color: "#475569",
     lineHeight: 22,
+    textAlign: "left",
   },
 
   image: {
