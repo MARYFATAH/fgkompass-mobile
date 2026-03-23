@@ -4,6 +4,7 @@ import { PanResponder, Pressable, StyleSheet, Text, View, Image } from "react-na
 import { useTranslation } from "react-i18next";
 import { client } from "../sanity/client";
 import { buildImageUrl } from "../sanity/imageUrl";
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 const ROTATE_EVERY_MS = 10000;
 const SWIPE_THRESHOLD = 50;
@@ -160,32 +161,32 @@ export default function KeinGeheimtipp() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
+    ...BRAND_CARD,
+    borderRadius: 18,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
-    padding: 14,
+    padding: 16,
   },
   image: {
     width: "100%",
-    borderRadius: 12,
-    backgroundColor: "#FDE8EF",
-    marginBottom: 12,
+    borderRadius: 14,
+    backgroundColor: BRAND_COLORS.surfaceStrong,
+    marginBottom: 14,
   },
   imageFallback: {
     height: 180,
   },
   title: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
+    lineHeight: 24,
   },
   excerpt: {
-    fontSize: 14,
-    color: "#475569",
-    marginVertical: 8,
-    lineHeight: 20,
+    fontSize: 13,
+    color: BRAND_COLORS.textMuted,
+    marginTop: 8,
+    marginBottom: 12,
+    lineHeight: 19,
   },
   controlsRow: {
     marginBottom: 8,
@@ -202,19 +203,21 @@ const styles = StyleSheet.create({
     width: 9,
     height: 9,
     borderRadius: 99,
-    backgroundColor: "#F9A8D4",
+    backgroundColor: BRAND_COLORS.borderStrong,
     opacity: 0.45,
   },
   dotActive: {
     opacity: 1,
-    backgroundColor: "#E11D48",
+    backgroundColor: BRAND_COLORS.primaryStrong,
   },
   readMore: {
-    color: "#E11D48",
-    fontWeight: "600",
+    color: BRAND_COLORS.primaryStrong,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.3,
   },
   message: {
     fontSize: 14,
-    color: "#475569",
+    color: BRAND_COLORS.textMuted,
   },
 });

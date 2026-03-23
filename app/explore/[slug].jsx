@@ -3,7 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
+import BrandScreen from "../../components/BrandScreen";
 import LifePhaseArticleCard from "../../components/LifePhaseArticleCard";
+import { BRAND_COLORS } from "../../constants/theme";
 import { client } from "../../sanity/client";
 
 export default function ExploreGroup() {
@@ -82,39 +84,22 @@ export default function ExploreGroup() {
       <Stack.Screen
         options={{ title: group?.title || t("home.sectionExplore") }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backText}>&lt;- Back</Text>
-        </Pressable>
+      <BrandScreen>
+        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <Text style={styles.backText}>&lt;- Back</Text>
+          </Pressable>
 
-        <View style={styles.header}>
-        <Text style={styles.title}>
-          {group?.slug ? t(`topics.${group.slug}`, group.title) : group?.title}
-        </Text>
-          <Text style={styles.subtitle}>{t("home.sectionMore")}</Text>
-        </View>
-
-        {subtopics.length === 0 ? (
-          <View>
-            {posts.map((p) => (
-                <LifePhaseArticleCard
-                  key={p._id}
-                  title={p.title}
-                  excerpt={p.excerpt}
-                  image={p.image}
-                  imageAspectRatio={p.imageAspectRatio}
-                  slug={p.slug.current}
-                />
-            ))}
+          <View style={styles.header}>
+            <Text style={styles.title}>
+              {group?.slug ? t(`topics.${group.slug}`, group.title) : group?.title}
+            </Text>
+            <Text style={styles.subtitle}>{t("home.sectionMore")}</Text>
           </View>
-        ) : (
-          <>
-            {allPosts.length > 0 ? (
-              <View style={styles.subgroup}>
-                <Text style={styles.subgroupTitle}>
-                  {t("home.sectionMore")}
-                </Text>
-                {allPosts.map((p) => (
+
+          {subtopics.length === 0 ? (
+            <View>
+              {posts.map((p) => (
                 <LifePhaseArticleCard
                   key={p._id}
                   title={p.title}
@@ -123,30 +108,49 @@ export default function ExploreGroup() {
                   imageAspectRatio={p.imageAspectRatio}
                   slug={p.slug.current}
                 />
-                ))}
-              </View>
-            ) : null}
+              ))}
+            </View>
+          ) : (
+            <>
+              {allPosts.length > 0 ? (
+                <View style={styles.subgroup}>
+                  <Text style={styles.subgroupTitle}>
+                    {t("home.sectionMore")}
+                  </Text>
+                  {allPosts.map((p) => (
+                    <LifePhaseArticleCard
+                      key={p._id}
+                      title={p.title}
+                      excerpt={p.excerpt}
+                      image={p.image}
+                      imageAspectRatio={p.imageAspectRatio}
+                      slug={p.slug.current}
+                    />
+                  ))}
+                </View>
+              ) : null}
 
-            {subtopics.map((sub) => (
-              <View key={sub._id} style={styles.subgroup}>
-                <Text style={styles.subgroupTitle}>
-                  {sub.slug ? t(`topics.${sub.slug}`, sub.title) : sub.title}
-                </Text>
-                {(postsBySubtopic.get(sub._id) || []).map((p) => (
-                  <LifePhaseArticleCard
-                    key={p._id}
-                    title={p.title}
-                    excerpt={p.excerpt}
-                    image={p.image}
-                    imageAspectRatio={p.imageAspectRatio}
-                    slug={p.slug.current}
-                  />
-                ))}
-              </View>
-            ))}
-          </>
-        )}
-      </ScrollView>
+              {subtopics.map((sub) => (
+                <View key={sub._id} style={styles.subgroup}>
+                  <Text style={styles.subgroupTitle}>
+                    {sub.slug ? t(`topics.${sub.slug}`, sub.title) : sub.title}
+                  </Text>
+                  {(postsBySubtopic.get(sub._id) || []).map((p) => (
+                    <LifePhaseArticleCard
+                      key={p._id}
+                      title={p.title}
+                      excerpt={p.excerpt}
+                      image={p.image}
+                      imageAspectRatio={p.imageAspectRatio}
+                      slug={p.slug.current}
+                    />
+                  ))}
+                </View>
+              ))}
+            </>
+          )}
+        </ScrollView>
+      </BrandScreen>
     </>
   );
 }
@@ -154,7 +158,7 @@ export default function ExploreGroup() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
   },
   content: {
     paddingHorizontal: 20,
@@ -167,14 +171,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#FCE7F3",
-    backgroundColor: "#FFFFFF",
+    borderColor: BRAND_COLORS.border,
+    backgroundColor: "rgba(255,255,255,0.82)",
     marginBottom: 12,
   },
   backText: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   header: {
     marginBottom: 18,
@@ -182,11 +186,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   subtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     marginTop: 6,
   },
   subgroup: {
@@ -195,7 +199,7 @@ const styles = StyleSheet.create({
   subgroupTitle: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
     marginBottom: 12,
   },
 });

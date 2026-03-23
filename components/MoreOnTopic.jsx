@@ -11,6 +11,7 @@ import {
 import { client } from "../sanity/client";
 import { buildImageUrl } from "../sanity/imageUrl";
 import { useTranslation } from "react-i18next";
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 export default function MoreOnTopic() {
   const [posts, setPosts] = useState([]);
@@ -26,6 +27,7 @@ export default function MoreOnTopic() {
         `*[_type=="post" && defined(slug.current)][0...4]{
           _id,
           title,
+          excerpt,
           slug,
           image,
           "imageAspectRatio": image.asset->metadata.dimensions.aspectRatio
@@ -53,7 +55,7 @@ export default function MoreOnTopic() {
             }
             style={({ pressed }) => [
               styles.card,
-              pressed && { backgroundColor: "#FFF1F2" },
+              pressed && styles.cardPressed,
               isTablet && { width: "48%" },
             ]}
           >
@@ -76,7 +78,10 @@ export default function MoreOnTopic() {
               <Text style={styles.title} numberOfLines={2}>
                 {post.title}
               </Text>
-              <Text style={styles.subtitle}>{t("common.readMore")}</Text>
+              <Text style={styles.subtitle} numberOfLines={2}>
+                {post.excerpt || t("common.readMore")}
+              </Text>
+              <Text style={styles.linkText}>{t("common.readMore")}</Text>
             </View>
           </Pressable>
         ))}
@@ -86,40 +91,48 @@ export default function MoreOnTopic() {
 }
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "rgba(255,255,255,0.9)",
-    borderRadius: 20,
-    padding: 16,
-    marginTop: 24,
+    marginTop: 12,
   },
   grid: {
-    gap: 16,
+    gap: 12,
     justifyContent: "space-between",
   },
   card: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    padding: 12,
+    alignItems: "flex-start",
+    gap: 12,
+    padding: 14,
     borderRadius: 14,
-    backgroundColor: "#fff",
+    ...BRAND_CARD,
+  },
+  cardPressed: {
+    backgroundColor: BRAND_COLORS.surfaceSoft,
   },
   image: {
-    width: 80,
+    width: 72,
     borderRadius: 12,
-    backgroundColor: "#f1f5f9",
+    backgroundColor: BRAND_COLORS.surfaceStrong,
   },
   textWrap: {
     flex: 1,
   },
   title: {
     fontSize: 15,
-    fontWeight: "600",
-    color: "#1e293b",
-    lineHeight: 20,
+    fontWeight: "700",
+    color: BRAND_COLORS.title,
+    lineHeight: 21,
   },
   subtitle: {
     fontSize: 13,
-    color: "#64748b",
-    marginTop: 4,
+    color: BRAND_COLORS.textMuted,
+    marginTop: 5,
+    lineHeight: 18,
+  },
+  linkText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: BRAND_COLORS.primary,
+    marginTop: 10,
+    letterSpacing: 0.3,
   },
 });

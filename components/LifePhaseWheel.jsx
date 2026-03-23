@@ -1,4 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 export default function LifePhaseLine({ phases = [], activePhase, onSelect }) {
   return (
@@ -27,44 +28,42 @@ export default function LifePhaseLine({ phases = [], activePhase, onSelect }) {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    gap: 8,
     marginHorizontal: 20,
     marginBottom: 10,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: BRAND_COLORS.surfaceMuted,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: BRAND_COLORS.border,
   },
 
   item: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 20,
-    backgroundColor: "#FFF7FB",
+    ...BRAND_CARD,
+    paddingHorizontal: 15,
+    paddingVertical: 9,
+    borderRadius: 16,
+    backgroundColor: BRAND_COLORS.surface,
     borderWidth: 1,
-    borderColor: "#F3E8FF",
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    borderColor: BRAND_COLORS.border,
   },
 
   activeItem: {
-    backgroundColor: "#FDF2F8",
-    borderColor: "#BE185D",
+    backgroundColor: BRAND_COLORS.primarySoft,
+    borderColor: BRAND_COLORS.primaryStrong,
     transform: [{ scale: 1.02 }],
   },
 
   label: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "600",
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     letterSpacing: 0.2,
   },
 
   activeLabel: {
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
     fontWeight: "700",
   },
 });

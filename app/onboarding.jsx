@@ -58,7 +58,7 @@ export default function Onboarding() {
 
   return (
     <LinearGradient
-      colors={["#FFF7FB", "#FDE7F0", "#F9E8FF"]}
+      colors={["#FFFFFF", "#FFFFFF"]}
       style={styles.root}
     >
       <View style={[styles.toggleWrap, { top: insets.top + 8 }]}>

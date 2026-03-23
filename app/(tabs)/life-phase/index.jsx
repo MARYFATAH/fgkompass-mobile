@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import BrandScreen from "../../../components/BrandScreen";
 import LifePhaseArticleCard from "../../../components/LifePhaseArticleCard";
 import LifePhaseWheel from "../../../components/LifePhaseWheel";
+import { BRAND_COLORS } from "../../../constants/theme";
 import { client } from "../../../sanity/client";
 import { useTranslation } from "react-i18next";
 
@@ -117,53 +119,53 @@ export default function LifePhaseScreen() {
   }, [activePhase?.slug]);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      stickyHeaderIndices={[1]}
-    >
-      <View style={styles.header}>
-        <Text style={styles.title}>{t("lifePhase.title")}</Text>
-        <Text style={styles.subtitle}>{t("lifePhase.subtitle")}</Text>
-      </View>
+    <BrandScreen>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        stickyHeaderIndices={[1]}
+      >
+        <View style={styles.header}>
+          <Text style={styles.title}>{t("lifePhase.title")}</Text>
+          <Text style={styles.subtitle}>{t("lifePhase.subtitle")}</Text>
+        </View>
 
-      <View style={styles.stickyWrap}>
-        <View style={styles.wheelWrap}>
+        <View style={styles.stickyWrap}>
           <LifePhaseWheel
             phases={displayPhases}
             activePhase={activePhase}
             onSelect={(phase) => setActivePhaseId(phase.id)}
           />
         </View>
-      </View>
 
-      <View style={styles.sectionHeader}>
-        <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
-        <View style={styles.divider} />
-      </View>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.phaseTitle}>{activePhase?.label}</Text>
+          <View style={styles.divider} />
+        </View>
 
-      {posts.length === 0 && (
-        <Text style={styles.empty}>{t("lifePhase.empty")}</Text>
-      )}
+        {posts.length === 0 && (
+          <Text style={styles.empty}>{t("lifePhase.empty")}</Text>
+        )}
 
-      {posts.map((p) => (
-        <LifePhaseArticleCard
-          key={p._id}
-          title={p.title}
-          excerpt={p.excerpt}
-          image={p.image}
-          imageAspectRatio={p.imageAspectRatio}
-          slug={p.slug}
-        />
-      ))}
-    </ScrollView>
+        {posts.map((p) => (
+          <LifePhaseArticleCard
+            key={p._id}
+            title={p.title}
+            excerpt={p.excerpt}
+            image={p.image}
+            imageAspectRatio={p.imageAspectRatio}
+            slug={p.slug}
+          />
+        ))}
+      </ScrollView>
+    </BrandScreen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
   },
 
   content: {
@@ -179,27 +181,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     marginTop: 6,
   },
 
-  wheelWrap: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
-    paddingVertical: 6,
-    marginBottom: 22,
-  },
   stickyWrap: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
     paddingTop: 4,
     paddingBottom: 10,
+    marginBottom: 12,
   },
 
   sectionHeader: {
@@ -209,17 +204,17 @@ const styles = StyleSheet.create({
   phaseTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
   },
 
   divider: {
     height: 1,
-    backgroundColor: "#FCE7F3",
+    backgroundColor: BRAND_COLORS.border,
     marginTop: 12,
   },
 
   empty: {
-    color: "#9CA3AF",
+    color: BRAND_COLORS.textSoft,
     fontSize: 14,
     marginTop: 8,
   },

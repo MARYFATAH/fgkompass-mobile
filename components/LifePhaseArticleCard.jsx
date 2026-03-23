@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { buildImageUrl } from "../sanity/imageUrl";
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 export default function LifePhaseArticleCard({
   title,
@@ -56,46 +57,45 @@ export default function LifePhaseArticleCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 18,
-    marginBottom: 18,
+    ...BRAND_CARD,
+    borderRadius: 16,
+    marginBottom: 16,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#FBCFE8",
-    elevation: 2,
   },
 
   image: {
     width: "100%",
-    backgroundColor: "#FDE8EF",
+    backgroundColor: BRAND_COLORS.surfaceStrong,
   },
 
   imagePlaceholder: {
     height: 160,
-    backgroundColor: "#FCE7F3",
+    backgroundColor: BRAND_COLORS.primarySoft,
   },
 
   content: {
-    padding: 16,
+    padding: 15,
   },
 
   title: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#1F2937",
-    marginBottom: 6,
+    fontSize: 16,
+    fontWeight: "700",
+    color: BRAND_COLORS.title,
+    marginBottom: 5,
+    lineHeight: 22,
   },
 
   excerpt: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#4B5563",
+    fontSize: 13,
+    lineHeight: 19,
+    color: BRAND_COLORS.textMuted,
     marginBottom: 10,
   },
 
   readMore: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#9F1239",
+    fontSize: 12,
+    fontWeight: "700",
+    color: BRAND_COLORS.primary,
+    letterSpacing: 0.3,
   },
 });

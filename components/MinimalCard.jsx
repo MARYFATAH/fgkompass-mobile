@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
+
 /**
- * 🌿 MinimalCard — elegant uniform-height category card (native)
+ * MinimalCard - elegant uniform-height category card (native)
  */
 export default function MinimalCard({
   title,
@@ -24,36 +26,36 @@ export default function MinimalCard({
   const { width } = useWindowDimensions();
   const cardWidth = Math.max(150, Math.min(220, Math.round(width * 0.52)));
 
-  const Card = (
+  const cardContent = (
     <View style={[styles.card, { width: cardWidth }]}>
-      {imageSource ? (
-        <Image source={imageSource} style={styles.image} />
-      ) : null}
-      {/* HEADER */}
-      <View style={styles.header}>
-        {Icon && (
-          <View style={styles.iconWrap}>
-            <Icon size={22} color="#374151" />
-          </View>
-        )}
-        <Text style={styles.title} numberOfLines={2}>
-          {title}
-        </Text>
+      {imageSource ? <Image source={imageSource} style={styles.image} /> : null}
+
+      <View style={styles.body}>
+        <View style={styles.header}>
+          {Icon && (
+            <View style={styles.iconWrap}>
+              <Icon size={22} color={BRAND_COLORS.primary} />
+            </View>
+          )}
+          <Text style={styles.title} numberOfLines={2}>
+            {title}
+          </Text>
+        </View>
+
+        <View style={styles.descriptionWrap}>
+          {description ? (
+            <Text style={styles.description} numberOfLines={3}>
+              {description}
+            </Text>
+          ) : null}
+        </View>
+
+        <Text style={styles.explore}>{`${t("common.explore")} ->`}</Text>
       </View>
-
-      {/* DESCRIPTION */}
-      {description ? (
-        <Text style={styles.description} numberOfLines={3}>
-          {description}
-        </Text>
-      ) : null}
-
-      {/* FOOTER */}
-      <Text style={styles.explore}>{t("common.explore")} →</Text>
     </View>
   );
 
-  if (!link) return Card;
+  if (!link) return cardContent;
 
   return (
     <Pressable
@@ -64,60 +66,67 @@ export default function MinimalCard({
         pressed && styles.pressed,
       ]}
     >
-      {Card}
+      {cardContent}
     </Pressable>
   );
 }
+
 const styles = StyleSheet.create({
   pressable: {},
   pressed: {
     transform: [{ scale: 0.97 }],
   },
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    padding: 16,
-    minHeight: 120,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
+    ...BRAND_CARD,
+    borderRadius: 18,
+    padding: 14,
+    height: 214,
+  },
+  body: {
+    flex: 1,
     justifyContent: "space-between",
-    elevation: 0,
   },
   image: {
     width: "100%",
-    height: 90,
-    borderRadius: 14,
-    marginBottom: 12,
+    height: 84,
+    borderRadius: 12,
+    marginBottom: 10,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
-    marginBottom: 12,
+    gap: 10,
+    marginBottom: 10,
+    minHeight: 44,
   },
   iconWrap: {
-    padding: 8,
+    padding: 7,
     borderRadius: 12,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: BRAND_COLORS.primarySoft,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: BRAND_COLORS.border,
   },
   title: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#1F2937",
+    fontSize: 16,
+    fontWeight: "700",
+    color: BRAND_COLORS.title,
     flexShrink: 1,
+    lineHeight: 22,
   },
   description: {
-    fontSize: 14,
-    color: "#4B5563",
-    lineHeight: 20,
-    marginTop: 4,
+    fontSize: 13,
+    color: BRAND_COLORS.textMuted,
+    lineHeight: 18,
+    marginTop: 2,
+  },
+  descriptionWrap: {
+    minHeight: 54,
   },
   explore: {
-    marginTop: 14,
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#374151",
+    marginTop: 10,
+    fontSize: 13,
+    fontWeight: "700",
+    color: BRAND_COLORS.primary,
+    letterSpacing: 0.2,
   },
 });

@@ -7,7 +7,9 @@ import { PortableText } from "@portabletext/react-native";
 import { client } from "../sanity/client";
 import { buildImageUrl } from "../sanity/imageUrl";
 import { useTranslation } from "react-i18next";
+import BrandScreen from "../components/BrandScreen";
 import LanguageToggle from "../components/LanguageToggle";
+import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 const LIFE_PHASE_THEME = {
   teens: "#0EA5E9",
@@ -77,7 +79,7 @@ export default function ArticleScreen() {
     LIFE_PHASE_THEME[post.lifePhase?.slug?.current] || LIFE_PHASE_THEME.default;
 
   return (
-    <View style={styles.wrapper}>
+    <BrandScreen style={styles.wrapper}>
       <Stack.Screen options={{ title: post?.title || t("common.loading") }} />
       <View style={styles.toggleWrap}>
         <LanguageToggle />
@@ -140,17 +142,17 @@ export default function ArticleScreen() {
           <PortableText value={post.body} components={portableComponents} />
         </View>
       </ScrollView>
-    </View>
+    </BrandScreen>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: "#FFF7FB",
+    backgroundColor: BRAND_COLORS.pageBase,
   },
   container: {
-    backgroundColor: "#FFF7FB",
+    backgroundColor: "transparent",
   },
   content: {
     paddingHorizontal: 20,
@@ -163,21 +165,21 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#FCE7F3",
-    backgroundColor: "#FFFFFF",
+    borderColor: BRAND_COLORS.border,
+    backgroundColor: "rgba(255,255,255,0.82)",
     marginBottom: 12,
   },
   backText: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   header: {
     marginBottom: 16,
   },
   headerTitle: {
     fontSize: 12,
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: 1.3,
@@ -185,21 +187,19 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
     marginTop: 6,
   },
 
   heroCard: {
+    ...BRAND_CARD,
     borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
     overflow: "hidden",
-    backgroundColor: "#FFFFFF",
     marginBottom: 18,
   },
   heroImage: {
     width: "100%",
-    backgroundColor: "#FDE8EF",
+    backgroundColor: BRAND_COLORS.surfaceStrong,
   },
   heroBody: {
     padding: 16,
@@ -233,38 +233,36 @@ const styles = StyleSheet.create({
   },
   metaDate: {
     fontSize: 12,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
   },
   metaDot: {
     width: 4,
     height: 4,
     borderRadius: 999,
-    backgroundColor: "#CBD5F5",
+    backgroundColor: BRAND_COLORS.borderStrong,
   },
   metaRead: {
     fontSize: 12,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
   },
 
   articleCard: {
-    backgroundColor: "#FFFFFF",
+    ...BRAND_CARD,
     borderRadius: 20,
     padding: 16,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
   },
 
   paragraph: {
     fontSize: 16,
     lineHeight: 26,
-    color: "#1F2937",
+    color: BRAND_COLORS.text,
     marginBottom: 16,
   },
 
   h2: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
     marginTop: 26,
     marginBottom: 10,
   },
@@ -281,12 +279,12 @@ const styles = StyleSheet.create({
   listItem: {
     fontSize: 15,
     lineHeight: 24,
-    color: "#374151",
+    color: BRAND_COLORS.text,
     marginBottom: 8,
   },
 
   callout: {
-    backgroundColor: "#FDF2F8",
+    backgroundColor: BRAND_COLORS.primarySoft,
     borderLeftWidth: 4,
     borderLeftColor: "#EC4899",
     padding: 14,
@@ -297,7 +295,7 @@ const styles = StyleSheet.create({
   calloutText: {
     fontSize: 15,
     lineHeight: 24,
-    color: "#831843",
+    color: BRAND_COLORS.title,
   },
 
   center: {

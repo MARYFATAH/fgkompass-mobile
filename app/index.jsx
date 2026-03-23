@@ -66,7 +66,7 @@ export default function Landing() {
 
   return (
     <LinearGradient
-      colors={["#FFF7FB", "#FDE7F0", "#F9E8FF"]}
+      colors={["#FFFFFF", "#FFFFFF"]}
       style={[
         styles.container,
         {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
-    backgroundColor: "#fdf2f8",
+    backgroundColor: "#FFFFFF",
   },
   toggleWrap: {
     position: "absolute",

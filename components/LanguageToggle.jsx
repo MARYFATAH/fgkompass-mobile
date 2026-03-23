@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { BRAND_COLORS, BRAND_SHADOW } from "../constants/theme";
 
 export default function LanguageToggle() {
   const { i18n } = useTranslation();
@@ -31,17 +32,18 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#FCE7F3",
-    backgroundColor: "#FFF7FB",
+    borderColor: BRAND_COLORS.border,
+    backgroundColor: "rgba(255,255,255,0.86)",
+    ...BRAND_SHADOW,
   },
   activeLeft: {},
   activeRight: {},
   label: {
     fontSize: 12,
-    color: "#9CA3AF",
+    color: BRAND_COLORS.textSoft,
     fontWeight: "600",
   },
   activeLabel: {
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
 });

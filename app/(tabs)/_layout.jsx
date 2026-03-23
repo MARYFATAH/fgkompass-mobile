@@ -4,6 +4,7 @@ import { Image, View, useWindowDimensions } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LanguageToggle from "../../components/LanguageToggle";
+import { BRAND_COLORS } from "../../constants/theme";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ export default function TabsLayout() {
                 height: logoSize,
                 resizeMode: "contain",
                 marginRight: 12,
-                backgroundColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.95)",
                 borderRadius: logoSize / 2,
               }}
             />
@@ -41,34 +42,34 @@ export default function TabsLayout() {
 
         // 🎨 Brand-compatible background color
         headerStyle: {
-          backgroundColor: "#fdf2f8",
+          backgroundColor: BRAND_COLORS.pageBase,
         },
 
         headerTitleStyle: {
-          fontSize: 17,
-          fontWeight: "600",
-          color: "#881337",
+          fontSize: 18,
+          fontWeight: "700",
+          color: BRAND_COLORS.title,
         },
 
         // 🎨 Brand-compatible back button color
-        headerTintColor: "#881337",
+        headerTintColor: BRAND_COLORS.title,
 
         tabBarStyle: {
           height: 58 + insets.bottom,
           paddingTop: 6,
           paddingBottom: Math.max(6, insets.bottom),
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "rgba(255,255,255,0.96)",
           borderTopWidth: 1,
-          borderTopColor: "#F1F5F9",
+          borderTopColor: BRAND_COLORS.border,
         },
 
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: "500",
+          fontWeight: "600",
         },
 
-        tabBarActiveTintColor: "#9F1239",
-        tabBarInactiveTintColor: "#94A3B8",
+        tabBarActiveTintColor: BRAND_COLORS.primary,
+        tabBarInactiveTintColor: BRAND_COLORS.tabInactive,
       }}
     >
       <Tabs.Screen

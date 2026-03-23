@@ -16,6 +16,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
 import KeinGeheimtipp from "../../components/KeinGeheimtipp";
+import BrandScreen from "../../components/BrandScreen";
+import { BRAND_CARD, BRAND_COLORS, BRAND_GRADIENTS } from "../../constants/theme";
 import { client } from "../../sanity/client";
 import { buildImageUrl } from "../../sanity/imageUrl";
 
@@ -136,7 +138,7 @@ export default function Home() {
   }));
 
   return (
-    <View style={styles.root}>
+    <BrandScreen>
       {/* HERO */}
       <Animated.View style={[styles.hero, heroStyle]}>
         <Animated.Image
@@ -144,7 +146,7 @@ export default function Home() {
           style={[styles.heroImage, heroImageStyle]}
         />
         <LinearGradient
-          colors={["rgba(255,255,255,0)", "rgba(255,255,255,0.9)"]}
+          colors={BRAND_GRADIENTS.heroOverlay}
           style={styles.heroOverlay}
         />
         <Animated.View style={[styles.heroText, heroTextStyle]}>
@@ -232,13 +234,16 @@ export default function Home() {
           ))}
         </Section>
       </Animated.ScrollView>
-    </View>
+    </BrandScreen>
   );
 }
 
 const Section = ({ title, children, sectionPadding }) => (
   <View style={[styles.section, { paddingHorizontal: sectionPadding }]}>
-    <Text style={styles.sectionTitle}>{title}</Text>
+    <View style={styles.sectionHeading}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.sectionRule} />
+    </View>
     {children}
   </View>
 );
@@ -246,7 +251,7 @@ const Section = ({ title, children, sectionPadding }) => (
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: BRAND_COLORS.pageBase,
   },
   hero: {
     position: "absolute",
@@ -273,26 +278,36 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   heroSubtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     marginTop: 6,
   },
 
   content: {
-    paddingTop: HERO_HEIGHT + 16,
+    paddingTop: HERO_HEIGHT + 20,
   },
 
   section: {
-    marginBottom: 36,
+    marginBottom: 32,
+  },
+  sectionHeading: {
+    marginBottom: 14,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: "700",
-    color: "#9F1239",
-    marginBottom: 14,
+    color: BRAND_COLORS.title,
+    letterSpacing: 0.2,
+  },
+  sectionRule: {
+    width: 44,
+    height: 2,
+    borderRadius: 999,
+    backgroundColor: BRAND_COLORS.borderStrong,
+    marginTop: 8,
   },
 
   horizontal: {
@@ -329,34 +344,35 @@ const styles = StyleSheet.create({
   },
 
   article: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
+    ...BRAND_CARD,
+    borderRadius: 18,
     overflow: "hidden",
-    marginBottom: 18,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
+    marginBottom: 16,
   },
   articleImage: {
     width: "100%",
-    backgroundColor: "#FDE8EF",
+    backgroundColor: BRAND_COLORS.surfaceStrong,
   },
   articleBody: {
-    padding: 16,
+    padding: 15,
   },
   articleTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "700",
-    color: "#881337",
+    color: BRAND_COLORS.title,
+    lineHeight: 23,
   },
   articleExcerpt: {
-    fontSize: 14,
-    color: "#475569",
+    fontSize: 13,
+    color: BRAND_COLORS.textMuted,
     marginVertical: 8,
-    lineHeight: 20,
+    lineHeight: 19,
   },
   readMore: {
-    color: "#E11D48",
-    fontWeight: "600",
+    color: BRAND_COLORS.primaryStrong,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.3,
   },
 });
 

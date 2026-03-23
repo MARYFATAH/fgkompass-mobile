@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import BrandScreen from "../../components/BrandScreen";
+import { BRAND_CARD, BRAND_COLORS } from "../../constants/theme";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -57,7 +59,7 @@ export default function Contact() {
   };
 
   return (
-    <View style={styles.root}>
+    <BrandScreen style={styles.root}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={{ flex: 1 }}
@@ -123,14 +125,14 @@ export default function Contact() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </BrandScreen>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: BRAND_COLORS.pageBase,
   },
   container: {
     padding: 20,
@@ -143,20 +145,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   subtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     marginTop: 6,
     maxWidth: 320,
   },
   card: {
-    backgroundColor: "#FFFFFF",
+    ...BRAND_CARD,
     borderRadius: 20,
     padding: 18,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
   },
   field: {
     marginBottom: 18,
@@ -164,18 +164,18 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#475569",
+    color: BRAND_COLORS.textMuted,
     marginBottom: 6,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255,255,255,0.92)",
     borderWidth: 1,
-    borderColor: "#FCE7F3",
+    borderColor: BRAND_COLORS.border,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 15,
-    color: "#0f172a",
+    color: BRAND_COLORS.text,
   },
   textarea: {
     height: 120,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: "#E11D48",
+    backgroundColor: BRAND_COLORS.primaryStrong,
     paddingVertical: 14,
     borderRadius: 18,
     alignItems: "center",
@@ -197,12 +197,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   error: {
-    color: "#B91C1C",
+    color: BRAND_COLORS.danger,
     fontSize: 13,
     marginTop: 6,
   },
   success: {
-    color: "#15803D",
+    color: BRAND_COLORS.success,
     fontSize: 13,
     marginTop: 6,
   },

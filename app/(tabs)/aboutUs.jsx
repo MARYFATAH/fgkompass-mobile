@@ -7,6 +7,8 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { useTranslation } from "react-i18next";
+import BrandScreen from "../../components/BrandScreen";
+import { BRAND_CARD, BRAND_COLORS } from "../../constants/theme";
 
 export default function About() {
   const { t } = useTranslation();
@@ -14,11 +16,12 @@ export default function About() {
   const contentMaxWidth = Math.min(920, width - 24);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={[styles.content, styles.contentCentered]}
-    >
-      <View style={[styles.inner, { maxWidth: contentMaxWidth }]}>
+    <BrandScreen>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={[styles.content, styles.contentCentered]}
+      >
+        <View style={[styles.inner, { maxWidth: contentMaxWidth }]}>
         {/* Hero */}
         <View style={styles.hero}>
           <Text style={styles.title}>{t("about.title")}</Text>
@@ -65,8 +68,9 @@ export default function About() {
           <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
           <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
         </View>
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </BrandScreen>
   );
 }
 
@@ -92,7 +96,7 @@ function Section({ title, text, bullets }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
   },
   content: {
     padding: 20,
@@ -112,23 +116,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: BRAND_COLORS.textMuted,
     lineHeight: 22,
     textAlign: "justify",
   },
 
   card: {
-    backgroundColor: "#FFFFFF",
+    ...BRAND_CARD,
     borderRadius: 20,
     padding: 18,
     gap: 20,
-    borderWidth: 1,
-    borderColor: "#FCE7F3",
   },
 
   textBlock: {
@@ -141,17 +143,17 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#9F1239",
+    color: BRAND_COLORS.primary,
   },
   sectionText: {
     fontSize: 14,
-    color: "#475569",
+    color: BRAND_COLORS.textMuted,
     lineHeight: 22,
     textAlign: "justify",
   },
   bullet: {
     fontSize: 14,
-    color: "#475569",
+    color: BRAND_COLORS.textMuted,
     lineHeight: 22,
     textAlign: "left",
   },
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: "#FCE7F3",
+    backgroundColor: BRAND_COLORS.border,
     marginTop: 28,
   },
 
@@ -175,11 +177,11 @@ const styles = StyleSheet.create({
   },
   ctaText: {
     fontSize: 16,
-    color: "#475569",
+    color: BRAND_COLORS.textMuted,
   },
   ctaLink: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#E11D48",
+    color: BRAND_COLORS.primaryStrong,
   },
 });
