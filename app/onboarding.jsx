@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "expo-router";
 import {
-  FlatList,
   Pressable,
   StyleSheet,
   Text,
@@ -12,39 +11,58 @@ import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import LanguageToggle from "../components/LanguageToggle";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Onboarding() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const { width } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
-  const listRef = useRef(null);
   const [index, setIndex] = useState(0);
-  const compactControls = width < 360;
-  const cardMaxWidth = Math.min(720, width - 40);
 
-  const slides = [
-    {
-      key: "step1",
-      title: t("onboarding.step1Title"),
-      body: t("onboarding.step1Body"),
-    },
-    {
-      key: "step2",
-      title: t("onboarding.step2Title"),
-      body: t("onboarding.step2Body"),
-    },
-    {
-      key: "step3",
-      title: t("onboarding.step3Title"),
-      body: t("onboarding.step3Body"),
-    },
-  ];
+  const isGerman = i18n.language === "de";
+  const slides = isGerman
+    ? [
+        {
+          key: "step1",
+          title: "Warum es diese App gibt",
+          body:
+            "Frauen sind keine kleineren Maenner mit Gebaermutter. Sie haben eine eigene Physiologie, eigene Symptome und eigene Beduerfnisse. Doch noch immer wird Frauengesundheit zu oft uebersehen, zu spaet erkannt und zu wenig erforscht. Die App Women's Health Knowledge Compass setzt genau hier an: Sie macht Wissen zugaenglich, staerkt Selbstfuersorge und begleitet Frauen durch alle Lebensphasen von Zyklus und Schwangerschaft bis zu Wechseljahren und mentaler Belastung.",
+        },
+        {
+          key: "step2",
+          title: "Ein Raum fuer Empowerment",
+          body:
+            "Diese App ist mehr als ein Tool. Sie ist ein Raum fuer Aufklaerung, Austausch und Aktivierung. Sie hilft Frauen, ihren Koerper besser zu verstehen, Symptome fruehzeitig zu deuten und individuelle Strategien fuer Gesundheit im Alltag zu entwickeln. Dabei geht es nicht um Defizite, sondern um Potenziale: koerperlich, emotional und sozial.",
+        },
+        {
+          key: "step3",
+          title: "Dein Kompass",
+          body:
+            "Mit fundierten Informationen, praktischen Impulsen und einem staerkenorientierten Blick auf Frauengesundheit schafft der Compass Orientierung. Lebensnah, wertschaetzend und empowernd. Fuer Frauen, die sich selbst ernst nehmen. Und fuer eine Medizin, die Frauen endlich mitdenkt.",
+        },
+      ]
+    : [
+        {
+          key: "step1",
+          title: "Why This App Exists",
+          body:
+            "Women are not smaller men with a uterus. They have their own physiology, their own symptoms, and their own needs. Yet women's health is still too often overlooked, recognized too late, and under-researched. The Women's Health Knowledge Compass app addresses this very issue: it makes knowledge accessible, strengthens self-care, and supports women through all phases of life from menstruation and pregnancy to menopause and mental stress.",
+        },
+        {
+          key: "step2",
+          title: "A Space for Empowerment",
+          body:
+            "This app is more than just a tool. It is a space for education, exchange, and empowerment. It helps women better understand their bodies, recognize symptoms early, and develop individual strategies for everyday health. It is not about deficits, but about potential: physical, emotional, and social.",
+        },
+        {
+          key: "step3",
+          title: "Your Compass",
+          body:
+            "With sound information, practical advice, and a strengths-based approach to women's health, Compass provides guidance that is practical, respectful, and empowering. For women who take themselves seriously. And for a medical system that finally considers women's needs.",
+        },
+      ];
 
   const goTo = (nextIndex) => {
     if (nextIndex < 0 || nextIndex >= slides.length) return;
-    listRef.current?.scrollToIndex({ index: nextIndex, animated: true });
     setIndex(nextIndex);
   };
 
@@ -56,66 +74,41 @@ export default function Onboarding() {
     goTo(index + 1);
   };
 
+  const activeSlide = slides[index];
+
   return (
     <LinearGradient
       colors={["#FFFFFF", "#FFFFFF"]}
       style={styles.root}
     >
-      <View style={[styles.toggleWrap, { top: insets.top + 8 }]}>
+      <View style={styles.toggleWrap}>
         <LanguageToggle />
       </View>
 
       <Animated.View style={styles.blobLeft} />
       <Animated.View style={styles.blobRight} />
 
-      <View style={[styles.header, { paddingTop: insets.top + 50 }]}>
-        <Text style={[styles.title, { fontSize: width < 360 ? 20 : 24 }]}>
-          {t("onboarding.title")}
-        </Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{t("onboarding.title")}</Text>
       </View>
 
-      <FlatList
-        ref={listRef}
-        data={slides}
-        keyExtractor={(item) => item.key}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={(event) => {
-          const nextIndex = Math.round(
-            event.nativeEvent.contentOffset.x / width,
-          );
-          setIndex(nextIndex);
-        }}
-        renderItem={({ item }) => (
-          <View style={[styles.slide, { width }]}>
-            <Animated.View
-              style={[
-                styles.card,
-                {
-                  width: cardMaxWidth,
-                  padding: width < 360 ? 18 : 22,
-                },
-              ]}
-              entering={FadeInUp.duration(500)}
-            >
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardBody}>{item.body}</Text>
-            </Animated.View>
-          </View>
-        )}
-      />
+      <View style={[styles.slide, { width }]}>
+        <Animated.View
+          key={activeSlide.key}
+          style={styles.card}
+          entering={FadeInUp.duration(500)}
+        >
+          <Text style={styles.cardTitle}>{activeSlide.title}</Text>
+          <Text style={styles.cardBody}>{activeSlide.body}</Text>
+        </Animated.View>
+      </View>
 
       <View
-        style={[
-          styles.controls,
-          compactControls && styles.controlsCompact,
-          { paddingBottom: Math.max(18, insets.bottom + 10) },
-        ]}
+        style={styles.controls}
       >
         <Pressable
           onPress={() => router.replace("/(tabs)/home")}
-          style={[styles.skip, compactControls && styles.skipCompact]}
+          style={styles.skip}
         >
           <Text style={styles.skipText}>{t("onboarding.skip")}</Text>
         </Pressable>
@@ -129,7 +122,7 @@ export default function Onboarding() {
           ))}
         </View>
 
-        <Pressable onPress={onNext} style={[styles.button, compactControls && styles.buttonCompact]}>
+        <Pressable onPress={onNext} style={styles.button}>
           <Text style={styles.buttonText}>
             {index === slides.length - 1
               ? t("onboarding.cta")
@@ -147,6 +140,7 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
+    top: 44,
     right: 16,
     zIndex: 10,
   },
@@ -169,6 +163,7 @@ const styles = StyleSheet.create({
     right: -30,
   },
   header: {
+    paddingTop: 86,
     paddingHorizontal: 20,
     paddingBottom: 12,
     alignItems: "flex-start",
@@ -180,6 +175,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   slide: {
+    flex: 1,
     paddingHorizontal: 20,
     alignItems: "flex-start",
     justifyContent: "center",
@@ -187,6 +183,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 22,
+    padding: 22,
     borderWidth: 1,
     borderColor: "#E5E7EB",
     alignItems: "flex-start",
@@ -205,16 +202,14 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   controls: {
+    marginTop: "auto",
     paddingHorizontal: 20,
     paddingTop: 16,
+    paddingBottom: 26,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     gap: 12,
-  },
-  controlsCompact: {
-    flexDirection: "column",
-    alignItems: "stretch",
   },
   dots: {
     flexDirection: "row",
@@ -239,9 +234,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
   },
-  buttonCompact: {
-    width: "100%",
-  },
   buttonText: {
     color: "#fff",
     fontSize: 14,
@@ -250,9 +242,6 @@ const styles = StyleSheet.create({
   skip: {
     paddingVertical: 10,
     paddingHorizontal: 8,
-  },
-  skipCompact: {
-    alignSelf: "flex-start",
   },
   skipText: {
     color: "#9F1239",

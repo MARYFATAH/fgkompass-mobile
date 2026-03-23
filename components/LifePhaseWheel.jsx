@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
-import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
+import { BRAND_COLORS, BRAND_SHADOW } from "../constants/theme";
 
 export default function LifePhaseLine({ phases = [], activePhase, onSelect }) {
   return (
@@ -28,36 +28,29 @@ export default function LifePhaseLine({ phases = [], activePhase, onSelect }) {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    gap: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 6,
+    gap: 10,
     marginHorizontal: 20,
     marginBottom: 10,
-    backgroundColor: BRAND_COLORS.surfaceMuted,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: BRAND_COLORS.border,
   },
 
   item: {
-    ...BRAND_CARD,
-    paddingHorizontal: 15,
-    paddingVertical: 9,
-    borderRadius: 16,
-    backgroundColor: BRAND_COLORS.surface,
-    borderWidth: 1,
-    borderColor: BRAND_COLORS.border,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: BRAND_COLORS.surfaceMuted,
+    ...BRAND_SHADOW,
   },
 
   activeItem: {
     backgroundColor: BRAND_COLORS.primarySoft,
-    borderColor: BRAND_COLORS.primaryStrong,
     transform: [{ scale: 1.02 }],
   },
 
   label: {
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
     color: BRAND_COLORS.textMuted,
     letterSpacing: 0.2,
   },

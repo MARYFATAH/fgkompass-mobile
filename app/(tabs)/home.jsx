@@ -6,6 +6,7 @@ import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from "r
 import Animated, {
   Extrapolate,
   FadeIn,
+  FadeInDown,
   interpolate,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -21,7 +22,7 @@ import { BRAND_CARD, BRAND_COLORS, BRAND_GRADIENTS } from "../../constants/theme
 import { client } from "../../sanity/client";
 import { buildImageUrl } from "../../sanity/imageUrl";
 
-const HERO_HEIGHT = 240;
+const HERO_HEIGHT = 280;
 const DEFAULT_TOPIC_IMAGE = require("../../assets/strongwomen.jpg");
 const TOPIC_IMAGES = {
   "hormone-overview-and-regulation": require("../../assets/images/hormone.jpg"),
@@ -149,7 +150,10 @@ export default function Home() {
           colors={BRAND_GRADIENTS.heroOverlay}
           style={styles.heroOverlay}
         />
-        <Animated.View style={[styles.heroText, heroTextStyle]}>
+        <Animated.View
+          entering={FadeInDown.duration(700)}
+          style={[styles.heroText, heroTextStyle]}
+        >
           <Text style={[styles.heroTitle, { fontSize: width < 360 ? 22 : 26 }]}>
             {t("home.heroTitle")}
           </Text>
@@ -242,7 +246,6 @@ const Section = ({ title, children, sectionPadding }) => (
   <View style={[styles.section, { paddingHorizontal: sectionPadding }]}>
     <View style={styles.sectionHeading}>
       <Text style={styles.sectionTitle}>{title}</Text>
-      <View style={styles.sectionRule} />
     </View>
     {children}
   </View>
@@ -274,20 +277,30 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 20,
     right: 20,
+    padding: 20,
+    borderRadius: 20,
+    backgroundColor: "rgba(255,255,255,0.84)",
+    maxWidth: 560,
+    alignSelf: "center",
+    alignItems: "center",
   },
   heroTitle: {
-    fontSize: 26,
-    fontWeight: "700",
-    color: BRAND_COLORS.primary,
+    fontSize: 28,
+    fontWeight: "800",
+    color: BRAND_COLORS.title,
+    lineHeight: 34,
+    textAlign: "center",
   },
   heroSubtitle: {
     fontSize: 14,
     color: BRAND_COLORS.textMuted,
-    marginTop: 6,
+    marginTop: 8,
+    lineHeight: 21,
+    textAlign: "center",
   },
 
   content: {
-    paddingTop: HERO_HEIGHT + 20,
+    paddingTop: HERO_HEIGHT + 24,
   },
 
   section: {
@@ -301,13 +314,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: BRAND_COLORS.title,
     letterSpacing: 0.2,
-  },
-  sectionRule: {
-    width: 44,
-    height: 2,
-    borderRadius: 999,
-    backgroundColor: BRAND_COLORS.borderStrong,
-    marginTop: 8,
   },
 
   horizontal: {
@@ -373,6 +379,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.3,
+    textTransform: "uppercase",
   },
 });
 

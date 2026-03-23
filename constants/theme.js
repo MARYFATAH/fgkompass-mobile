@@ -23,15 +23,15 @@ export const BRAND_COLORS = {
 
 export const BRAND_GRADIENTS = {
   page: ["#FFFFFF", "#FFFFFF"],
-  heroOverlay: ["rgba(255,255,255,0)", "rgba(255,248,251,0.94)"],
+  heroOverlay: ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.98)"],
 };
 
 export const BRAND_SHADOW = {
   shadowColor: BRAND_COLORS.shadow,
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.04,
-  shadowRadius: 14,
-  elevation: 2,
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.03,
+  shadowRadius: 10,
+  elevation: 1,
 };
 
 export const BRAND_CARD = {

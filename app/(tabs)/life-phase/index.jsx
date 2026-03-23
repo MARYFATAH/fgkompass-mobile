@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
   stickyWrap: {
     backgroundColor: "transparent",
     paddingTop: 4,
-    paddingBottom: 10,
-    marginBottom: 12,
+    paddingBottom: 6,
+    marginBottom: 8,
   },
 
   sectionHeader: {

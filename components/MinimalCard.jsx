@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
   },
   card: {
     ...BRAND_CARD,
-    borderRadius: 18,
-    padding: 14,
-    height: 214,
+    borderRadius: 16,
+    padding: 16,
+    height: 210,
   },
   body: {
     flex: 1,
@@ -88,16 +88,16 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 84,
-    borderRadius: 12,
-    marginBottom: 10,
+    height: 82,
+    borderRadius: 10,
+    marginBottom: 14,
   },
   header: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 10,
-    marginBottom: 10,
-    minHeight: 44,
+    marginBottom: 8,
+    minHeight: 42,
   },
   iconWrap: {
     padding: 7,
@@ -120,11 +120,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   descriptionWrap: {
-    minHeight: 54,
+    minHeight: 40,
   },
   explore: {
     marginTop: 10,
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "700",
     color: BRAND_COLORS.primary,
     letterSpacing: 0.2,

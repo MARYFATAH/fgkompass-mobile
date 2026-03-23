@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
-    padding: 14,
+    padding: 15,
     borderRadius: 14,
     ...BRAND_CARD,
   },
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: BRAND_COLORS.primary,
     marginTop: 10,
-    letterSpacing: 0.3,
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
   },
 });
