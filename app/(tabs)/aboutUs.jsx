@@ -1,4 +1,5 @@
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -6,12 +7,14 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import BrandScreen from "../../components/BrandScreen";
 import { BRAND_CARD, BRAND_COLORS } from "../../constants/theme";
 
 export default function About() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { width } = useWindowDimensions();
   const contentMaxWidth = Math.min(920, width - 24);
 
@@ -66,7 +69,9 @@ export default function About() {
         {/* CTA */}
         <View style={styles.cta}>
           <Text style={styles.ctaText}>{t("about.ctaText")}</Text>
-          <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
+          <Pressable onPress={() => router.push("/(tabs)/contact")}>
+            <Text style={styles.ctaLink}>{t("about.ctaLink")}</Text>
+          </Pressable>
         </View>
         </View>
       </ScrollView>
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: BRAND_COLORS.textMuted,
     lineHeight: 22,
-    textAlign: "justify",
+    textAlign: "left",
   },
 
   card: {
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: BRAND_COLORS.textMuted,
     lineHeight: 22,
-    textAlign: "justify",
+    textAlign: "left",
   },
   bullet: {
     fontSize: 14,
