@@ -9,6 +9,7 @@ import { buildImageUrl } from "../sanity/imageUrl";
 import { useTranslation } from "react-i18next";
 import BrandScreen from "../components/BrandScreen";
 import LanguageToggle from "../components/LanguageToggle";
+import AuthButton from "../components/AuthButton";
 import { BRAND_CARD, BRAND_COLORS } from "../constants/theme";
 
 const LIFE_PHASE_THEME = {
@@ -82,6 +83,7 @@ export default function ArticleScreen() {
     <BrandScreen style={styles.wrapper}>
       <Stack.Screen options={{ title: post?.title || t("common.loading") }} />
       <View style={styles.toggleWrap}>
+        <AuthButton />
         <LanguageToggle />
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -305,6 +307,8 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
     top: 12,
     right: 12,
     zIndex: 10,

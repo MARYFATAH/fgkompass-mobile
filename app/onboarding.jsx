@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import LanguageToggle from "../components/LanguageToggle";
+import AuthButton from "../components/AuthButton";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 export default function Onboarding() {
@@ -82,6 +83,7 @@ export default function Onboarding() {
       style={styles.root}
     >
       <View style={styles.toggleWrap}>
+        <AuthButton />
         <LanguageToggle />
       </View>
 
@@ -140,6 +142,8 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
     top: 44,
     right: 16,
     zIndex: 10,

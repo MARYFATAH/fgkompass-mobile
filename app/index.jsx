@@ -16,6 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { client } from "../sanity/client";
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle";
+import AuthButton from "../components/AuthButton";
 
 export default function Landing() {
   const router = useRouter();
@@ -75,6 +76,7 @@ export default function Landing() {
       ]}
     >
       <View style={[styles.toggleWrap, { top: insets.top + 8 }]}>
+        <AuthButton />
         <LanguageToggle />
       </View>
       {/* Ambient blobs */}
@@ -126,6 +128,12 @@ export default function Landing() {
             {t("landing.onboardingLink")}
           </Text>
         </Pressable>
+        <Pressable
+          onPress={() => router.push("/(auth)/sign-in")}
+          style={styles.linkButton}
+        >
+          <Text style={styles.linkButtonText}>Sign in</Text>
+        </Pressable>
       </Animated.View>
     </LinearGradient>
   );
@@ -141,6 +149,8 @@ const styles = StyleSheet.create({
   },
   toggleWrap: {
     position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
     right: 16,
     zIndex: 10,
   },
@@ -214,6 +224,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   secondaryButtonText: {
+    color: "#9F1239",
+    fontSize: 14,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  linkButton: {
+    paddingVertical: 10,
+  },
+  linkButtonText: {
     color: "#9F1239",
     fontSize: 14,
     fontWeight: "700",

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+
 import BrandScreen from "../../components/BrandScreen";
 import { BRAND_CARD, BRAND_COLORS } from "../../constants/theme";
 
@@ -62,16 +63,14 @@ export default function Contact() {
     <BrandScreen style={styles.root}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
+        style={styles.flex}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          {/* TITLE */}
           <View style={styles.header}>
             <Text style={styles.title}>{t("contact.title")}</Text>
             <Text style={styles.subtitle}>{t("contact.subtitle")}</Text>
           </View>
 
-          {/* FORM */}
           <View style={styles.card}>
             <View style={styles.field}>
               <Text style={styles.label}>{t("contact.name")}</Text>
@@ -133,6 +132,9 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: BRAND_COLORS.pageBase,
+  },
+  flex: {
+    flex: 1,
   },
   container: {
     padding: 20,

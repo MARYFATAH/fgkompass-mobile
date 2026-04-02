@@ -18,6 +18,7 @@ import MinimalCard from "../../components/MinimalCard";
 import MoreOnTopic from "../../components/MoreOnTopic";
 import KeinGeheimtipp from "../../components/KeinGeheimtipp";
 import BrandScreen from "../../components/BrandScreen";
+import AuthButton from "../../components/AuthButton";
 import { BRAND_CARD, BRAND_COLORS, BRAND_GRADIENTS } from "../../constants/theme";
 import { client } from "../../sanity/client";
 import { buildImageUrl } from "../../sanity/imageUrl";
@@ -158,6 +159,11 @@ export default function Home() {
             {t("home.heroTitle")}
           </Text>
           <Text style={styles.heroSubtitle}>{t("home.heroSubtitle")}</Text>
+          <AuthButton
+            signedOutLabel="Sign in / Sign up"
+            style={styles.heroAuthButton}
+            textStyle={styles.heroAuthButtonText}
+          />
         </Animated.View>
       </Animated.View>
 
@@ -297,6 +303,16 @@ const styles = StyleSheet.create({
     marginTop: 8,
     lineHeight: 21,
     textAlign: "center",
+  },
+  heroAuthButton: {
+    marginTop: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    backgroundColor: "rgba(255,255,255,0.92)",
+  },
+  heroAuthButtonText: {
+    fontSize: 13,
+    color: BRAND_COLORS.primaryStrong,
   },
 
   content: {

@@ -93,22 +93,29 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="contact"
-        options={{
-          title: label("tabs.contact", "Contact"),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="call" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="aboutUs"
         options={{
           title: label("tabs.about", "About"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="information-circle" size={size} color={color} />
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: label("tabs.profile", "Profile"),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="contact"
+        options={{
+          href: null,
         }}
       />
 
