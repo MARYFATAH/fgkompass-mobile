@@ -17,12 +17,48 @@ export default function SignInScreen() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const finalizeSignIn = async () => {
+    await signIn.finalize({
+      navigate: ({ session, decorateUrl }) => {
+        if (session?.currentTask) {
+          console.log(session.currentTask);
+          return;
+        }
+
+        const url = decorateUrl("/home");
+        if (Platform.OS === "web" && typeof window !== "undefined") {
+          window.location.assign(url);
+        } else if (url.startsWith("http")) {
+          window.location.href = url;
+        } else {
+          router.push(url);
+        }
+      },
+    });
+  };
+
+  const requestEmailCodeIfAvailable = async () => {
+    const emailCodeFactor = signIn.supportedSecondFactors?.find(
+      (factor) => factor.strategy === "email_code",
+    );
+
+    if (emailCodeFactor) {
+      await signIn.mfa.sendEmailCode();
+      setStatusMessage("We sent you an email code to finish signing in.");
+      return true;
+    }
+
+    return false;
+  };
 
   const handleSubmit = async () => {
+    setStatusMessage("");
     const { error } = await signIn.password({
-        emailAddress,
-        password,
-      });
+      emailAddress,
+      password,
+    });
 
     if (error) {
       console.error(JSON.stringify(error, null, 2));
@@ -30,63 +66,39 @@ export default function SignInScreen() {
     }
 
     if (signIn.status === "complete") {
-      await signIn.finalize({
-        navigate: ({ session, decorateUrl }) => {
-          if (session?.currentTask) {
-            console.log(session.currentTask);
-            return;
-          }
-
-          const url = decorateUrl("/home");
-          if (Platform.OS === "web" && typeof window !== "undefined") {
-            window.location.assign(url);
-          } else if (url.startsWith("http")) {
-            window.location.href = url;
-          } else {
-            router.push(url);
-          }
-        },
-      });
-    } else if (signIn.status === "needs_client_trust") {
-      const emailCodeFactor = signIn.supportedSecondFactors.find(
-        (factor) => factor.strategy === "email_code",
-      );
-
-      if (emailCodeFactor) {
-        await signIn.mfa.sendEmailCode();
+      await finalizeSignIn();
+    } else if (
+      signIn.status === "needs_client_trust" ||
+      signIn.status === "needs_second_factor"
+    ) {
+      const sent = await requestEmailCodeIfAvailable();
+      if (!sent) {
+        setStatusMessage(`Additional verification is required: ${signIn.status}`);
       }
+    } else if (signIn.status === "needs_first_factor") {
+      setStatusMessage("Please complete the next verification step to continue.");
     } else {
+      setStatusMessage(`Sign-in needs another step: ${signIn.status || "unknown"}`);
       console.error("Sign-in attempt not complete:", signIn);
     }
   };
 
   const handleVerify = async () => {
+    setStatusMessage("");
     await signIn.mfa.verifyEmailCode({ code });
 
     if (signIn.status === "complete") {
-      await signIn.finalize({
-        navigate: ({ session, decorateUrl }) => {
-          if (session?.currentTask) {
-            console.log(session.currentTask);
-            return;
-          }
-
-          const url = decorateUrl("/home");
-          if (Platform.OS === "web" && typeof window !== "undefined") {
-            window.location.assign(url);
-          } else if (url.startsWith("http")) {
-            window.location.href = url;
-          } else {
-            router.push(url);
-          }
-        },
-      });
+      await finalizeSignIn();
     } else {
+      setStatusMessage(`Verification needs another step: ${signIn.status || "unknown"}`);
       console.error("Sign-in attempt not complete:", signIn);
     }
   };
 
-  if (signIn.status === "needs_client_trust") {
+  if (
+    signIn.status === "needs_client_trust" ||
+    signIn.status === "needs_second_factor"
+  ) {
     return (
       <AuthScreen
         title="Verify your email"
@@ -100,6 +112,7 @@ export default function SignInScreen() {
           placeholder="Enter verification code"
         />
         <AuthError>{errors?.fields?.code?.message}</AuthError>
+        <AuthError>{statusMessage}</AuthError>
         <AuthButton onPress={handleVerify} disabled={fetchStatus === "fetching"}>
           Verify email
         </AuthButton>
@@ -141,6 +154,7 @@ export default function SignInScreen() {
         placeholder="Enter your password"
       />
       <AuthError>{errors?.fields?.password?.message}</AuthError>
+      <AuthError>{statusMessage}</AuthError>
 
       <AuthButton
         onPress={handleSubmit}
