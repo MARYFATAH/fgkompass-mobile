@@ -92,6 +92,18 @@ export default function SignInScreen() {
     });
 
     if (error) {
+      const sessionExists = error?.errors?.some?.(
+        (item) => item?.code === "session_exists",
+      );
+      if (sessionExists) {
+        const homeUrl = "/home";
+        if (Platform.OS === "web" && typeof window !== "undefined") {
+          window.location.assign(homeUrl);
+        } else {
+          router.replace(homeUrl);
+        }
+        return;
+      }
       console.error(JSON.stringify(error, null, 2));
       return;
     }
