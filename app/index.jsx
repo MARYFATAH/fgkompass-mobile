@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import Animated, {
@@ -128,12 +128,11 @@ export default function Landing() {
             {t("landing.onboardingLink")}
           </Text>
         </Pressable>
-        <Pressable
-          onPress={() => router.push("/sign-in")}
-          style={styles.linkButton}
-        >
-          <Text style={styles.linkButtonText}>Sign in</Text>
-        </Pressable>
+        <Link href="/sign-in" asChild>
+          <Pressable style={styles.linkButton}>
+            <Text style={styles.linkButtonText}>Sign in</Text>
+          </Pressable>
+        </Link>
       </Animated.View>
     </LinearGradient>
   );
