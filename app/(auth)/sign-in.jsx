@@ -1,6 +1,6 @@
 import { useSignIn } from "@clerk/expo";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Platform, Text, View } from "react-native";
 
 import AuthScreen, {
@@ -18,6 +18,7 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
+  const verificationCodeRequestedRef = useRef(false);
 
   const finalizeSignIn = async () => {
     await signIn.finalize({
@@ -47,14 +48,44 @@ export default function SignInScreen() {
     if (emailCodeFactor) {
       await signIn.mfa.sendEmailCode();
       setStatusMessage("We sent you an email code to finish signing in.");
+      verificationCodeRequestedRef.current = true;
       return true;
     }
 
     return false;
   };
 
+  useEffect(() => {
+    if (!signIn?.status) {
+      return;
+    }
+
+    if (signIn.status === "complete") {
+      void finalizeSignIn();
+      return;
+    }
+
+    if (
+      (signIn.status === "needs_client_trust" ||
+        signIn.status === "needs_second_factor") &&
+      !verificationCodeRequestedRef.current
+    ) {
+      void requestEmailCodeIfAvailable().then((sent) => {
+        if (!sent) {
+          setStatusMessage(`Additional verification is required: ${signIn.status}`);
+        }
+      });
+      return;
+    }
+
+    if (signIn.status === "needs_first_factor") {
+      setStatusMessage("Please complete the next verification step to continue.");
+    }
+  }, [signIn]);
+
   const handleSubmit = async () => {
     setStatusMessage("");
+    verificationCodeRequestedRef.current = false;
     const { error } = await signIn.password({
       emailAddress,
       password,
@@ -64,35 +95,11 @@ export default function SignInScreen() {
       console.error(JSON.stringify(error, null, 2));
       return;
     }
-
-    if (signIn.status === "complete") {
-      await finalizeSignIn();
-    } else if (
-      signIn.status === "needs_client_trust" ||
-      signIn.status === "needs_second_factor"
-    ) {
-      const sent = await requestEmailCodeIfAvailable();
-      if (!sent) {
-        setStatusMessage(`Additional verification is required: ${signIn.status}`);
-      }
-    } else if (signIn.status === "needs_first_factor") {
-      setStatusMessage("Please complete the next verification step to continue.");
-    } else {
-      setStatusMessage(`Sign-in needs another step: ${signIn.status || "unknown"}`);
-      console.error("Sign-in attempt not complete:", signIn);
-    }
   };
 
   const handleVerify = async () => {
     setStatusMessage("");
     await signIn.mfa.verifyEmailCode({ code });
-
-    if (signIn.status === "complete") {
-      await finalizeSignIn();
-    } else {
-      setStatusMessage(`Verification needs another step: ${signIn.status || "unknown"}`);
-      console.error("Sign-in attempt not complete:", signIn);
-    }
   };
 
   if (
