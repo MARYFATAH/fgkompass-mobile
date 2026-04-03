@@ -92,7 +92,7 @@ export default function ArticleScreen() {
             if (router.canGoBack?.()) {
               router.back();
             } else {
-              router.replace("/(tabs)/home");
+              router.replace("/home");
             }
           }}
           style={styles.backButton}

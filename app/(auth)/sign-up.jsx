@@ -46,7 +46,7 @@ export default function SignUpScreen() {
             return;
           }
 
-          const url = decorateUrl("/(tabs)/home");
+          const url = decorateUrl("/home");
           if (url.startsWith("http")) {
             window.location.href = url;
           } else {
@@ -77,7 +77,7 @@ export default function SignUpScreen() {
           : "Create a private account for saved progress and personalized features."
       }
       footerText={needsVerification ? null : "Already have an account?"}
-      footerLinkHref={needsVerification ? null : "/(auth)/sign-in"}
+      footerLinkHref={needsVerification ? null : "/sign-in"}
       footerLinkLabel={needsVerification ? null : "Sign in"}
     >
       {needsVerification ? (
@@ -135,7 +135,7 @@ export default function SignUpScreen() {
 
           <View style={styles.footerRow}>
             <Text style={styles.footerText}>Already have an account? </Text>
-            <Link href={"/(auth)/sign-in"} asChild>
+            <Link href={"/sign-in"} asChild>
               <Text style={styles.footerLink}>Sign in</Text>
             </Link>
           </View>

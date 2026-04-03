@@ -37,7 +37,7 @@ export default function SignInScreen() {
             return;
           }
 
-          const url = decorateUrl("/(tabs)/home");
+          const url = decorateUrl("/home");
           if (url.startsWith("http")) {
             window.location.href = url;
           } else {
@@ -69,7 +69,7 @@ export default function SignInScreen() {
             return;
           }
 
-          const url = decorateUrl("/(tabs)/home");
+          const url = decorateUrl("/home");
           if (url.startsWith("http")) {
             window.location.href = url;
           } else {
@@ -114,7 +114,7 @@ export default function SignInScreen() {
       title="Sign in"
       subtitle="Access your saved progress and private space."
       footerText="Don't have an account?"
-      footerLinkHref="/(auth)/sign-up"
+      footerLinkHref="/sign-up"
       footerLinkLabel="Sign up"
     >
       <AuthLabel>Email</AuthLabel>

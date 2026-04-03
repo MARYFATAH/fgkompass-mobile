@@ -78,7 +78,7 @@ export default function ProfileScreen() {
 
   const handlePrimaryAction = async () => {
     if (!isSignedIn) {
-      router.push("/(auth)/sign-in");
+      router.push("/sign-in");
       return;
     }
 

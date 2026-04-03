@@ -34,7 +34,7 @@ function FallbackAuthButton({ signedOutLabel, style, textStyle }) {
 
   return (
     <Pressable
-      onPress={() => router.push("/(auth)/sign-in")}
+      onPress={() => router.push("/sign-in")}
       style={[styles.button, style]}
     >
       <Text style={[styles.text, textStyle]}>{signedOutLabel}</Text>
@@ -49,7 +49,7 @@ function ClerkAuthButton({ signedOutLabel, style, textStyle }) {
 
   const handlePress = async () => {
     if (!isSignedIn) {
-      router.push("/(auth)/sign-in");
+      router.push("/sign-in");
       return;
     }
 

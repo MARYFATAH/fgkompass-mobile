@@ -69,7 +69,7 @@ export default function Onboarding() {
 
   const onNext = () => {
     if (index === slides.length - 1) {
-      router.replace("/(tabs)/home");
+      router.replace("/home");
       return;
     }
     goTo(index + 1);
@@ -109,7 +109,7 @@ export default function Onboarding() {
         style={styles.controls}
       >
         <Pressable
-          onPress={() => router.replace("/(tabs)/home")}
+          onPress={() => router.replace("/home")}
           style={styles.skip}
         >
           <Text style={styles.skipText}>{t("onboarding.skip")}</Text>

@@ -129,7 +129,7 @@ export default function Landing() {
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => router.push("/(auth)/sign-in")}
+          onPress={() => router.push("/sign-in")}
           style={styles.linkButton}
         >
           <Text style={styles.linkButtonText}>Sign in</Text>
