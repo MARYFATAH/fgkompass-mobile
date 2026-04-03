@@ -1,9 +1,18 @@
 import { useClerk, useUser } from "@clerk/expo";
-import { Link, useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { useRouter } from "expo-router";
+import { Platform, Pressable, StyleSheet, Text } from "react-native";
 
 import { hasClerkPublishableKey } from "../constants/auth";
 import { BRAND_COLORS } from "../constants/theme";
+
+function goToSignIn(router) {
+  if (Platform.OS === "web" && typeof window !== "undefined") {
+    window.location.assign("/sign-in");
+    return;
+  }
+
+  router.push("/sign-in");
+}
 
 export default function AuthButton({
   signedOutLabel = "Sign in",
@@ -30,12 +39,12 @@ export default function AuthButton({
 }
 
 function FallbackAuthButton({ signedOutLabel, style, textStyle }) {
+  const router = useRouter();
+
   return (
-    <Link href="/sign-in" asChild>
-      <Pressable style={[styles.button, style]}>
+      <Pressable onPress={() => goToSignIn(router)} style={[styles.button, style]}>
         <Text style={[styles.text, textStyle]}>{signedOutLabel}</Text>
       </Pressable>
-    </Link>
   );
 }
 
@@ -46,6 +55,7 @@ function ClerkAuthButton({ signedOutLabel, style, textStyle }) {
 
   const handlePress = async () => {
     if (!isSignedIn) {
+      goToSignIn(router);
       return;
     }
 
@@ -61,11 +71,9 @@ function ClerkAuthButton({ signedOutLabel, style, textStyle }) {
         </Text>
       </Pressable>
     ) : (
-      <Link href="/sign-in" asChild>
-        <Pressable style={[styles.button, style]}>
+        <Pressable onPress={() => goToSignIn(router)} style={[styles.button, style]}>
           <Text style={[styles.text, textStyle]}>{signedOutLabel}</Text>
         </Pressable>
-      </Link>
     )
   );
 }

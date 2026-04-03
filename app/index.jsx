@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import Animated, {
   FadeIn,
   FadeInDown,
@@ -64,6 +64,15 @@ export default function Landing() {
     opacity: 0.35 + pulse.value * 0.35,
     transform: [{ scale: 1 + pulse.value * 0.08 }],
   }));
+
+  const openSignIn = () => {
+    if (Platform.OS === "web" && typeof window !== "undefined") {
+      window.location.assign("/sign-in");
+      return;
+    }
+
+    router.push("/sign-in");
+  };
 
   return (
     <LinearGradient
@@ -128,11 +137,9 @@ export default function Landing() {
             {t("landing.onboardingLink")}
           </Text>
         </Pressable>
-        <Link href="/sign-in" asChild>
-          <Pressable style={styles.linkButton}>
-            <Text style={styles.linkButtonText}>Sign in</Text>
-          </Pressable>
-        </Link>
+        <Pressable onPress={openSignIn} style={styles.linkButton}>
+          <Text style={styles.linkButtonText}>Sign in</Text>
+        </Pressable>
       </Animated.View>
     </LinearGradient>
   );

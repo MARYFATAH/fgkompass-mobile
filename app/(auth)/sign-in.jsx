@@ -1,7 +1,7 @@
 import { useSignIn } from "@clerk/expo";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 
 import AuthScreen, {
   AuthButton,
@@ -38,7 +38,9 @@ export default function SignInScreen() {
           }
 
           const url = decorateUrl("/home");
-          if (url.startsWith("http")) {
+          if (Platform.OS === "web" && typeof window !== "undefined") {
+            window.location.assign(url);
+          } else if (url.startsWith("http")) {
             window.location.href = url;
           } else {
             router.push(url);
@@ -70,7 +72,9 @@ export default function SignInScreen() {
           }
 
           const url = decorateUrl("/home");
-          if (url.startsWith("http")) {
+          if (Platform.OS === "web" && typeof window !== "undefined") {
+            window.location.assign(url);
+          } else if (url.startsWith("http")) {
             window.location.href = url;
           } else {
             router.push(url);

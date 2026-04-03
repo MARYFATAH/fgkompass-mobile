@@ -1,7 +1,7 @@
 import { useAuth, useSignUp } from "@clerk/expo";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 import AuthScreen, {
   AuthButton,
@@ -47,7 +47,9 @@ export default function SignUpScreen() {
           }
 
           const url = decorateUrl("/home");
-          if (url.startsWith("http")) {
+          if (Platform.OS === "web" && typeof window !== "undefined") {
+            window.location.assign(url);
+          } else if (url.startsWith("http")) {
             window.location.href = url;
           } else {
             router.push(url);
